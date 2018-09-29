@@ -1,0 +1,28 @@
+{
+  "name": "frontend",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "react": "^16.5.2",
+    "react-dom": "^16.5.2",
+    "react-scripts": "1.1.5"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject",
+    "build:prod": "cross-env CI=true npm run test && npm run build",
+    "postbuild": "copyfiles -u 1 build/**/* ../src/main/resources/static"
+  },
+  "proxy": {
+    "/api": {
+      "target": "http://localhost:8080",
+      "ws": true
+    }
+  },
+  "devDependencies": {
+    "copyfiles": "^2.1.0",
+    "cross-env": "^5.2.0"
+  }
+}
