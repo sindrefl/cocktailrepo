@@ -16,5 +16,5 @@ class HelloController(@Autowired var testRepository: TestRepo) {
     }
 
     @GetMapping("/api/test")
-    fun hi() : List<String> = testRepository.get()
+    fun hi() : List<String> = testRepository.getAll()
 }

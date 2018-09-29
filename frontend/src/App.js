@@ -16,6 +16,8 @@ class App extends Component {
             .then(message => {
                 this.setState({message: message});
             });
+
+        fetch('/api/test').then(response => response.text()).then(message => this.setState({db:message}));
     };
 
     render() {
@@ -28,6 +30,11 @@ class App extends Component {
                 <p className="App-intro">
                     To get started, edit <code>src/App.js</code> and save to reload. This is the new version.
                 </p>
+
+                <div>
+                  Dump from database:
+                    {this.state.db}
+                </div>
             </div>
         );
     }
