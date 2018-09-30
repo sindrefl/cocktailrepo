@@ -11,13 +11,13 @@ class App extends Component {
     }
 
     hello = () => {
-        fetch('/api/hello')
+        fetch('/api/api/hello')
             .then(response => response.text())
             .then(message => {
                 this.setState({message: message});
             });
 
-        fetch('/api/test').then(response => response.text()).then(message => this.setState({db:message}));
+        fetch('/api/allDrinks').then(response => response.text()).then(message => this.setState({db:message}));
     };
 
     render() {
@@ -32,7 +32,7 @@ class App extends Component {
                 </p>
 
                 <div>
-                  Dump from database:
+                  Dump from database: All drinks:
                     {this.state.db}
                 </div>
             </div>
