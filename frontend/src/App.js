@@ -1,43 +1,22 @@
-import React, {Component} from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react';
+import Main from './Containers/Main';
+
+
+
+import './css/App.css';
+
+import {BrowserRouter as Router, Route, Link} from 'react-router-dom'
 
 class App extends Component {
-
-    state = {};
-
-    componentDidMount() {
-        setInterval(this.hello, 250);
-    }
-
-    hello = () => {
-        fetch('/api/hello')
-            .then(response => response.text())
-            .then(message => {
-                this.setState({message: message});
-            });
-
-        fetch('/api/allDrinks').then(response => response.text()).then(message => this.setState({db:message}));
-    };
-
-    render() {
-        return (
-            <div className="App">
-                <header className="App-header">
-                    <img src={logo} className="App-logo" alt="logo"/>
-                    <h1 className="App-title">{this.state.message}</h1>
-                </header>
-                <p className="App-intro">
-                    To get started, edit <code>src/App.js</code> and save to reload. This is the newest version.
-                </p>
-
-                <div>
-                  Dump from database: All drinks:
-                    {this.state.db}
-                </div>
-            </div>
-        );
-    }
+  render() {
+    return (
+      <div className="App">
+      <Router>
+        <Main />  
+      </Router>
+      </div>
+    );
+  }
 }
 
 export default App;
