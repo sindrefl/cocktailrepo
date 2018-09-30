@@ -4,7 +4,6 @@ import React, {Component} from 'react';
 import FillUpComponent from '../svgcomponents/FillUpComponent';
 import RandomDrinkCard from '../Components/RandomDrink';
 
-const axios = require('axios');
 
 class MyBarPage extends Component {
     constructor(props){
@@ -17,10 +16,9 @@ class MyBarPage extends Component {
     }
 
     componentDidMount(){
-        axios
-            .get('http://localhost:8080/random')
+        fetch('/api/random').then(response => response.json())
             .then((response) => {
-                let drink = response.data;
+                let drink = response;
                 this.setState({randomDrink: drink})
             })
             .catch(function (error) {

@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
 import '../css/App.css';
 
+
+import fetch from 'isomorphic-fetch'
 import update from 'immutability-helper';
 
-const axios = require('axios');
 class NewDrinkForm extends Component {
     
     constructor(props) {
@@ -48,16 +49,17 @@ class NewDrinkForm extends Component {
     submitForm(e) {
         e.preventDefault()
         console.log(this.state)
-        axios
-            .post('http://localhost:8080/addDrink', {
-            glass: this.state.glass,
-            name: this.state.drinkName,
-            category: this.state.drinkType,
-            ingredients: this.state.ingredients,
-            amounts: this.state.amounts,
-            description: this.state.description
-        })
-            .then((response) => {
+        fetch('/api/addDrink', {
+            method:'POST',
+            body: {
+                glass: this.state.glass,
+                name: this.state.drinkName,
+                category: this.state.drinkType,
+                ingredients: this.state.ingredients,
+                amounts: this.state.amounts,
+                description: this.state.description
+            }
+        }).then((response) => {
                 console.log(response)
                 if(response.status === 200){
                     this.setState({submitted : true})

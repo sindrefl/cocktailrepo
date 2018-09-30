@@ -9,12 +9,9 @@ import NewDrinkForm from '../Components/NewDrinkForm'
 import {Route, Switch} from 'react-router-dom'
 import CocktailDashboard from './CocktailDashboard';
 import CategoryList from './CategoryList';
-
-import InitScript from './initScript'
-
 import MyBarPage from './MyBarPage'
 
-const axios = require('axios');
+import fetch from 'isomorphic-fetch'
 
 class Main extends Component {
     constructor(props) {
@@ -28,32 +25,30 @@ class Main extends Component {
     }
 
     componentDidMount() {
-        axios
-            .get('/api/random')
-            .then((response) => {
-                let drink = response.data;
+        fetch('/api/random', {
+            method : 'GET'
+        }).then((response) => response.json()).then(response => {
+                let drink = response;
                 this.setState({randomDrink: drink})
             })
             .catch(function (error) {
                 // handle error
                 console.log(error);
             });
-        axios
-            .get('/api/categories/10')
-            .then((response) => {
-                let categoryList = response.data;
-                this.setState({categories: categoryList});
-            })
-            .catch((error) => {
-                console.log(error)
+        fetch('/api/categories/10',{
+            method:'GET'
+        }).then(response => response.json()).then((response) => {
+            let categoryList = response;
+            this.setState({categories: categoryList});
+        })
+        .catch((error) => {
+            console.log(error)
+        });    
+        fetch('/api/allDrinks').then(response => response.json()).then((response) => {
+                this.setState({allDrinks: response})
             });
-        axios
-            .get('/api/allDrinks')
-            .then((response) => {
-                this.setState({allDrinks: response.data})
-            });
-        axios.get('/api/glassTypes/10').then((response) => {
-            this.setState({glassTypes : response.data})
+        fetch('/api/glassTypes/10').then(response => response.json()).then((response) => {
+            this.setState({glassTypes : response})
         }).catch(error => {
             console.log(error)
         });

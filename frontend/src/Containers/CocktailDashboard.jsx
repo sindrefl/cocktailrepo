@@ -8,7 +8,6 @@ import RandomDrinkCard from '../Components/RandomDrink'
 import {Link, Route} from 'react-router-dom'
 import CategoryCard from '../Components/CategoryCard';
 
-const axios = require('axios');
 
 class CocktailDashboard extends Component {
     render() {

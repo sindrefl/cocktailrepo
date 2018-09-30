@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { Route, Link, Redirect} from 'react-router-dom';
 import DrinkCard from '../Components/DrinkCard';
 
-const axios = require('axios');
+
+import fetch from 'isomorphic-fetch'
 
 class CategoryList extends Component {
     constructor(props){
@@ -44,10 +45,8 @@ class CategoryList extends Component {
 
     updatePage(newUrl){
         this.setStateFromUrl(newUrl)
-        axios.get('/api/filteredDrinks/' + newUrl)
-            .then((response) => {
-                console.log(response);
-                this.setState({drinks: response.data})
+        fetch('/api/filteredDrinks/' + newUrl).then((response)=>response.json()).then((response) => {
+                this.setState({drinks: response})
             }).catch((error)=>{
                 console.log(error);
             });
