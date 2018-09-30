@@ -71,6 +71,7 @@ class CategoryList extends Component {
     }
     
     render(){
+        console.log(this.state.drinks[0])
         return <div>
                     <div>
                         <form className="Grid-header">
@@ -102,8 +103,8 @@ class CategoryList extends Component {
                                 this.state.drinks.map((drink,index) => <span onClick={(e) => this.toggleModal(e)}>
                                                                             <DrinkCard 
                                                                                 key={index} 
-                                                                                imageUrl={`/api/images/drinks/${drink.name.replace(/ /g,'_').replace(/[èé]/g, 'e')}.jpg`} 
-                                                                                altUrl={drink.imageUrl}
+                                                                                imageUrl={window.location.origin.indexOf('local') !== -1 ? `/api/images/drinks/${drink.name.replace(/ /g,'_').replace(/[èé]/g, 'e')}.jpg` : `http://s3.amazonaws.com/cocktailfiles/drinks/${drink.name.replace(/ /g,'_').replace(/[èé]/g, 'e')}.jpg`} 
+                                                                                altUrl={drink.image_link}
                                                                                 name={drink.name} 
                                                                                 glass={drink.glass} 
                                                                                 recipe={drink.recipe} 
