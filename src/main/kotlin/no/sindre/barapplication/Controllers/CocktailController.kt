@@ -17,6 +17,7 @@ import java.util.logging.Logger
 import javax.servlet.http.HttpServletResponse
 
 @RestController
+@RequestMapping("/api")
 class CocktailController(@Autowired
                          var cocktailService: CocktailService,
                          @Autowired

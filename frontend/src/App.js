@@ -11,7 +11,7 @@ class App extends Component {
     }
 
     hello = () => {
-        fetch('/api/api/hello')
+        fetch('/api/hello')
             .then(response => response.text())
             .then(message => {
                 this.setState({message: message});
@@ -28,7 +28,7 @@ class App extends Component {
                     <h1 className="App-title">{this.state.message}</h1>
                 </header>
                 <p className="App-intro">
-                    To get started, edit <code>src/App.js</code> and save to reload. This is the new version.
+                    To get started, edit <code>src/App.js</code> and save to reload. This is the newest version.
                 </p>
 
                 <div>
