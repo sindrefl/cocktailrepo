@@ -21,11 +21,11 @@ class NewDrinkForm extends Component {
         this.setAmountsNameField = this.setAmountsNameField.bind(this);
         
         this.state = {
-            drinkName: "",
-            drinkType: "",
+            name: "",
+            category: "",
             ingredients: [""],
             amounts: [""],
-            img: undefined,
+            image_link: undefined,
             description: "",
             glass: "HIGHBALL",
             submitted : false
@@ -47,17 +47,36 @@ class NewDrinkForm extends Component {
 
     submitForm(e) {
         e.preventDefault()
-        console.log(this.state)
+        console.log(JSON.stringify({
+            glass: this.state.glass,
+            name: this.state.name,
+            category: this.state.category,
+            ingredients: this.state.ingredients,
+            amounts: this.state.amounts,
+            description: this.state.description,
+            alcoholic: true,
+            img_link: this.state.image_link,
+            recipe: ""
+
+        }))
         fetch('/api/addDrink', {
             method:'POST',
-            body: {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+              },
+            body: JSON.stringify({
                 glass: this.state.glass,
-                name: this.state.drinkName,
-                category: this.state.drinkType,
+                name: this.state.name,
+                category: this.state.category,
                 ingredients: this.state.ingredients,
                 amounts: this.state.amounts,
-                description: this.state.description
-            }
+                description: this.state.description,
+                alcoholic: true,
+                img_link: this.state.image_link,
+                recipe: ""
+
+            })
         }).then((response) => {
                 console.log(response)
                 if(response.status === 200){
@@ -107,17 +126,17 @@ class NewDrinkForm extends Component {
                         <li>
                             <input
                                 type="text"
-                                name="drinkName"
+                                name="name"
                                 placeholder="Name of Drink"
-                                value={this.state.drinkName}
+                                value={this.state.name}
                                 onChange={this.setField}></input>
                         </li>
                         <li>
                             <input
                                 type="text"
-                                name="drinkType"
+                                name="category"
                                 placeholder="Type of Drink"
-                                value={this.state.drinkType}
+                                value={this.state.category}
                                 onChange={this.setField}></input>
                         </li>
                         <li>

@@ -15,93 +15,132 @@ import java.nio.file.Files
 import java.nio.file.Paths
 import java.util.logging.Logger
 import javax.servlet.http.HttpServletResponse
+import org.springframework.core.io.ClassPathResource
+import org.springframework.http.MediaType
+import org.springframework.util.StreamUtils
+import org.springframework.web.bind.annotation.RequestMethod
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
+
 
 @RestController
 @RequestMapping("/api")
 class CocktailController(@Autowired
                          var cocktailService: CocktailService,
                          @Autowired
-var csvService: CSVService
+                         var csvService: CSVService
 ) {
 
     val LOG = LoggerFactory.getLogger(CocktailController::class.java.name)
 
     @RequestMapping("/")
-    fun home(): String{
+    fun home(): String {
         return "This is the home"
     }
 
 
-
     @PostMapping("/addDrink")
-    fun addDrink(@RequestBody cocktail: Cocktail){
-        if(cocktail.name.contains('*')){
+    fun addDrink(@RequestBody cocktail: Cocktail) {
+        if (cocktail.name.contains('*')) {
             cocktail.name = "Quick Fuck"
         }
-        if(cocktail.name.contains("\"")){
+        if (cocktail.name.contains("\"")) {
             cocktail.name = cocktail.name.replace("\"", "")
         }
+
+        LOG.info(cocktail.image_link)
+        LOG.info(""+cocktail.image_link.isNullOrBlank())
         downloadImage(cocktail.image_link, cocktail.name.replace(' ', '_'))
-        cocktailService.addCocktail(cocktail)
+     //   cocktailService.addCocktail(cocktail)
     }
 
 
-    fun downloadImage(url: String?, name : String){
+    fun downloadImage(url: String?, name: String) {
         var fileName = name
-        if(url.isNullOrBlank()){
+        if (url.isNullOrBlank()) {
             return
         }
-        if(name.contains("/")){
-            fileName = name.replace("/","_")
+        if (name.contains("/")) {
+            fileName = name.replace("/", "_")
         }
 
         try {
-            val image = URL(url).openStream().use({ input -> Files.copy(input, Paths.get("C:/Users/sindre.flood/Documents/MyBar/MyBarServer/target/classes/static/images/drinks/$fileName.jpg")) })
-        } catch (e : IOException) {
+            val image = URL(url).openStream().use({ input -> Files.copy(input, Paths.get("C:/Users/sindre.flood/Documents/CocktailApplication/barapplication/src/main/resources/public/images/drinks/$fileName.jpg")) })
+        } catch (e: IOException) {
             LOG.error("image failed: ${e.message}")
         }
     }
 
 
     @GetMapping("/random")
-    fun index(): Cocktail{
+    fun index(): Cocktail {
         cocktailService.updateRandomCocktail()
         return cocktailService.randomCocktail
     }
 
     @GetMapping("/allDrinks")
-    fun getDrinks() : List<Cocktail> = cocktailService.getCocktails()
+    fun getDrinks(): List<Cocktail> = cocktailService.getCocktails()
 
 
     @GetMapping("/filteredDrinks/{searchString}")
-    fun getFiltered(@PathVariable searchString : String) = cocktailService.getFilteredDrinkList(searchString)
+    fun getFiltered(@PathVariable searchString: String) = cocktailService.getFilteredDrinkList(searchString)
 
     @GetMapping("/glassTypes")
-    fun getGlasses() : Array<Glass> {
+    fun getGlasses(): Array<Glass> {
         return Glass.values()
     }
 
     @GetMapping("/glassTypes/{length}")
-    fun getGlasses(@PathVariable length:Int) : List<Glass> {
+    fun getGlasses(@PathVariable length: Int): List<Glass> {
         return Glass.values().take(length)
     }
 
     @GetMapping("/categories")
-    fun getCategories() : List<Category> {
+    fun getCategories(): List<Category> {
         return cocktailService.getCategories()
     }
 
     @GetMapping("/categories/{length}")
-    fun getCategories(@PathVariable length: Int) : List<Category> {
+    fun getCategories(@PathVariable length: Int): List<Category> {
         return cocktailService.getCategories().take(length)
     }
 
     @RequestMapping("/cocktails.csv")
-    fun getCocktailsAsCsv(response:HttpServletResponse){
+    fun getCocktailsAsCsv(response: HttpServletResponse) {
         response.contentType = ("text/csv")
         response.setHeader("Content-Disposition", "attachment; filename=\"cocktails.csv\"")
         csvService.writeCocktails(response.writer, cocktailService.getCocktails());
         response.writer.flush()
         response.writer.close()
+    }
+
+    @GetMapping("/images/drinks/{path}", produces = [MediaType.IMAGE_JPEG_VALUE])
+    @Throws(IOException::class)
+    fun getdrinkImage(@PathVariable path: String, response: HttpServletResponse) {
+
+        val imgFile = ClassPathResource("/public/images/drinks/$path")
+
+        response.contentType = MediaType.IMAGE_JPEG_VALUE
+        StreamUtils.copy(imgFile.inputStream, response.outputStream)
+    }
+
+    @GetMapping("/images/categories/{path}", produces = [MediaType.IMAGE_JPEG_VALUE])
+    @Throws(IOException::class)
+    fun getcatImage(@PathVariable path: String, response: HttpServletResponse) {
+
+        val imgFile = ClassPathResource("/public/images/categories/$path")
+
+        response.contentType = MediaType.IMAGE_JPEG_VALUE
+        StreamUtils.copy(imgFile.inputStream, response.outputStream)
+    }
+
+    @GetMapping("/images/glass/{path}", produces = [MediaType.IMAGE_JPEG_VALUE])
+    @Throws(IOException::class)
+    fun getglassImage(@PathVariable path: String, response: HttpServletResponse) {
+
+        val imgFile = ClassPathResource("/public/images/glass/$path")
+
+        response.contentType = MediaType.IMAGE_JPEG_VALUE
+        StreamUtils.copy(imgFile.inputStream, response.outputStream)
     }
 }

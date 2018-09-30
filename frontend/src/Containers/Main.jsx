@@ -11,7 +11,6 @@ import CocktailDashboard from './CocktailDashboard';
 import CategoryList from './CategoryList';
 import MyBarPage from './MyBarPage'
 
-
 class Main extends Component {
     constructor(props) {
         super(props);
@@ -56,6 +55,8 @@ class Main extends Component {
     render() {
         return (
             <div className="Main">
+            
+            
             <Navbar glassTypes={this.state.glassTypes}/>
 
             <Switch>
@@ -63,6 +64,7 @@ class Main extends Component {
             <Route path="/filtered/:query" render={({match}) => <CategoryList url={match} drinks={this.state.allDrinks}></CategoryList>}></Route>
             <Route path="/home/bar" render={() => <MyBarPage></MyBarPage>}></Route>
             </Switch>
+    
             </div>
         );
     }

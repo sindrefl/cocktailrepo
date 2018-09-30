@@ -102,7 +102,7 @@ class CategoryList extends Component {
                                 this.state.drinks.map((drink,index) => <span onClick={(e) => this.toggleModal(e)}>
                                                                             <DrinkCard 
                                                                                 key={index} 
-                                                                                imageUrl={`/images/drinks/${drink.name.replace(/ /g,'_')}.jpg`} 
+                                                                                imageUrl={`/api/images/drinks/${drink.name.replace(/ /g,'_').replace(/[èé]/g, 'e')}.jpg`} 
                                                                                 altUrl={drink.imageUrl}
                                                                                 name={drink.name} 
                                                                                 glass={drink.glass} 
