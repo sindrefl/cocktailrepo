@@ -1,14 +1,12 @@
 package no.sindre.barapplication.Services
 
 
-import javafx.application.Application
 import no.sindre.barapplication.Models.Category
 import no.sindre.barapplication.Models.Cocktail
 import no.sindre.barapplication.Models.Glass
 import no.sindre.barapplication.Models.Ingredient
 import no.sindre.barapplication.Repositories.CocktailRepository
 import no.sindre.barapplication.Repositories.IngredientsRepository
-import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -118,6 +116,6 @@ class CocktailService(@Autowired var cocktailRepository: CocktailRepository, @Au
         return cocktailRepository.getCategories()
     }
 
-    private val log = LoggerFactory.getLogger(Application::class.java)
+    private val log = LoggerFactory.getLogger(CocktailService::class.java)
 
 }
