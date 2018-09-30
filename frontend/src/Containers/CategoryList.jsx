@@ -3,7 +3,6 @@ import { Route, Link, Redirect} from 'react-router-dom';
 import DrinkCard from '../Components/DrinkCard';
 
 
-import fetch from 'isomorphic-fetch'
 
 class CategoryList extends Component {
     constructor(props){

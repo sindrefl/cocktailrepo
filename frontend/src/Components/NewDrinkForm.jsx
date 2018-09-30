@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import '../css/App.css';
 
 
-import fetch from 'isomorphic-fetch'
 import update from 'immutability-helper';
 
 class NewDrinkForm extends Component {

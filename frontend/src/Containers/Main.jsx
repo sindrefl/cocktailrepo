@@ -11,7 +11,6 @@ import CocktailDashboard from './CocktailDashboard';
 import CategoryList from './CategoryList';
 import MyBarPage from './MyBarPage'
 
-import fetch from 'isomorphic-fetch'
 
 class Main extends Component {
     constructor(props) {
