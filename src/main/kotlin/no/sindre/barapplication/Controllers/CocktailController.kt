@@ -126,7 +126,7 @@ class CocktailController(
     @Throws(IOException::class)
     fun getdrinkImage(@PathVariable path: String, response: HttpServletResponse) {
 
-        if (System.getenv("S3_KEY").isNullOrBlank()) {
+        if (System.getenv("AWS_ACCESS_KEY_ID").isNullOrBlank()) {
             val imgFile = ClassPathResource("/public/images/drinks/$path")
             response.contentType = MediaType.IMAGE_JPEG_VALUE
             StreamUtils.copy(imgFile.inputStream, response.outputStream)
@@ -141,8 +141,7 @@ class CocktailController(
     @Throws(IOException::class)
     fun getcatImage(@PathVariable path: String, response: HttpServletResponse) {
 
-        LOG.info("var: ${System.getenv("AWS_ACCESS_KEY_ID")}")
-        if (System.getenv("S3_KEY").isNullOrBlank()) {
+        if (System.getenv("AWS_ACCESS_KEY").isNullOrBlank()) {
             val imgFile = ClassPathResource("/public/images/categories/$path")
             response.contentType = MediaType.IMAGE_JPEG_VALUE
             StreamUtils.copy(imgFile.inputStream, response.outputStream)
@@ -157,7 +156,7 @@ class CocktailController(
     @Throws(IOException::class)
     fun getglassImage(@PathVariable path: String, response: HttpServletResponse) {
 
-        if (System.getenv("S3_KEY").isNullOrBlank()) {
+        if (System.getenv("AWS_ACCESS_KEY_ID").isNullOrBlank()) {
             val imgFile = ClassPathResource("/public/images/glass/$path")
             response.contentType = MediaType.IMAGE_JPEG_VALUE
             StreamUtils.copy(imgFile.inputStream, response.outputStream)
