@@ -13,7 +13,7 @@ class CocktailDashboard extends Component {
             <div className="Main">
                 {this.props.randomDrink && <RandomDrinkCard
                     name={this.props.randomDrink.name}
-                    imageUrl={`/api/images/drinks/${this.props.randomDrink.name.replace(/ /g, '_')}.jpg`}
+                    imageUrl={`/drinks/${this.props.randomDrink.name.replace(/ /g, '_')}.jpg`}
                     altUrl={this.props.randomDrink.imageUrl}
                     description={this.props.randomDrink.description}
                     glass={this.props.randomDrink.glass}
@@ -35,7 +35,7 @@ class CocktailDashboard extends Component {
                                 return <div>
                                     <Link key={glass} to={`/filtered/glass=${glass}`}>
                                         <CategoryCard
-                                            imageUrl={`/api/images/glass/${glass}.jpg`}
+                                            imageUrl={`/glass/${glass}.jpg`}
                                             name={glass}/>
                                     </Link>
 
@@ -59,7 +59,7 @@ class CocktailDashboard extends Component {
                                 return <div>
                                     <Link key={index} to={`/filtered/category=${encodeURIComponent(cat.name)}`}>
                                         <CategoryCard
-                                            imageUrl={encodeURI(`api/images/categories/${cat.name.replace(/\//g,"")}.jpg`)}
+                                            imageUrl={`/categories/${cat.name.replace(/\//g,"")}.jpg`}
                                             name={cat.name}/>
                                     </Link>
 

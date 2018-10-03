@@ -38,7 +38,6 @@ class CategoryList extends Component {
 
     submit(e){
         e.preventDefault()
-        console.log(this.state)
         this.updatePage(`glass=${this.state.glass}&category=${this.state.category}`)
     }
 
@@ -102,7 +101,7 @@ class CategoryList extends Component {
                                 this.state.drinks.map((drink,index) => <span onClick={(e) => this.toggleModal(e)}>
                                                                             <DrinkCard 
                                                                                 key={index} 
-                                                                                imageUrl={`/api/images/drinks/${drink.name.replace(/ /g,'_').replace(/[èé]/g, 'e')}.jpg`} 
+                                                                                imageUrl={`/drinks/${drink.name.replace(/ /g,'_').replace(/[èé]/g, 'e')}.jpg`} 
                                                                                 altUrl={drink.image_link}
                                                                                 name={drink.name} 
                                                                                 glass={drink.glass} 
