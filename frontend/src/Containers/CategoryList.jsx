@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Route, Link, Redirect} from 'react-router-dom';
 import DrinkCard from '../Components/DrinkCard';
 
 
@@ -27,7 +26,7 @@ class CategoryList extends Component {
         for(const el of list){
             const li = el.split('=')
             switch(li[0]){
-                case "category": this.setState({category:li[1]})
+                case "category": this.setState({category:li[1].replace(/%20/g, " ").replace(/%2F/g, "/")})
                 break;
                 case "glass" : this.setState({glass:li[1]})
                 break;
@@ -39,6 +38,7 @@ class CategoryList extends Component {
 
     submit(e){
         e.preventDefault()
+        console.log(this.state)
         this.updatePage(`glass=${this.state.glass}&category=${this.state.category}`)
     }
 
@@ -47,7 +47,7 @@ class CategoryList extends Component {
         fetch('/api/filteredDrinks/' + newUrl).then((response)=>response.json()).then((response) => {
                 this.setState({drinks: response})
             }).catch((error)=>{
-                console.log(error);
+                console.warn(`error in newurl ${error}`);
             });
     }
 
@@ -71,7 +71,6 @@ class CategoryList extends Component {
     }
     
     render(){
-        console.log(this.state.drinks[0])
         return <div>
                     <div>
                         <form className="Grid-header">
@@ -103,7 +102,7 @@ class CategoryList extends Component {
                                 this.state.drinks.map((drink,index) => <span onClick={(e) => this.toggleModal(e)}>
                                                                             <DrinkCard 
                                                                                 key={index} 
-                                                                                imageUrl={window.location.origin.indexOf('local') !== -1 ? `/api/images/drinks/${drink.name.replace(/ /g,'_').replace(/[èé]/g, 'e')}.jpg` : `http://s3.amazonaws.com/cocktailfiles/drinks/${drink.name.replace(/ /g,'_').replace(/[èé]/g, 'e')}.jpg`} 
+                                                                                imageUrl={`/api/images/drinks/${drink.name.replace(/ /g,'_').replace(/[èé]/g, 'e')}.jpg`} 
                                                                                 altUrl={drink.image_link}
                                                                                 name={drink.name} 
                                                                                 glass={drink.glass} 

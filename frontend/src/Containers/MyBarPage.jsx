@@ -23,7 +23,7 @@ class MyBarPage extends Component {
             })
             .catch(function (error) {
                 // handle error
-                console.log(error);
+                console.warn(error);
             });
     }
 

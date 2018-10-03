@@ -23,12 +23,12 @@ this.setState({ showAddNewDrink: false });
         <header className="App-header"> 
         <div className="left-header">
         <div className="header-item">
-        <Link to={"/"}><img className="icon" src={require("../assets/home.png")}></img></Link>
+        <Link to={"/"}><img className="icon" src={require("../assets/home.png")} alt="Home icon"></img></Link>
         </div>
         </div>
         <div className="right-header">
         <div className="header-item">
-          <img className="icon clickable" src={require("../assets/plus.png")} onClick={this.showModal}></img>
+          <img className="icon clickable" src={require("../assets/plus.png")} alt="plus icon" onClick={this.showModal}></img>
         </div>
           <NewDrinkForm glassTypes={this.props.glassTypes} show={this.state.showAddNewDrink} handleClose={this.hideModal}>
         </NewDrinkForm>
@@ -36,7 +36,7 @@ this.setState({ showAddNewDrink: false });
             Hello Sindre
             </div>
             <div className="header-item">
-          <Link to={"/home/bar"}><img className="icon" src={require("../assets/profile4.png")}></img></Link>
+          <Link to={"/home/bar"}><img className="icon" src={require("../assets/profile4.png")} alt="Profile icon"></img></Link>
         </div>
         </div>
         </header>

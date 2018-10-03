@@ -38,13 +38,13 @@ class CocktailService(@Autowired var cocktailRepository: CocktailRepository, @Au
 
     //to filter out potential unwanted queries
     private fun getParamsFromString(searchString: String):List<Pair<String,String>>{
-        LOG.info("THIS IS THE SEARCHSTRING" + searchString)
-        val split = searchString.split('&')
+        val filt = searchString.replace(Regex("%20"), " ").replace(Regex("%2F"), "/")
+        LOG.info("This is the searchstr: $filt")
+        val split = filt.split('&')
         LOG.info("THIS IS THE SPLIT $split")
         val params = emptyList<Pair<String,String>>().toMutableList()
         for(string in split){
             val sub = string.split("=")
-            LOG.info("THIS IS THE SUB $sub")
             when(sub[0]){
                 "category" -> params.add(Pair("cocktail.category",sub[1].replace(regex,"")))
                 "glass" -> params.add(Pair("cocktail.glass",sub[1].replace(regex,"")))
@@ -58,7 +58,7 @@ class CocktailService(@Autowired var cocktailRepository: CocktailRepository, @Au
         return getCocktails(cocktailRepository.getIdsFromFilter(getParamsFromString(searchString)))
     }
 
-    val regex = Regex("[^a-zA-Z /-_'èéÈÉ0-9]")
+    val regex = Regex("[^a-zA-Z'èéÈÉ0-9\\/\\s]")
     fun addCocktail(cocktail: Cocktail){
 
         cocktail.name = cocktail.name.replace(regex,"")

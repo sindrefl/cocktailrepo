@@ -1,8 +1,6 @@
 import React from 'react';
 import JugSvg from './JugSvg';
-import VodkaSvg from './VodkaSvg';
 
-import CategoryCard from '../Components/CategoryCard';
 
 const wrapWithType = (inner, type) => {
     return <div>
@@ -40,4 +38,3 @@ const FillUpComponent = (props) => {
 }
 
 export default FillUpComponent;
-8

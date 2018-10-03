@@ -4,10 +4,12 @@ package no.sindre.barapplication.Controllers
 import no.sindre.barapplication.Models.Category
 import no.sindre.barapplication.Models.Cocktail
 import no.sindre.barapplication.Models.Glass
+import no.sindre.barapplication.Services.AWSService
 import no.sindre.barapplication.Services.CSVService
 import no.sindre.barapplication.Services.CocktailService
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.web.bind.annotation.*
 import java.io.IOException
 import java.net.URL
@@ -21,15 +23,17 @@ import org.springframework.util.StreamUtils
 import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import java.io.File
 
 
 @RestController
 @RequestMapping("/api")
-class CocktailController(@Autowired
-                         var cocktailService: CocktailService,
-                         @Autowired
-                         var csvService: CSVService
+class CocktailController(
+        val cocktailService: CocktailService,
+        val csvService: CSVService,
+        val awsService: AWSService
 ) {
+
 
     val LOG = LoggerFactory.getLogger(CocktailController::class.java.name)
 
@@ -49,9 +53,9 @@ class CocktailController(@Autowired
         }
 
         LOG.info(cocktail.image_link)
-        LOG.info(""+cocktail.image_link.isNullOrBlank())
+        LOG.info("" + cocktail.image_link.isNullOrBlank())
         downloadImage(cocktail.image_link, cocktail.name.replace(' ', '_'))
-     //   cocktailService.addCocktail(cocktail)
+        //   cocktailService.addCocktail(cocktail)
     }
 
 
@@ -64,10 +68,14 @@ class CocktailController(@Autowired
             fileName = name.replace("/", "_")
         }
 
-        try {
-            val image = URL(url).openStream().use({ input -> Files.copy(input, Paths.get("C:/Users/sindre.flood/Documents/CocktailApplication/barapplication/src/main/resources/public/images/drinks/$fileName.jpg")) })
-        } catch (e: IOException) {
-            LOG.error("image failed: ${e.message}")
+        if (System.getenv("AWS_ACCESS_KEY_ID").isNullOrBlank()) {
+            try {
+                val image = URL(url).openStream().use({ input -> Files.copy(input, Paths.get("C:/Users/sindre.flood/Documents/CocktailApplication/barapplication/src/main/resources/public/images/drinks/$fileName.jpg")) })
+            } catch (e: IOException) {
+                LOG.error("image failed: ${e.message}")
+            }
+        } else {
+            awsService.putObject("drinks/$fileName.jpg",File(URL(url).file))
         }
     }
 
@@ -118,29 +126,46 @@ class CocktailController(@Autowired
     @Throws(IOException::class)
     fun getdrinkImage(@PathVariable path: String, response: HttpServletResponse) {
 
-        val imgFile = ClassPathResource("/public/images/drinks/$path")
-
-        response.contentType = MediaType.IMAGE_JPEG_VALUE
-        StreamUtils.copy(imgFile.inputStream, response.outputStream)
+        if (System.getenv("S3_KEY").isNullOrBlank()) {
+            val imgFile = ClassPathResource("/public/images/drinks/$path")
+            response.contentType = MediaType.IMAGE_JPEG_VALUE
+            StreamUtils.copy(imgFile.inputStream, response.outputStream)
+        } else {
+            val obj = awsService.getObject("/drinks/$path")
+            response.contentType = MediaType.IMAGE_JPEG_VALUE
+            StreamUtils.copy(obj.objectContent, response.outputStream)
+        }
     }
 
     @GetMapping("/images/categories/{path}", produces = [MediaType.IMAGE_JPEG_VALUE])
     @Throws(IOException::class)
     fun getcatImage(@PathVariable path: String, response: HttpServletResponse) {
 
-        val imgFile = ClassPathResource("/public/images/categories/$path")
-
-        response.contentType = MediaType.IMAGE_JPEG_VALUE
-        StreamUtils.copy(imgFile.inputStream, response.outputStream)
+        LOG.info("var: ${System.getenv("AWS_ACCESS_KEY_ID")}")
+        if (System.getenv("S3_KEY").isNullOrBlank()) {
+            val imgFile = ClassPathResource("/public/images/categories/$path")
+            response.contentType = MediaType.IMAGE_JPEG_VALUE
+            StreamUtils.copy(imgFile.inputStream, response.outputStream)
+        } else {
+            val obj = awsService.getObject("/categories/$path")
+            response.contentType = MediaType.IMAGE_JPEG_VALUE
+            StreamUtils.copy(obj.objectContent, response.outputStream)
+        }
     }
 
     @GetMapping("/images/glass/{path}", produces = [MediaType.IMAGE_JPEG_VALUE])
     @Throws(IOException::class)
     fun getglassImage(@PathVariable path: String, response: HttpServletResponse) {
 
-        val imgFile = ClassPathResource("/public/images/glass/$path")
+        if (System.getenv("S3_KEY").isNullOrBlank()) {
+            val imgFile = ClassPathResource("/public/images/glass/$path")
+            response.contentType = MediaType.IMAGE_JPEG_VALUE
+            StreamUtils.copy(imgFile.inputStream, response.outputStream)
 
-        response.contentType = MediaType.IMAGE_JPEG_VALUE
-        StreamUtils.copy(imgFile.inputStream, response.outputStream)
+        } else {
+            val obj = awsService.getObject("/glass/$path")
+            response.contentType = MediaType.IMAGE_JPEG_VALUE
+            StreamUtils.copy(obj.objectContent, response.outputStream)
+        }
     }
 }

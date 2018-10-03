@@ -1,11 +1,9 @@
 import React, {Component} from 'react';
-import logo from '../assets/logo.svg';
 import '../css/App.css';
 
-import DrinkCard from '../Components/DrinkCard'
 import RandomDrinkCard from '../Components/RandomDrink'
 
-import {Link, Route} from 'react-router-dom'
+import {Link} from 'react-router-dom'
 import CategoryCard from '../Components/CategoryCard';
 
 
@@ -59,9 +57,9 @@ class CocktailDashboard extends Component {
                             .categories
                             .map((cat, index) => {
                                 return <div>
-                                    <Link key={index} to={`/filtered/category=${cat.name}`}>
+                                    <Link key={index} to={`/filtered/category=${encodeURIComponent(cat.name)}`}>
                                         <CategoryCard
-                                            imageUrl={`api/images/categories/${cat.name.replace(/[/]/g, "").replace(/ /g,"_")}.jpg`}
+                                            imageUrl={encodeURI(`api/images/categories/${cat.name.replace(/\//g,"")}.jpg`)}
                                             name={cat.name}/>
                                     </Link>
 

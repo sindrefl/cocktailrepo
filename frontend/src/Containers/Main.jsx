@@ -2,9 +2,6 @@ import React, {Component} from 'react';
 import '../css/App.css';
 
 import Navbar from '../Components/Navbar'
-import DrinkCard from '../Components/DrinkCard'
-import RandomDrinkCard from '../Components/RandomDrink'
-import NewDrinkForm from '../Components/NewDrinkForm'
 
 import {Route, Switch} from 'react-router-dom'
 import CocktailDashboard from './CocktailDashboard';
@@ -31,7 +28,7 @@ class Main extends Component {
             })
             .catch(function (error) {
                 // handle error
-                console.log(error);
+                console.warn(error);
             });
         fetch('/api/categories/10',{
             method:'GET'
@@ -40,7 +37,7 @@ class Main extends Component {
             this.setState({categories: categoryList});
         })
         .catch((error) => {
-            console.log(error)
+            console.warn(error)
         });    
         fetch('/api/allDrinks').then(response => response.json()).then((response) => {
                 this.setState({allDrinks: response})
@@ -48,7 +45,7 @@ class Main extends Component {
         fetch('/api/glassTypes/10').then(response => response.json()).then((response) => {
             this.setState({glassTypes : response})
         }).catch(error => {
-            console.log(error)
+            console.warn(error)
         });
     }
 
