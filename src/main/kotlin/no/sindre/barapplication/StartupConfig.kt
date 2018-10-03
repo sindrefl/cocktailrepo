@@ -23,11 +23,13 @@ class StartupConfig {
     fun s3client() : AmazonS3? {
         try{
             val s3client = AmazonS3ClientBuilder.standard()
-                    .withCredentials(AWSStaticCredentialsProvider(BasicAWSCredentials(System.getenv("AWS_ACCESS_KEY_ID"), System.getenv("AWS_SECRET_ACCESS_KEY"))))
+                    .withCredentials(AWSStaticCredentialsProvider(BasicAWSCredentials(System.getenv("AWS_ACCESS_KEY_ID"),System.getenv("AWS_SECRET_ACCESS_KEY"))))
+                    .withCredentials(AWSStaticCredentialsProvider(BasicAWSCredentials(System.getenv("AWS_ACCESS_KEY_ID"),System.getenv("AWS_SECRET_ACCESS_KEY"))))
                     .withRegion(Regions.EU_WEST_2)
                     .build()
             return s3client
         }catch (e: IllegalArgumentException){
+            e.printStackTrace()
             return null
         }
 

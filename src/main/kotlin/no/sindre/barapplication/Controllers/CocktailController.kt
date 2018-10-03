@@ -126,15 +126,15 @@ class CocktailController(
     @Throws(IOException::class)
     fun getdrinkImage(@PathVariable path: String, response: HttpServletResponse) {
 
-        if (System.getenv("AWS_ACCESS_KEY_ID").isNullOrBlank()) {
-            val imgFile = ClassPathResource("/public/images/drinks/$path")
-            response.contentType = MediaType.IMAGE_JPEG_VALUE
-            StreamUtils.copy(imgFile.inputStream, response.outputStream)
-        } else {
-            val obj = awsService.getObject("/drinks/$path")
+        //if (System.getenv("AWS_ACCESS_KEY_ID").isNullOrBlank()) {
+        //    val imgFile = ClassPathResource("/public/images/drinks/$path")
+        //    response.contentType = MediaType.IMAGE_JPEG_VALUE
+        //    StreamUtils.copy(imgFile.inputStream, response.outputStream)
+        //} else {
+            val obj = awsService.getObject("drinks/$path")
             response.contentType = MediaType.IMAGE_JPEG_VALUE
             StreamUtils.copy(obj.objectContent, response.outputStream)
-        }
+        //}
     }
 
     @GetMapping("/images/categories/{path}", produces = [MediaType.IMAGE_JPEG_VALUE])
