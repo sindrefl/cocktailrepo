@@ -1,9 +1,17 @@
 import React from 'react'
 import Downshift from 'downshift'
 
-export const Autocomplete = ({items, select, name}) => {
+export const Autocomplete = ({items, value, name, setField}) => {
     return (
         <Downshift
+            onStateChange={changes => {
+            if (changes.hasOwnProperty('selectedItem')) {
+                setField({target: {value: changes.selectedItem, name}})
+            } else if (changes.hasOwnProperty('inputValue')) {
+                setField({target:{value: changes.inputValue, name}})
+            }
+        }}  
+            selectedItem={value}
             itemToString={item => (item
             ? item
             : '')}>
@@ -24,7 +32,7 @@ export const Autocomplete = ({items, select, name}) => {
                     <div>
                         <input {...getInputProps()}/>
                     </div>
-                    <ul {...getMenuProps()}>
+                    <ul className="downshift-dropdown" {...getMenuProps()}>
                         {isOpen && items
                             ? items.filter(item => !inputValue || item.indexOf(inputValue) !== -1).map((item, index) => (
                                 <li

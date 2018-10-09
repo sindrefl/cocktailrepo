@@ -43,14 +43,7 @@
   position: relative;
 }
 
-#downshift-0-menu{
-  position: absolute;
-  top: 25px;
-  right: 0px;
-  width: 100%;
-}
-
-#downshift-1-menu{
+.downshift-dropdown{
   position: absolute;
   top: 25px;
   right: 0px;

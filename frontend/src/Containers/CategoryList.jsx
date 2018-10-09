@@ -57,7 +57,6 @@ class CategoryList extends Component {
 
     setField = (changeEvent) => {
         const {name,value} = changeEvent.target
-        console.log(changeEvent)
         this.setState({[name]: value})
     }
 
@@ -82,8 +81,7 @@ class CategoryList extends Component {
                                 placeholder="Category"
                                 items={categories.map(cat => cat.name)}
                                 value={category}
-                                //onChange={(selected) => this.setField({target:{name:"category", value:selected}})}
-                                onChange={this.setField}
+                                setField={this.setField}
                                 />
                             </div>
                         <div className="header-item input-text">
@@ -93,7 +91,7 @@ class CategoryList extends Component {
                                 placeholder="Glass Type"
                                 items={glassTypes}
                                 value={glass}
-                                onChange={(selected) => this.setField({target:{name:"glass", value: selected}})}
+                                setField={this.setField}
                                 />
                             </div>
                         <div className="header-item">
