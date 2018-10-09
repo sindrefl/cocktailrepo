@@ -4,6 +4,7 @@ import DrinkCard from '../Components/DrinkCard';
 import {Autocomplete} from './Automplete'; 
 import { withRouter } from 'react-router';
 import AlcoholModal from '../Components/AlcoholModal';
+import { getDrinkImage } from './api';
 
 
 
@@ -108,7 +109,7 @@ class CategoryList extends Component {
                             {drinks && drinks.map((drink,index) => <span onClick={(e) => this.toggleModal(drink)}>
                                                                             <DrinkCard 
                                                                                 key={index} 
-                                                                                imageUrl={`/drinks/${drink.name.replace(/ /g,'_').replace(/[èé]/g, 'e')}.jpg`} 
+                                                                                imageUrl={getDrinkImage(drink)} 
                                                                                 altUrl={drink.image_link}
                                                                                 name={drink.name} 
                                                                                 glass={drink.glass} 

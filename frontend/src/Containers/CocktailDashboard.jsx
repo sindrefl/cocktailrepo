@@ -5,7 +5,7 @@ import RandomDrinkCard from '../Components/RandomDrink'
 
 import {Link} from 'react-router-dom'
 import CategoryCard from '../Components/CategoryCard';
-
+import { getGlassImage } from './api';
 
 class CocktailDashboard extends Component {
     render() {
@@ -13,7 +13,7 @@ class CocktailDashboard extends Component {
             <div className="Main">
                 {this.props.randomDrink && <RandomDrinkCard
                     name={this.props.randomDrink.name}
-                    imageUrl={`/drinks/${this.props.randomDrink.name.replace(/ /g, '_')}.jpg`}
+                    imageUrl={`api/images/drinks/${this.props.randomDrink.name.replace(/ /g, '_')}.jpg`}
                     altUrl={this.props.randomDrink.imageUrl}
                     description={this.props.randomDrink.description}
                     glass={this.props.randomDrink.glass}
@@ -35,7 +35,7 @@ class CocktailDashboard extends Component {
                                 return <div>
                                     <Link key={glass} to={ {pathname:'/filtered', state: {glass: glass, category:""}}}>
                                         <CategoryCard
-                                            imageUrl={`/glass/${glass}.jpg`}
+                                            imageUrl={getGlassImage(glass)}
                                             name={glass}/>
                                     </Link>
 
@@ -59,7 +59,7 @@ class CocktailDashboard extends Component {
                                 return <div>
                                     <Link key={index} to={{pathname:"/filtered", state:{glass: "", category:cat.name}}}>
                                         <CategoryCard
-                                            imageUrl={`/categories/${cat.name.replace(/\//g,"")}.jpg`}
+                                            imageUrl={`api/images/categories/${cat.name.replace(/\//g,"")}.jpg`}
                                             name={cat.name}/>
                                     </Link>
 
