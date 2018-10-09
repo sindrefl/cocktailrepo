@@ -53,9 +53,12 @@ class CocktailService(@Autowired var cocktailRepository: CocktailRepository, @Au
         return params
     }
 
-    fun getFilteredDrinkList(searchString: String) : List<Cocktail>{
-        if (filterSqlQueries(searchString)) return emptyList()
-        return getCocktails(cocktailRepository.getIdsFromFilter(getParamsFromString(searchString)))
+    fun getFilteredDrinkList(category: Category, glass: Glass) : List<Cocktail>{
+        return getCocktails(cocktailRepository.getIdsFromFilter(category, glass))
+    }
+
+    fun getFilteredDrinkList(category: Category) : List<Cocktail>{
+        return getCocktails(cocktailRepository.getIdsFromFilter(category))
     }
 
     val regex = Regex("[^a-zA-Z'èéÈÉ0-9\\/\\s]")

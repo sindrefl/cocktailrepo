@@ -33,7 +33,7 @@ class CocktailDashboard extends Component {
                             .glassTypes
                             .map((glass, index) => {
                                 return <div>
-                                    <Link key={glass} to={`/filtered/glass=${glass}`}>
+                                    <Link key={glass} to={ {pathname:'/filtered', state: {glass: glass, category:""}}}>
                                         <CategoryCard
                                             imageUrl={`/glass/${glass}.jpg`}
                                             name={glass}/>
@@ -57,7 +57,7 @@ class CocktailDashboard extends Component {
                             .categories
                             .map((cat, index) => {
                                 return <div>
-                                    <Link key={index} to={`/filtered/category=${encodeURIComponent(cat.name)}`}>
+                                    <Link key={index} to={{pathname:"/filtered", state:{glass: "", category:cat.name}}}>
                                         <CategoryCard
                                             imageUrl={`/categories/${cat.name.replace(/\//g,"")}.jpg`}
                                             name={cat.name}/>

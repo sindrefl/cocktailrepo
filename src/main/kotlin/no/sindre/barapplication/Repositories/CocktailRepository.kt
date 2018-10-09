@@ -95,8 +95,15 @@ class CocktailRepository(@Autowired var namedParameterJdbcTemplate: NamedParamet
     }
 
 
-    fun getIdsFromFilter(params : List<Pair<String,String>>) : List<Int>{
-        val sql = "SELECT COCKTAIL_ID FROM COCKTAIL_DB.COCKTAIL WHERE " + params.map { it.first + " LIKE ('%" + it.second + "%')" }.joinToString(" AND ")
+    fun getIdsFromFilter(category: Category, glass: Glass) : List<Int>{
+        val sql = "SELECT COCKTAIL_ID FROM COCKTAIL_DB.COCKTAIL WHERE category LIKE ('%" + category.name + "%') AND glass LIKE ('%" + glass +"%')"
+        LOG.info(sql)
+        val ids = namedParameterJdbcTemplate.queryForList(sql, MapSqlParameterSource()).map { it.get("cocktail_id").toString().toInt()}
+        return ids
+    }
+
+    fun getIdsFromFilter(category: Category) : List<Int>{
+        val sql = "SELECT COCKTAIL_ID FROM COCKTAIL_DB.COCKTAIL WHERE category LIKE ('%" + category.name + "%')"
         LOG.info(sql)
         val ids = namedParameterJdbcTemplate.queryForList(sql, MapSqlParameterSource()).map { it.get("cocktail_id").toString().toInt()}
         return ids

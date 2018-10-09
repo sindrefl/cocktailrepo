@@ -1,104 +1,111 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types'
 import DrinkCard from '../Components/DrinkCard';
+import {Autocomplete} from './Automplete'; 
+import { withRouter } from 'react-router';
+import AlcoholModal from '../Components/AlcoholModal';
+
 
 
 
 class CategoryList extends Component {
+    static propTypes = {
+        match: PropTypes.object.isRequired,
+        location: PropTypes.object.isRequired,
+        history: PropTypes.object.isRequired
+    }
     constructor(props){
         super(props);
         this.state = {
-            modal:false,
             category: "",
+            categories: [],
+            glassTypes: [],
             glass: "",
-            drinks : []
+            drinks: this.props.drinks,
+            modal: undefined
         }
-
-        this.toggleModal = this.toggleModal.bind(this);
-        this.hideModal = this.hideModal.bind(this);
-        this.setStateFromUrl = this.setStateFromUrl.bind(this);
-        this.updatePage = this.updatePage.bind(this);
-        this.submit = this.submit.bind(this);
         
+        this.toggleModal = this.toggleModal.bind(this);
+        this.submit = this.submit.bind(this);  
+        this.setField = this.setField.bind(this);      
     }
-
-    setStateFromUrl(path){
-        let list = path.split('&')
-        for(const el of list){
-            const li = el.split('=')
-            switch(li[0]){
-                case "category": this.setState({category:li[1].replace(/%20/g, " ").replace(/%2F/g, "/")})
-                break;
-                case "glass" : this.setState({glass:li[1]})
-                break;
-                default: break;
-            }
-        }
-    }
-
 
     submit(e){
         e.preventDefault()
-        this.updatePage(`glass=${this.state.glass}&category=${this.state.category}`)
-    }
-
-    updatePage(newUrl){
-        this.setStateFromUrl(newUrl)
-        fetch('/api/filteredDrinks/' + newUrl).then((response)=>response.json()).then((response) => {
+        fetch(`/api/filteredDrinks?category=${this.state.category}&glass=${this.state.glass}`).then((response)=>response.json()).then((response) => {
+            console.log(response)
                 this.setState({drinks: response})
             }).catch((error)=>{
                 console.warn(`error in newurl ${error}`);
             });
+
     }
 
     componentDidMount(){
-        const split = window.location.pathname.split('/')
-        const query = split[split.length -1]
-        this.updatePage(query)
+        const {category, glass} = this.props.location.state
+        this.setState({category,glass})
+        fetch('/api/categories',{
+            method: 'GET'
+        }).then(response => response.json()).then(response => this.setState({categories: response}))
+        fetch('/api/glassTypes',{
+            method: 'GET'
+        }).then(response => response.json()).then(response => this.setState({glassTypes: response}))
+        fetch(`/api/filteredDrinks?category=${category}&glass=${glass}`).then(response => response.json()).then(response => this.setState({drinks: response}))
+        
     }
 
     setField = (changeEvent) => {
-        const {target} = changeEvent
-        const key = target.getAttribute("name")
-        this.setState({[key]: changeEvent.target.value})
+        const {name,value} = changeEvent.target
+        console.log(changeEvent)
+        this.setState({[name]: value})
     }
 
-    toggleModal(e){
-        console.log(e)
-    }
-    hideModal(e){
-        console.log(e)
+
+    toggleModal(drink){
+        if(this.state.modal) this.setState({modal: undefined})
+        else this.setState({modal: drink})
+        console.log(drink)
     }
     
     render(){
+        const {category, categories, glass,glassTypes, drinks, modal} = this.state;
+        console.log(category)
+        console.log(glass)
         return <div>
                     <div>
                         <form className="Grid-header">
-                            <input className="header-item input-text"
-                            type="text"
-                            name="category"
-                            placeholder="Category"
-                            value={this.state.category}
-                            onChange={(e) => this.setField(e)}
-                            >
-                        </input>
-                        <input className="header-item input-text"
-                            type="text"
-                            name="glass"
-                            placeholder="Glass Type"
-                            value={this.state.glass}
-                            onChange={(e) => this.setField(e)}
-                            >
-                        </input>
+                            <div className="header-item input-text">
+                                <Autocomplete 
+                                type="text"
+                                name="category"
+                                placeholder="Category"
+                                items={categories.map(cat => cat.name)}
+                                value={category}
+                                //onChange={(selected) => this.setField({target:{name:"category", value:selected}})}
+                                onChange={this.setField}
+                                />
+                            </div>
+                        <div className="header-item input-text">
+                            <Autocomplete 
+                                type="text"
+                                name="glass"
+                                placeholder="Glass Type"
+                                items={glassTypes}
+                                value={glass}
+                                onChange={(selected) => this.setField({target:{name:"glass", value: selected}})}
+                                />
+                            </div>
                         <div className="header-item">
-                            <button type="submit" onClick={(e) => this.submit(e)}>SEARCH</button>
+                            <div>
+                                <button type="submit" onClick={this.submit}>SEARCH</button>
+                            </div>
                         </div>
                         </form>
                     </div>
-                        
+                    {modal && <AlcoholModal isOpen={modal !== undefined} contentLabel={'AlcoholModal'} toggleModal={this.toggleModal} drink={modal}/>}    
                     <div className="Grid-container">
                         <div className="Grid">
-                            {this.state.drinks &&
-                                this.state.drinks.map((drink,index) => <span onClick={(e) => this.toggleModal(e)}>
+                            {drinks && drinks.map((drink,index) => <span onClick={(e) => this.toggleModal(drink)}>
                                                                             <DrinkCard 
                                                                                 key={index} 
                                                                                 imageUrl={`/drinks/${drink.name.replace(/ /g,'_').replace(/[èé]/g, 'e')}.jpg`} 
@@ -117,4 +124,4 @@ class CategoryList extends Component {
     }
 }
 
-export default CategoryList;
+export default withRouter(CategoryList);

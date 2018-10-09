@@ -14,11 +14,11 @@ class Main extends Component {
         this.state = {
             randomDrink: undefined,
             categories: [],
-            allDrinks: undefined,
-            glassTypes : []
+            glassTypes: [],
         }
     }
 
+ 
     componentDidMount() {
         fetch('/api/random', {
             method : 'GET'
@@ -38,10 +38,7 @@ class Main extends Component {
         })
         .catch((error) => {
             console.warn(error)
-        });    
-        fetch('/api/allDrinks').then(response => response.json()).then((response) => {
-                this.setState({allDrinks: response})
-            });
+        });   
         fetch('/api/glassTypes/10').then(response => response.json()).then((response) => {
             this.setState({glassTypes : response})
         }).catch(error => {
@@ -57,9 +54,9 @@ class Main extends Component {
             <Navbar glassTypes={this.state.glassTypes}/>
 
             <Switch>
-            <Route path="/" exact render= {() => <CocktailDashboard randomDrink={this.state.randomDrink} categories={this.state.categories} allDrinks={this.state.allDrinks} glassTypes={this.state.glassTypes}/>}></Route>
-            <Route path="/filtered/:query" render={({match}) => <CategoryList url={match} drinks={this.state.allDrinks}></CategoryList>}></Route>
-            <Route path="/home/bar" render={() => <MyBarPage></MyBarPage>}></Route>
+                <Route path="/" exact render= {() => <CocktailDashboard randomDrink={this.state.randomDrink} categories={this.state.categories} glassTypes={this.state.glassTypes}/>}></Route>
+                <Route path="/filtered" render={() => <CategoryList></CategoryList>}></Route>
+                <Route path="/home/bar" render={() => <MyBarPage></MyBarPage>}></Route>
             </Switch>
     
             </div>

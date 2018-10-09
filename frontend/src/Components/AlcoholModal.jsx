@@ -1,20 +1,37 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
+import ReactModal from 'react-modal';
+import RandomDrinkCard from './RandomDrink';
+
+ReactModal.setAppElement('#root')
 
 class AlcoholModal extends Component {
-    
-  render() {
-    return (
-        <div className="Card-Container">
-          <strong>{this.props.name}</strong>
-          <div className="Drink-Card">
-            <img width="200px" height="200px" src={this.props.imageUrl}></img>
-          </div>
-          <div>
-            {this.props.description}
-          </div>  
-        </div>
-    );
-  }
+    render() {
+        const {isOpen, toggleModal, contentLabel, drink} = this.props;
+        return (
+            <div>
+                <ReactModal
+                    isOpen={isOpen}
+                    overlayClassName="modal"
+                    className="modal-main"
+                    contentLabel={contentLabel}
+                    onRequestClose={(e) => toggleModal(e)}
+                    >
+                    <RandomDrinkCard
+                      name={drink.name}
+                      imageUrl={`/drinks/${drink.name.replace(/ /g, '_')}.jpg`}
+                      altUrl={drink.imageUrl}
+                      description={drink.description}
+                      glass={drink.glass}
+                      ingredients={drink.ingredients}
+                      amounts={drink.amounts}
+                    >
+
+                    </RandomDrinkCard>
+                    <button onClick={(e) => toggleModal(e)}>Close Modal</button>
+                </ReactModal>
+            </div>
+        );
+    }
 }
 
 export default AlcoholModal;

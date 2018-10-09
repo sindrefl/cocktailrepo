@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import {Link} from 'react-router-dom'
 import NewDrinkForm from './NewDrinkForm';
+import ReactModal from 'react-modal'
 
 class Navbar extends Component {
   constructor(props){
@@ -19,6 +20,7 @@ this.setState({ showAddNewDrink: false });
 
 
   render() {
+    const {showAddNewDrink} = this.state;
     return (
         <header className="App-header"> 
         <div className="left-header">
@@ -30,8 +32,15 @@ this.setState({ showAddNewDrink: false });
         <div className="header-item">
           <img className="icon clickable" src={require("../assets/plus.png")} alt="plus icon" onClick={this.showModal}></img>
         </div>
-          <NewDrinkForm glassTypes={this.props.glassTypes} show={this.state.showAddNewDrink} handleClose={this.hideModal}>
-        </NewDrinkForm>
+          <ReactModal
+            isOpen={showAddNewDrink}
+            overlayClassName="modal"
+            className="modal-main"
+            contentLabel={'new drink modal'}
+            onRequestClose={this.hideModal}
+            >
+          <NewDrinkForm glassTypes={this.props.glassTypes}></NewDrinkForm>
+        </ReactModal>
           <div className="header-item">
             Hello Sindre
             </div>

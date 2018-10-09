@@ -4,6 +4,7 @@ package no.sindre.barapplication.Controllers
 import no.sindre.barapplication.Models.Category
 import no.sindre.barapplication.Models.Cocktail
 import no.sindre.barapplication.Models.Glass
+import no.sindre.barapplication.Models.Ingredient
 import no.sindre.barapplication.Services.AWSService
 import no.sindre.barapplication.Services.CSVService
 import no.sindre.barapplication.Services.CocktailService
@@ -90,8 +91,19 @@ class CocktailController(
     fun getDrinks(): List<Cocktail> = cocktailService.getCocktails()
 
 
-    @GetMapping("/filteredDrinks/{searchString}")
-    fun getFiltered(@PathVariable searchString: String) = cocktailService.getFilteredDrinkList(searchString)
+    @GetMapping("/filteredDrinks")
+    fun getFiltered(@RequestParam(required = false) category: String, @RequestParam(required = false) glass: String): List<Cocktail>{
+        if(category.isNullOrBlank() && glass.isNullOrBlank()){
+            return cocktailService.getCocktails()
+        }else if (category.isNullOrBlank()){
+            return cocktailService.getFilteredDrinkList(Category(""), Glass.valueOf(glass))
+        }else if (glass.isNullOrBlank()){
+            return cocktailService.getFilteredDrinkList(Category(category))
+        }
+        else{
+            return cocktailService.getFilteredDrinkList(Category(category), Glass.valueOf(glass))
+        }
+    }
 
     @GetMapping("/glassTypes")
     fun getGlasses(): Array<Glass> {
@@ -112,6 +124,9 @@ class CocktailController(
     fun getCategories(@PathVariable length: Int): List<Category> {
         return cocktailService.getCategories().take(length)
     }
+
+    @GetMapping("/ingredients")
+    fun getIngredients(): List<Ingredient> = cocktailService.getIngredients()
 
     @RequestMapping("/cocktails.csv")
     fun getCocktailsAsCsv(response: HttpServletResponse) {
