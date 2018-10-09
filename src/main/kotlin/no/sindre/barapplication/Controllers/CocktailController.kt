@@ -171,15 +171,16 @@ class CocktailController(
     @Throws(IOException::class)
     fun getglassImage(@PathVariable path: String, response: HttpServletResponse) {
 
-        if (System.getenv("AWS_ACCESS_KEY_ID").isNullOrBlank()) {
+        //if (System.getenv("AWS_ACCESS_KEY_ID").isNullOrBlank()) {
             val imgFile = ClassPathResource("/public/images/glass/$path")
             response.contentType = MediaType.IMAGE_JPEG_VALUE
             StreamUtils.copy(imgFile.inputStream, response.outputStream)
-
+        /*
         } else {
             val obj = awsService.getObject("glass/$path")
             response.contentType = MediaType.IMAGE_JPEG_VALUE
             StreamUtils.copy(obj.objectContent, response.outputStream)
         }
+        */
     }
 }
