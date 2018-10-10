@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service
 
 @Service
 class AWSService(
-        private val s3client: AmazonS3?
+        val s3client: AmazonS3?
 ) {
 
     private val bucketName = "cocktailfiles"

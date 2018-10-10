@@ -3,6 +3,7 @@ import React, {Component} from 'react';
 
 import FillUpComponent from '../svgcomponents/FillUpComponent';
 import RandomDrinkCard from '../Components/RandomDrink';
+import { getRandomDrink, getDrinkImage } from './api';
 
 
 class MyBarPage extends Component {
@@ -16,13 +17,9 @@ class MyBarPage extends Component {
     }
 
     componentDidMount(){
-        fetch('/api/random').then(response => response.json())
-            .then((response) => {
-                let drink = response;
+        getRandomDrink.then(drink => {
                 this.setState({randomDrink: drink})
-            })
-            .catch(function (error) {
-                // handle error
+            }).catch(function (error) {
                 console.warn(error);
             });
     }
@@ -32,33 +29,32 @@ class MyBarPage extends Component {
     }
 
     render() {
+        const {randomDrink,batteri} = this.state
         return <div>
-
             YOUR BAR
-
         <div className="flex-horizontal-container">
-        {this.state.batteri.map((icon,index) => <div className="bottleIcon"><FillUpComponent key={index.toString()} type={icon}></FillUpComponent></div>)}
+        {batteri.map((icon,index) => <div className="bottleIcon"><FillUpComponent key={index.toString()} type={icon}></FillUpComponent></div>)}
         
         </div>
         <div className="flex-horizontal-container">
         <div>
-        {this.state.randomDrink && <RandomDrinkCard
-                    name={this.state.randomDrink.name}
-                    imageUrl={"http://localhost:8080/images/drinks/Whisky-Sour.jpg"}
-                    description={this.state.randomDrink.description}
-                    glass={this.state.randomDrink.glass}
-                    ingredients={this.state.randomDrink.ingredients}
-                    amounts ={this.state.randomDrink.amounts}
+        {randomDrink && <RandomDrinkCard
+                    name={randomDrink.name}
+                    imageUrl={getDrinkImage(randomDrink)}
+                    description={randomDrink.description}
+                    glass={randomDrink.glass}
+                    ingredients={randomDrink.ingredients}
+                    amounts ={randomDrink.amounts}
                     />
         }
         </div>
         <div>
-            {this.state.randomDrink && <RandomDrinkCard
-                    name={this.state.randomDrink.name}
-                    imageUrl={"http://localhost:8080/images/drinks/Whisky-Sour.jpg"}
-                    glass={this.state.randomDrink.glass}
-                    ingredients={this.state.randomDrink.ingredients}
-                    amounts ={this.state.randomDrink.amounts}
+            {randomDrink && <RandomDrinkCard
+                    name={randomDrink.name}
+                    imageUrl={getDrinkImage(randomDrink)}
+                    glass={randomDrink.glass}
+                    ingredients={randomDrink.ingredients}
+                    amounts ={randomDrink.amounts}
                     description={"This could either be some statistics or a suggestion based on previous drinks"}
                     />
         }

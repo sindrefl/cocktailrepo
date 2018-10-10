@@ -14,7 +14,8 @@ import java.util.*
 
 
 @Service
-class CocktailService(@Autowired var cocktailRepository: CocktailRepository, @Autowired var ingredientsRepository: IngredientsRepository) {
+class CocktailService(val cocktailRepository: CocktailRepository,
+                      val ingredientsRepository: IngredientsRepository) {
 
 
     private val LOG = LoggerFactory.getLogger(CocktailService::class.java)

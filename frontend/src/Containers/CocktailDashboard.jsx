@@ -5,22 +5,23 @@ import RandomDrinkCard from '../Components/RandomDrink'
 
 import {Link} from 'react-router-dom'
 import CategoryCard from '../Components/CategoryCard';
-import { getGlassImage, getCategoryImage, getDrinkImage } from './api';
+import { getGlassImage, getCategoryImage, getDrinkImage} from './api';
 
 class CocktailDashboard extends Component {
     render() {
+        const {randomDrink, glassTypes,categories} = this.props
         return (
             <div className="Main">
-                {this.props.randomDrink && <RandomDrinkCard
-                    name={this.props.randomDrink.name}
-                    imageUrl={getDrinkImage(this.props.randomDrink)}
-                    altUrl={this.props.randomDrink.imageUrl}
-                    description={this.props.randomDrink.description}
-                    glass={this.props.randomDrink.glass}
-                    ingredients={this.props.randomDrink.ingredients}
-                    amounts={this.props.randomDrink.amounts}/>
+                {randomDrink && <RandomDrinkCard
+                    name={randomDrink}
+                    imageUrl={getDrinkImage(randomDrink.name)}
+                    altUrl={randomDrink.imageUrl}
+                    description={randomDrink.description}
+                    glass={randomDrink.glass}
+                    ingredients={randomDrink.ingredients}
+                    amounts={randomDrink.amounts}/>
 }
-                {this.props.glassTypes && <div className="Grid-container">
+                {glassTypes && <div className="Grid-container">
                     <div className="Grid-header">
                         <div>
                             <h1>Find drinks by glass type</h1>
@@ -28,10 +29,7 @@ class CocktailDashboard extends Component {
                     </div>
                     <div className="Grid">
 
-                        {this
-                            .props
-                            .glassTypes
-                            .map((glass, index) => {
+                        {glassTypes.map((glass, index) => {
                                 return <div>
                                     <Link key={glass} to={ {pathname:'/filtered', state: {glass: glass, category:""}}}>
                                         <CategoryCard
@@ -45,17 +43,14 @@ class CocktailDashboard extends Component {
                 </div>
 }
 
-                {this.props.glassTypes && <div className="Grid-container">
+                {categories && <div className="Grid-container">
                     <div className="Grid-header">
                         <div>
                             <h1>Find drinks by category</h1>
                         </div>
                     </div>
                     <div className="Grid">
-                        {this
-                            .props
-                            .categories
-                            .map((cat, index) => {
+                        {categories.map((cat, index) => {
                                 return <div>
                                     <Link key={index} to={{pathname:"/filtered", state:{glass: "", category:cat.name}}}>
                                         <CategoryCard

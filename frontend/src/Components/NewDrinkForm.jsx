@@ -4,6 +4,7 @@ import '../css/App.css';
 
 import update from 'immutability-helper';
 import { Autocomplete } from '../Containers/Automplete';
+import { getCategories, getGlassTypes, getIngredients, postDrink } from '../Containers/api';
 
 class NewDrinkForm extends Component {
     
@@ -32,17 +33,9 @@ class NewDrinkForm extends Component {
     }
 
     componentDidMount(){
-        fetch('/api/ingredients',{
-            method: 'GET'
-        }).then(response => response.json()).then(response => this.setState({allIngredients : response.map(ing => ing.name)}));
-        
-        fetch('/api/categories',{
-            method: 'GET'
-        }).then(response => response.json()).then(response => this.setState({allCategories : response}));
-
-        fetch('/api/glassTypes',{
-            method: 'GET'
-        }).then(response => response.json()).then(response => this.setState({glassTypes : response}));
+        getIngredients().then(response => this.setState({allIngredients : response.map(ing => ing.name)}));
+        getCategories().then(response => this.setState({allCategories : response}));
+        getGlassTypes().then(response => this.setState({glassTypes : response}));
         
     }
 
@@ -61,25 +54,7 @@ class NewDrinkForm extends Component {
 
     submitForm(e) {
         e.preventDefault()
-        console.log(JSON.stringify({
-            glass: this.state.glass,
-            name: this.state.name,
-            category: this.state.category,
-            ingredients: this.state.ingredients,
-            amounts: this.state.amounts,
-            description: this.state.description,
-            alcoholic: true,
-            img_link: this.state.image_link,
-            recipe: ""
-
-        }))
-        fetch('/api/addDrink', {
-            method:'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-              },
-            body: JSON.stringify({
+        let body = JSON.stringify({
                 glass: this.state.glass,
                 name: this.state.name,
                 category: this.state.category,
@@ -89,16 +64,16 @@ class NewDrinkForm extends Component {
                 alcoholic: true,
                 img_link: this.state.image_link,
                 recipe: ""
-
             })
-        }).then((response) => {
+
+        postDrink(body).then((response) => {
                 console.log(response)
                 if(response.status === 200){
                     this.setState({submitted : true})
                 }
             })
             .then((error) => {
-                console.log(error)
+                console.warn(error)
             });
     }
 
@@ -156,10 +131,9 @@ class NewDrinkForm extends Component {
                                 name="category"
                                 placeholder="Type of Drink"
                                 value={category}
-                                onChange={this.setField}
+                                setField={this.setField}
                                 items={allCategories.map(cat => cat.name)}>
-                                {/*onChange={(selected) => this.setField({target:{name:"category", value:selected}})}*/}
-        
+                                
                             </Autocomplete>
                         </li>
                         <li>
@@ -182,7 +156,7 @@ class NewDrinkForm extends Component {
                                             placeholder = "Ingredient Name"
                                             value = {ingredients[index]}
                                             items={allIngredients}
-                                            onChange = {this.setIngredientNameField}>
+                                            setField = {this.setIngredientNameField}>
                                         </Autocomplete>
                                         <input
                                             type = "text"
@@ -190,7 +164,7 @@ class NewDrinkForm extends Component {
                                             index={index}
                                             placeholder = "Amount"
                                             value = {this.state.amounts[index]}
-                                            onChange = {this.setAmountsNameField} > 
+                                            setField = {this.setAmountsNameField} > 
                                         </input>
                                     </li>)})
                                 }

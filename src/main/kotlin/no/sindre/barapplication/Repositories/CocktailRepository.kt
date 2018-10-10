@@ -12,7 +12,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder
 
 
 @Repository
-class CocktailRepository(@Autowired var namedParameterJdbcTemplate: NamedParameterJdbcTemplate) {
+class CocktailRepository(val namedParameterJdbcTemplate: NamedParameterJdbcTemplate) {
 
 
     final val INSERT_COCKTAIL_SQL = "INSERT INTO COCKTAIL_DB.COCKTAIL (name,description,glass,category,alcoholic,img_link, recipe) VALUES (:name,:description,:glass,:category, :alcoholic, :image_link,:recipe) "

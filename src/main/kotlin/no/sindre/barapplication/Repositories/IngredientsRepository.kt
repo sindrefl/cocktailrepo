@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository
 import java.sql.ResultSet
 
 @Repository
-class IngredientsRepository(@Autowired var namedParameterJdbcTemplate: NamedParameterJdbcTemplate) {
+class IngredientsRepository(val namedParameterJdbcTemplate: NamedParameterJdbcTemplate) {
 
     val LOG = LoggerFactory.getLogger("com.example.IngredientRepository")
     final val INSERT_INGREDIENT_SQL = "INSERT INTO COCKTAIL_DB.INGREDIENT (name,ing_description,type,isBattery) VALUES (:name,:description,:type,:battery) "

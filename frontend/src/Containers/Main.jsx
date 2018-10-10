@@ -7,6 +7,7 @@ import {Route, Switch} from 'react-router-dom'
 import CocktailDashboard from './CocktailDashboard';
 import CategoryList from './CategoryList';
 import MyBarPage from './MyBarPage'
+import { getRandomDrink, getTopNCategories, getTopNGlassTypes } from './api';
 
 class Main extends Component {
     constructor(props) {
@@ -20,26 +21,16 @@ class Main extends Component {
 
  
     componentDidMount() {
-        fetch('/api/random', {
-            method : 'GET'
-        }).then((response) => response.json()).then(response => {
-                let drink = response;
-                this.setState({randomDrink: drink})
-            })
-            .catch(function (error) {
-                // handle error
-                console.warn(error);
-            });
-        fetch('/api/categories/10',{
-            method:'GET'
-        }).then(response => response.json()).then((response) => {
-            let categoryList = response;
-            this.setState({categories: categoryList});
-        })
+        getRandomDrink.then(response => { this.setState({randomDrink: response})})
         .catch((error) => {
+            console.warn(error);
+        });
+        getTopNCategories(10).then(categoryList => {
+            this.setState({categories: categoryList});
+        }).catch((error) => {
             console.warn(error)
         });   
-        fetch('/api/glassTypes/10').then(response => response.json()).then((response) => {
+        getTopNGlassTypes(10).then(response => {
             this.setState({glassTypes : response})
         }).catch(error => {
             console.warn(error)
@@ -49,8 +40,6 @@ class Main extends Component {
     render() {
         return (
             <div className="Main">
-            
-            
             <Navbar glassTypes={this.state.glassTypes}/>
 
             <Switch>

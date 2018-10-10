@@ -1,6 +1,7 @@
 /target/
 !.mvn/wrapper/maven-wrapper.jar
 /src/main/resources/application-local.properties
+.env
 
 ### STS ###
 .apt_generated

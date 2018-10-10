@@ -1,14 +1,63 @@
-export const APPLICATION_ROOT = window.origin.indexOf('localhost') !== -1 ? 'http://localhost:3000/' : 'https://mycocktaibar.herokuapp.com/'
+
 
 
 export const getGlassImage = (glass) => {
-    return `${APPLICATION_ROOT}api/images/glass?path=${glass}.jpg`
+    return `/api/images/glass?path=${glass}.jpg`
 }
 
 export const getCategoryImage = (category) => {
-    return `${APPLICATION_ROOT}api/images/categories?path=${category.name.replace(/\//g,"")}.jpg`
+    return `/api/images/categories?path=${category.name.replace(/\//g,"")}.jpg`
 }
 
 export const getDrinkImage = (drink) => {
-    return `${APPLICATION_ROOT}api/images/drinks?path=${drink.name.replace(/ /g,'_').replace(/[èé]/g, 'e')}.jpg`
+    return `/api/images/drinks?path=${drink.name.replace(/ /g,'_').replace(/[èé]/g, 'e')}.jpg`
 }
+
+export async function getRandomDrink(){
+    return await fetch('/api/random', {
+        method : 'GET'
+    }).then((response) => response.json());
+}
+
+export async function getIngredients(){
+    return await fetch('/api/ingredients',{
+        method: 'GET'
+    }).then(response => response.json())
+}
+
+export async function getTopNCategories(i){
+   return await fetch(`/api/categories/${i}`,{
+        method:'GET'
+   }).then(response => response.json())
+}
+
+export async function getCategories(){
+    return await fetch(`/api/categories`,{
+         method:'GET'
+    }).then(response => response.json())
+ }
+ 
+ export async function getTopNGlassTypes(i){
+    return await fetch(`/api/glassTypes/${i}`, {
+         method: 'GET'
+    }).then(response => response.json())
+ }
+ 
+ export async function getGlassTypes(){
+    return await fetch(`/api/glassTypes`, {
+         method: 'GET'
+    }).then(response => response.json())
+ }
+
+ export async function getFilteredDrinks(glass, category){
+    return await fetch(`/api/filteredDrinks?category=${category}&glass=${glass}`).then((response)=>response.json())
+ }
+
+ export async function postDrink(body){ 
+    fetch('/api/addDrink', {
+        method:'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          }, body})
+ }

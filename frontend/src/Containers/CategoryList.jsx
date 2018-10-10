@@ -4,10 +4,7 @@ import DrinkCard from '../Components/DrinkCard';
 import {Autocomplete} from './Automplete'; 
 import { withRouter } from 'react-router';
 import AlcoholModal from '../Components/AlcoholModal';
-import { getDrinkImage } from './api';
-
-
-
+import { getDrinkImage, getFilteredDrinks, getCategories, getGlassTypes } from './api';
 
 class CategoryList extends Component {
     static propTypes = {
@@ -22,7 +19,7 @@ class CategoryList extends Component {
             categories: [],
             glassTypes: [],
             glass: "",
-            drinks: this.props.drinks,
+            drinks: [],
             modal: undefined
         }
         
@@ -33,7 +30,8 @@ class CategoryList extends Component {
 
     submit(e){
         e.preventDefault()
-        fetch(`/api/filteredDrinks?category=${this.state.category}&glass=${this.state.glass}`).then((response)=>response.json()).then((response) => {
+        let {glass, category} = this.state
+        getFilteredDrinks(glass,category).then((response) => {
             console.log(response)
                 this.setState({drinks: response})
             }).catch((error)=>{
@@ -45,13 +43,9 @@ class CategoryList extends Component {
     componentDidMount(){
         const {category, glass} = this.props.location.state
         this.setState({category,glass})
-        fetch('/api/categories',{
-            method: 'GET'
-        }).then(response => response.json()).then(response => this.setState({categories: response}))
-        fetch('/api/glassTypes',{
-            method: 'GET'
-        }).then(response => response.json()).then(response => this.setState({glassTypes: response}))
-        fetch(`/api/filteredDrinks?category=${category}&glass=${glass}`).then(response => response.json()).then(response => this.setState({drinks: response}))
+        getCategories().then(response => this.setState({categories: response}))
+        getGlassTypes().then(response => this.setState({glassTypes: response}))
+        getFilteredDrinks().then(response => this.setState({drinks: response}))
         
     }
 
