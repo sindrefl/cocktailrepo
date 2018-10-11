@@ -32,7 +32,6 @@ class CategoryList extends Component {
         e.preventDefault()
         let {glass, category} = this.state
         getFilteredDrinks(glass,category).then((response) => {
-            console.log(response)
                 this.setState({drinks: response})
             }).catch((error)=>{
                 console.warn(`error in newurl ${error}`);
@@ -45,7 +44,7 @@ class CategoryList extends Component {
         this.setState({category,glass})
         getCategories().then(response => this.setState({categories: response}))
         getGlassTypes().then(response => this.setState({glassTypes: response}))
-        getFilteredDrinks().then(response => this.setState({drinks: response}))
+        getFilteredDrinks(glass,category).then(response => this.setState({drinks: response}))
         
     }
 
@@ -63,8 +62,6 @@ class CategoryList extends Component {
     
     render(){
         const {category, categories, glass,glassTypes, drinks, modal} = this.state;
-        console.log(category)
-        console.log(glass)
         return <div>
                     <div>
                         <form className="Grid-header">
@@ -98,7 +95,7 @@ class CategoryList extends Component {
                     {modal && <AlcoholModal isOpen={modal !== undefined} contentLabel={'AlcoholModal'} toggleModal={this.toggleModal} drink={modal}/>}    
                     <div className="Grid-container">
                         <div className="Grid">
-                            {drinks && drinks.map((drink,index) => <span onClick={(e) => this.toggleModal(drink)}>
+                            {drinks && drinks.length > 0 && drinks.map((drink,index) => <span onClick={(e) => this.toggleModal(drink)}>
                                                                             <DrinkCard 
                                                                                 key={index} 
                                                                                 imageUrl={getDrinkImage(drink)} 

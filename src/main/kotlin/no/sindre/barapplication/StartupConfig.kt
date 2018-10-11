@@ -19,16 +19,26 @@ import org.springframework.context.annotation.Primary
 import org.springframework.boot.context.properties.ConfigurationProperties
 import java.lang.IllegalArgumentException
 import java.sql.SQLException
-
-
+import org.apache.tomcat.jni.SSL.setPassword
+import org.springframework.core.env.Environment
+import org.springframework.jdbc.datasource.DriverManagerDataSource
+import org.apache.tomcat.jni.SSL.setPassword
+import sun.font.LayoutPathImpl.getPath
+import com.sun.deploy.util.URLUtil.getPort
+import no.sindre.barapplication.Models.Log
+import java.net.URI
+import java.net.URISyntaxException
 @Configuration
 class StartupConfig {
+
+    @Autowired
+    val env : Environment? = null
 
     @Bean
     fun s3client(): AmazonS3? {
         try {
             val s3client = AmazonS3ClientBuilder.standard()
-                    .withCredentials(AWSStaticCredentialsProvider(BasicAWSCredentials(System.getenv("AWS_ACCESS_KEY_ID"), System.getenv("AWS_SECRET_ACCESS_KEY"))))
+                    .withCredentials(AWSStaticCredentialsProvider(BasicAWSCredentials(env!!.getProperty("awskey"), env!!.getProperty("awssecret"))))
                     .withRegion(Regions.EU_WEST_2)
                     .build()
             return s3client
@@ -37,11 +47,4 @@ class StartupConfig {
             return null
         }
     }
-
-
-    @Bean
-    @ConfigurationProperties(prefix = "spring.datasource")
-    fun dataSource(): DataSource {
-            return DataSourceBuilder.create().build()
-        }
 }

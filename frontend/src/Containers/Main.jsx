@@ -21,10 +21,14 @@ class Main extends Component {
 
  
     componentDidMount() {
-        getRandomDrink.then(response => { this.setState({randomDrink: response})})
+        getRandomDrink().then(response => {
+            let drink = response
+            this.setState({randomDrink: drink})
+        })
         .catch((error) => {
             console.warn(error);
         });
+        
         getTopNCategories(10).then(categoryList => {
             this.setState({categories: categoryList});
         }).catch((error) => {

@@ -8,6 +8,7 @@ import no.sindre.barapplication.Services.CocktailService
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.core.env.Environment
 import org.springframework.web.bind.annotation.*
 import java.io.IOException
 import java.net.URL
@@ -28,7 +29,8 @@ import java.io.File
 class CocktailController(
         val cocktailService: CocktailService,
         val csvService: CSVService,
-        val awsService: AWSService
+        val awsService: AWSService,
+        val env: Environment
 ) {
 
 
@@ -72,7 +74,7 @@ class CocktailController(
                 LOG.error("image failed: ${e.message}")
             }
         } else {
-            awsService.putObject("drinks/$fileName.jpg",File(URL(url).file))
+            awsService.putObject("drinks/$fileName.jpg", File(URL(url).file))
         }
     }
 
@@ -88,15 +90,15 @@ class CocktailController(
 
 
     @GetMapping("/filteredDrinks")
-    fun getFiltered(@RequestParam(required = false) category: String, @RequestParam(required = false) glass: String): List<Cocktail>{
-        if(category.isNullOrBlank() && glass.isNullOrBlank()){
+    fun getFiltered(@RequestParam(required = false) category: String, @RequestParam(required = false) glass: String): List<Cocktail> {
+        val time = System.currentTimeMillis()
+        if (category.isBlank() && glass.isBlank()) {
             return cocktailService.getCocktails()
-        }else if (category.isNullOrBlank()){
+        } else if (category.isBlank()) {
             return cocktailService.getFilteredDrinkList(Category(""), Glass.valueOf(glass))
-        }else if (glass.isNullOrBlank()){
+        } else if (glass.isBlank()) {
             return cocktailService.getFilteredDrinkList(Category(category))
-        }
-        else{
+        } else {
             return cocktailService.getFilteredDrinkList(Category(category), Glass.valueOf(glass))
         }
     }
@@ -135,63 +137,77 @@ class CocktailController(
 
     @GetMapping("/images/drinks", produces = [MediaType.IMAGE_JPEG_VALUE])
     fun getdrinkImage(@RequestParam path: String, response: HttpServletResponse) {
-        if (System.getenv("AWS_ACCESS_KEY_ID").isNullOrBlank()) {
-            try{
+        if (env.getProperty("MODE").equals("local")) {
+            try {
                 val imgFile = ClassPathResource("/public/images/drinks/$path")
-                response.setHeader("Content-type", MediaType.IMAGE_JPEG_VALUE )
+                response.setHeader("Content-type", MediaType.IMAGE_JPEG_VALUE)
                 StreamUtils.copy(imgFile.inputStream, response.outputStream)
-            }catch(e: IOException){
+            } catch (e: IOException) {
                 Log.info("IOException thrown")
                 Log.info(e.message)
             }
-
         } else {
-            Log.info("aws run")
+            try{
                 val obj = awsService.getObject("drinks/$path")
                 response.contentType = MediaType.IMAGE_JPEG_VALUE
                 StreamUtils.copy(obj.objectContent, response.outputStream)
             }
+            catch (e: Exception){
+                LOG.info("Aws failed")
+                LOG.info(e.message)
+            }
+        }
     }
 
     @GetMapping("/images/categories", produces = [MediaType.IMAGE_JPEG_VALUE])
     fun getcatImage(@RequestParam path: String, response: HttpServletResponse) {
 
-        if (System.getenv("AWS_ACCESS_KEY").isNullOrBlank()) {
-            try{
+        if (env.getProperty("MODE").equals("local")) {
+            try {
                 val imgFile = ClassPathResource("/public/images/categories/$path")
-                response.contentType = MediaType.IMAGE_JPEG_VALUE
+                response.setHeader("Content-type", MediaType.IMAGE_JPEG_VALUE)
                 StreamUtils.copy(imgFile.inputStream, response.outputStream)
-            }catch(e: IOException){
-                Log.info("IOException")
+            } catch (e: IOException) {
+                Log.info("IOException thrown")
                 Log.info(e.message)
             }
-
         } else {
-            Log.info("aws run")
-            val obj = awsService.getObject("categories/$path")
-            response.contentType = MediaType.IMAGE_JPEG_VALUE
-            StreamUtils.copy(obj.objectContent, response.outputStream)
+            try{
+                val obj = awsService.getObject("categories/$path")
+                response.contentType = MediaType.IMAGE_JPEG_VALUE
+                StreamUtils.copy(obj.objectContent, response.outputStream)
+            }
+            catch (e: Exception){
+                LOG.info("Aws failed")
+                LOG.info(e.message)
+            }
+
         }
     }
 
     @GetMapping("/images/glass", produces = [MediaType.IMAGE_JPEG_VALUE])
     fun getglassImage(@RequestParam path: String, response: HttpServletResponse) {
 
-        //if (System.getenv("AWS_ACCESS_KEY_ID").isNullOrBlank()) {
-        try{
-            val imgFile = ClassPathResource("/public/images/glass/$path")
-            response.contentType = MediaType.IMAGE_JPEG_VALUE
-            StreamUtils.copy(imgFile.inputStream, response.outputStream)
-        }catch (e: IOException){
-            LOG.info("IOEXCEPTION THROWN")
-            LOG.info(e.message)
-        }
-        /*
+        if (env.getProperty("MODE").equals("local")) {
+            try {
+                val imgFile = ClassPathResource("/public/images/glass/$path")
+                response.setHeader("Content-type", MediaType.IMAGE_JPEG_VALUE)
+                StreamUtils.copy(imgFile.inputStream, response.outputStream)
+            } catch (e: IOException) {
+                Log.info("IOException thrown")
+                Log.info(e.message)
+            }
         } else {
-            val obj = awsService.getObject("glass/$path")
-            response.contentType = MediaType.IMAGE_JPEG_VALUE
-            StreamUtils.copy(obj.objectContent, response.outputStream)
+            try{
+                val obj = awsService.getObject("glass/$path")
+                response.contentType = MediaType.IMAGE_JPEG_VALUE
+                StreamUtils.copy(obj.objectContent, response.outputStream)
+            }
+            catch (e: Exception){
+                LOG.info("aws failed")
+                LOG.info(e.message)
+            }
+
         }
-        */
     }
 }

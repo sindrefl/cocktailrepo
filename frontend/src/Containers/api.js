@@ -50,11 +50,11 @@ export async function getCategories(){
  }
 
  export async function getFilteredDrinks(glass, category){
-    return await fetch(`/api/filteredDrinks?category=${category}&glass=${glass}`).then((response)=>response.json())
+    return await fetch(`/api/filteredDrinks?category=${category}&glass=${glass}`).then(response => response.json())
  }
 
  export async function postDrink(body){ 
-    fetch('/api/addDrink', {
+    return await fetch('/api/addDrink', {
         method:'POST',
         headers: {
             'Accept': 'application/json',

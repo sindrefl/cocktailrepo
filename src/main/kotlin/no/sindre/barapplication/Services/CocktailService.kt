@@ -1,14 +1,10 @@
 package no.sindre.barapplication.Services
 
 
-import no.sindre.barapplication.Models.Category
-import no.sindre.barapplication.Models.Cocktail
-import no.sindre.barapplication.Models.Glass
-import no.sindre.barapplication.Models.Ingredient
+import no.sindre.barapplication.Models.*
 import no.sindre.barapplication.Repositories.CocktailRepository
 import no.sindre.barapplication.Repositories.IngredientsRepository
 import org.slf4j.LoggerFactory
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.util.*
 

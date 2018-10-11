@@ -13,8 +13,8 @@ class CocktailDashboard extends Component {
         return (
             <div className="Main">
                 {randomDrink && <RandomDrinkCard
-                    name={randomDrink}
-                    imageUrl={getDrinkImage(randomDrink.name)}
+                    name={randomDrink.name}
+                    imageUrl={getDrinkImage(randomDrink)}
                     altUrl={randomDrink.imageUrl}
                     description={randomDrink.description}
                     glass={randomDrink.glass}
