@@ -2,7 +2,7 @@
 
 
 export const getGlassImage = (glass) => {
-    return `/api/images/glass?path=${glass}.jpg`
+    return `/api/images/glass?path=${glass.toUpperCase()}.jpg`
 }
 
 export const getCategoryImage = (category) => {
@@ -49,8 +49,12 @@ export async function getCategories(){
     }).then(response => response.json())
  }
 
- export async function getFilteredDrinks(glass, category){
-    return await fetch(`/api/filteredDrinks?category=${category}&glass=${glass}`).then(response => response.json())
+ export async function getFilteredDrinks(glass, category,page){
+    return await fetch(`/api/filteredDrinks?category=${category}&glass=${glass.toUpperCase()}&page=${page}`).then(response => response.json())
+ }
+
+ export async function getPageSize(glass, category){
+     return await fetch(`/api/pagecount?category=${category}&glass=${glass.toUpperCase()}`).then(response => response.json())
  }
 
  export async function postDrink(body){ 

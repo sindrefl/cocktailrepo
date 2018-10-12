@@ -6,7 +6,7 @@ ReactModal.setAppElement('#root')
 
 class AlcoholModal extends Component {
     render() {
-        const {isOpen, toggleModal, contentLabel, drink} = this.props;
+        const {isOpen, toggleModal, contentLabel, drink, drinkUrl} = this.props;
         return (
             <div>
                 <ReactModal
@@ -18,7 +18,7 @@ class AlcoholModal extends Component {
                     >
                     <RandomDrinkCard
                       name={drink.name}
-                      imageUrl={`/drinks/${drink.name.replace(/ /g, '_')}.jpg`}
+                      imageUrl={drinkUrl}
                       altUrl={drink.imageUrl}
                       description={drink.description}
                       glass={drink.glass}

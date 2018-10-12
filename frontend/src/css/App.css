@@ -77,12 +77,16 @@
   flex-direction: column;
 }
 
+.horizontal-list-container{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  text-align: center;
+}
 .horizontal-list{
   float: left;
   display: block;
   color: white;
-  text-align: center;
-  justify-content: space-around;
   padding: 16px;
   text-decoration: none;
   margin: 0;
@@ -247,4 +251,8 @@ cursor: pointer;
   position: absolute;
   top: 0;
   right: 0;
+}
+
+.bold{
+  text-emphasis: bold;
 }

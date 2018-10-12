@@ -13,7 +13,7 @@ export const Autocomplete = ({items, value, name, setField}) => {
         }}  
             selectedItem={value}
             itemToString={item => (item
-            ? item
+            ? item.toLowerCase()
             : '')}>
             {({
                 getInputProps,

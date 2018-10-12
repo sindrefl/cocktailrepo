@@ -4,6 +4,7 @@ import React, {Component} from 'react';
 import FillUpComponent from '../svgcomponents/FillUpComponent';
 import RandomDrinkCard from '../Components/RandomDrink';
 import { getRandomDrink, getDrinkImage } from './api';
+import JugSvg from '../svgcomponents/JugSvg';
 
 
 class MyBarPage extends Component {
@@ -11,13 +12,13 @@ class MyBarPage extends Component {
         super(props);
         this.state = {
             lastProps : this.props,
-            batteri : [{type : "Vodka", percent : 0.6}, {type: "Gin", percent: 0.2}, {type:"Rum", percent : 0.7,}, {type:"Triple Sec", percent: 0.2}, {type:"Tequila", percent: 0.2}],
+            batteri : [{type : "Vodka", percent : 0.3}, {type: "Gin", percent: 0.2}, {type:"Rum", percent : 0.7,}, {type:"Triple Sec", percent: 0.2}, {type:"Tequila", percent: 0.2}],
             randomDrink : undefined
         }
     }
 
     componentDidMount(){
-        getRandomDrink.then(drink => {
+        getRandomDrink().then(drink => {
                 this.setState({randomDrink: drink})
             }).catch(function (error) {
                 console.warn(error);
@@ -33,7 +34,7 @@ class MyBarPage extends Component {
         return <div>
             YOUR BAR
         <div className="flex-horizontal-container">
-        {batteri.map((icon,index) => <div className="bottleIcon"><FillUpComponent key={index.toString()} type={icon}></FillUpComponent></div>)}
+        {batteri.map((icon,index) => <JugSvg percent={icon.percent}/>)}
         
         </div>
         <div className="flex-horizontal-container">

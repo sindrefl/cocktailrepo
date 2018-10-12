@@ -34,8 +34,6 @@ class CocktailController(
 ) {
 
 
-    val LOG = LoggerFactory.getLogger(CocktailController::class.java.name)
-
     @RequestMapping("/")
     fun home(): String {
         return "This is the home"
@@ -90,18 +88,32 @@ class CocktailController(
 
 
     @GetMapping("/filteredDrinks")
-    fun getFiltered(@RequestParam(required = false) category: String, @RequestParam(required = false) glass: String): List<Cocktail> {
-        val time = System.currentTimeMillis()
-        if (category.isBlank() && glass.isBlank()) {
-            return cocktailService.getCocktails()
-        } else if (category.isBlank()) {
-            return cocktailService.getFilteredDrinkList(Category(""), Glass.valueOf(glass))
-        } else if (glass.isBlank()) {
-            return cocktailService.getFilteredDrinkList(Category(category))
+    fun getFiltered(@RequestParam(required = false) category: String, @RequestParam(required = false) glass: String, @RequestParam page: Int): List<Cocktail> {
+        val res =
+                if (category.isBlank() && glass.isBlank()) {
+                    cocktailService.getCocktails()
+                } else if (category.isBlank()) {
+                    cocktailService.getFilteredDrinkList(Category(""), Glass.valueOf(glass))
+                } else if (glass.isBlank()) {
+                    cocktailService.getFilteredDrinkList(Category(category))
+                } else {
+                    cocktailService.getFilteredDrinkList(Category(category), Glass.valueOf(glass))
+                }
+        return if (res.size > page * PAGE_SIZE) {
+            res.subList((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
+        } else if (res.size < (page - 1) * PAGE_SIZE) {
+            emptyList()
         } else {
-            return cocktailService.getFilteredDrinkList(Category(category), Glass.valueOf(glass))
+            res.subList((page - 1) * PAGE_SIZE, res.size)
         }
     }
+
+    @GetMapping("/pagecount")
+    fun getNumberOfPages(
+            @RequestParam glass: String,
+            @RequestParam category: String
+    ) : Int = cocktailService.getPageCount(glass, category)
+    
 
     @GetMapping("/glassTypes")
     fun getGlasses(): Array<Glass> {
@@ -147,12 +159,11 @@ class CocktailController(
                 Log.info(e.message)
             }
         } else {
-            try{
+            try {
                 val obj = awsService.getObject("drinks/$path")
                 response.contentType = MediaType.IMAGE_JPEG_VALUE
                 StreamUtils.copy(obj.objectContent, response.outputStream)
-            }
-            catch (e: Exception){
+            } catch (e: Exception) {
                 LOG.info("Aws failed")
                 LOG.info(e.message)
             }
@@ -172,12 +183,11 @@ class CocktailController(
                 Log.info(e.message)
             }
         } else {
-            try{
+            try {
                 val obj = awsService.getObject("categories/$path")
                 response.contentType = MediaType.IMAGE_JPEG_VALUE
                 StreamUtils.copy(obj.objectContent, response.outputStream)
-            }
-            catch (e: Exception){
+            } catch (e: Exception) {
                 LOG.info("Aws failed")
                 LOG.info(e.message)
             }
@@ -198,16 +208,21 @@ class CocktailController(
                 Log.info(e.message)
             }
         } else {
-            try{
+            try {
                 val obj = awsService.getObject("glass/$path")
                 response.contentType = MediaType.IMAGE_JPEG_VALUE
                 StreamUtils.copy(obj.objectContent, response.outputStream)
-            }
-            catch (e: Exception){
+            } catch (e: Exception) {
                 LOG.info("aws failed")
                 LOG.info(e.message)
             }
 
         }
+    }
+
+    companion object {
+        val LOG = LoggerFactory.getLogger(CocktailController::class.java.name)
+        val PAGE_SIZE = 20
+
     }
 }

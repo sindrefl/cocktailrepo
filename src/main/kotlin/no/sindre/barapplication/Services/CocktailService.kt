@@ -50,6 +50,9 @@ class CocktailService(val cocktailRepository: CocktailRepository,
         return params
     }
 
+
+    fun getPageCount(glass: String, category: String) : Int = cocktailRepository.getPageCount(glass, category)
+
     fun getFilteredDrinkList(category: Category, glass: Glass) : List<Cocktail>{
         return getCocktails(cocktailRepository.getIdsFromFilter(category, glass))
     }

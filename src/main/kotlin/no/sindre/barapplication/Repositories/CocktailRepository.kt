@@ -1,10 +1,12 @@
 package no.sindre.barapplication.Repositories
 
+import no.sindre.barapplication.Controllers.CocktailController
 import no.sindre.barapplication.Models.Category
 import no.sindre.barapplication.Models.Cocktail
 import no.sindre.barapplication.Models.Glass
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.jdbc.core.RowMapper
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.springframework.stereotype.Repository
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource
@@ -88,7 +90,10 @@ class CocktailRepository(val namedParameterJdbcTemplate: NamedParameterJdbcTempl
         return Pair(ids[0], ids.size)
     }
 
-    val Categorysql = "SELECT DISTINCT CATEGORY FROM COCKTAIL_DB.COCKTAIL"
+    val Categorysql = """
+        SELECT DISTINCT CATEGORY
+        FROM COCKTAIL_DB.COCKTAIL
+        """.trimIndent()
     fun getCategories() : List<Category>  {
         return namedParameterJdbcTemplate.queryForList(Categorysql, MapSqlParameterSource()).map { Category(name=it.get("category").toString()) }
 
@@ -96,15 +101,31 @@ class CocktailRepository(val namedParameterJdbcTemplate: NamedParameterJdbcTempl
 
 
     fun getIdsFromFilter(category: Category, glass: Glass) : List<Int>{
-        val sql = "SELECT COCKTAIL_ID FROM COCKTAIL_DB.COCKTAIL WHERE category LIKE ('%" + category.name + "%') AND glass LIKE ('%" + glass +"%')"
+        val sql = "SELECT COCKTAIL_ID FROM COCKTAIL_DB.COCKTAIL WHERE category ILIKE ('%" + category.name + "%') AND glass ILIKE ('%" + glass +"%')"
         val ids = namedParameterJdbcTemplate.queryForList(sql, MapSqlParameterSource()).map { it.get("cocktail_id").toString().toInt()}
         return ids
     }
 
     fun getIdsFromFilter(category: Category) : List<Int>{
-        val sql = "SELECT COCKTAIL_ID FROM COCKTAIL_DB.COCKTAIL WHERE category LIKE ('%" + category.name + "%')"
+        val sql = "SELECT COCKTAIL_ID FROM COCKTAIL_DB.COCKTAIL WHERE category ILIKE ('%" + category.name + "%')"
         LOG.info(sql)
         val ids = namedParameterJdbcTemplate.queryForList(sql, MapSqlParameterSource()).map { it.get("cocktail_id").toString().toInt()}
         return ids
+    }
+
+    val nRegex = Regex("\\\n")
+
+    fun getPageCount(glass: String,category: String): Int {
+        val sql = """
+            SELECT COUNT(COCKTAIL_ID)
+            FROM COCKTAIL_DB.COCKTAIL
+            WHERE category ILIKE ('%$category%') AND glass ILIKE ('%$glass%')
+            """.trimIndent().replace(nRegex," ")
+        val totalCount = namedParameterJdbcTemplate.queryForObject(sql, MapSqlParameterSource(), Int::class.java)!!
+        return if (totalCount == 0){
+            0
+        }else{
+            totalCount / CocktailController.PAGE_SIZE + 1
+        }
     }
 }

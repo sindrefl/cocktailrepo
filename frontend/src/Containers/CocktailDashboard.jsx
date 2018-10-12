@@ -52,7 +52,7 @@ class CocktailDashboard extends Component {
                     <div className="Grid">
                         {categories.map((cat, index) => {
                                 return <div>
-                                    <Link key={index} to={{pathname:"/filtered", state:{glass: "", category:cat.name}}}>
+                                    <Link key={index} to={{pathname:"/filtered", state:{glass: "", category:cat.name, page:1}}}>
                                         <CategoryCard
                                             imageUrl={getCategoryImage(cat)}
                                             name={cat.name}/>
