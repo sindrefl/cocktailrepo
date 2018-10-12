@@ -31,7 +31,7 @@ class CocktailDashboard extends Component {
 
                         {glassTypes.map((glass, index) => {
                                 return <div>
-                                    <Link key={glass} to={ {pathname:'/filtered', state: {glass: glass, category:""}}}>
+                                    <Link key={glass} to={ {pathname:'/filtered', state: {glass: glass, category:"", page:1}}}>
                                         <CategoryCard
                                             imageUrl={getGlassImage(glass)}
                                             name={glass}/>

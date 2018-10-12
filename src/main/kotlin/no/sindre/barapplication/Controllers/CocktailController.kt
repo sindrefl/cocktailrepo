@@ -33,26 +33,13 @@ class CocktailController(
         val env: Environment
 ) {
 
-
-    @RequestMapping("/")
-    fun home(): String {
-        return "This is the home"
-    }
-
-
     @PostMapping("/addDrink")
     fun addDrink(@RequestBody cocktail: Cocktail) {
-        if (cocktail.name.contains('*')) {
-            cocktail.name = "Quick Fuck"
-        }
         if (cocktail.name.contains("\"")) {
             cocktail.name = cocktail.name.replace("\"", "")
         }
-
-        LOG.info(cocktail.image_link)
-        LOG.info("" + cocktail.image_link.isNullOrBlank())
         downloadImage(cocktail.image_link, cocktail.name.replace(' ', '_'))
-        //   cocktailService.addCocktail(cocktail)
+        cocktailService.addCocktail(cocktail)
     }
 
 
@@ -65,7 +52,7 @@ class CocktailController(
             fileName = name.replace("/", "_")
         }
 
-        if (System.getenv("AWS_ACCESS_KEY_ID").isNullOrBlank()) {
+        if (System.getenv("MODE") == "local") {
             try {
                 val image = URL(url).openStream().use({ input -> Files.copy(input, Paths.get("C:/Users/sindre.flood/Documents/CocktailApplication/barapplication/src/main/resources/public/images/drinks/$fileName.jpg")) })
             } catch (e: IOException) {
@@ -113,7 +100,7 @@ class CocktailController(
             @RequestParam glass: String,
             @RequestParam category: String
     ) : Int = cocktailService.getPageCount(glass, category)
-    
+
 
     @GetMapping("/glassTypes")
     fun getGlasses(): Array<Glass> {
