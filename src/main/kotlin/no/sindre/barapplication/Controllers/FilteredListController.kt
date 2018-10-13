@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/api/filtered")
 class FilteredListController(val cocktailService: CocktailService,
                              val filterService: FilterService) {
-    
+
     @GetMapping("/suggestions/drink")
     fun getDrin(@RequestParam drink: String) =
             filterService.getSpecificDrinkSuggestions(drink)

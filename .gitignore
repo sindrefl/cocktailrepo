@@ -4,7 +4,7 @@
 /src/main/resources/public
 .env
 
-/src/main/kotlin/no/sindre/barapplication/Additionals.txt
+/src/main/kotlin/no/sindre/barapplication/Addionals.txt
 /src/main/kotlin/no/sindre/barapplication/initCock.sql
 /src/main/kotlin/no/sindre/barapplication/initDb.sql
 /src/main/kotlin/no/sindre/barapplication/initIngred.sql
