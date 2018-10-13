@@ -11,6 +11,15 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.springframework.stereotype.Repository
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource
 import org.springframework.jdbc.support.GeneratedKeyHolder
+import java.io.FileInputStream
+import com.oracle.util.Checksums.update
+import java.sql.Types.BLOB
+import org.springframework.jdbc.support.lob.DefaultLobHandler
+import java.io.ByteArrayInputStream
+import org.springframework.jdbc.core.support.SqlLobValue
+import java.io.BufferedWriter
+import java.io.File
+import java.sql.Types
 
 
 @Repository
@@ -127,5 +136,23 @@ class CocktailRepository(val namedParameterJdbcTemplate: NamedParameterJdbcTempl
         }else{
             totalCount / CocktailController.PAGE_SIZE + 1
         }
+    }
+
+    fun storeCocktailImage(bytes: ByteArray, cocktailName: String): Int {
+        val parameters = MapSqlParameterSource()
+        parameters.addValue("name", cocktailName)
+        parameters.addValue("image", SqlLobValue(ByteArrayInputStream(bytes), bytes.size, DefaultLobHandler()), Types.BLOB)
+        //f.bufferedWriter().use{ out -> out.writeLn("update cocktail_db.cocktail set image=\'\\x${bytes.joinToString("") { "${String.format("%02X", it).toLowerCase()}" }}\' where name=\'$cocktailName\';")}
+        return namedParameterJdbcTemplate.update("update cocktail_db.cocktail set image=:image where name=:name", parameters)
+    }
+
+    fun getCocktailImage(name: String): ByteArray{
+        val sql="SELECT image FROM COCKTAIL_DB.COCKTAIL WHERE name=\'$name\'"
+        return namedParameterJdbcTemplate.queryForObject(sql, MapSqlParameterSource(hashMapOf("name" to name)), { rs, rowNum -> rs.getBytes(1) })!!
+    }
+
+    fun BufferedWriter.writeLn(line: String) {
+        this.write(line)
+        this.newLine()
     }
 }

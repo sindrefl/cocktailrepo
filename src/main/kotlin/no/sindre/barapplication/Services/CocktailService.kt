@@ -6,6 +6,13 @@ import no.sindre.barapplication.Repositories.CocktailRepository
 import no.sindre.barapplication.Repositories.IngredientsRepository
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
+import sun.misc.IOUtils
+import java.io.File
+import java.io.FileInputStream
+import java.io.IOException
+import java.nio.file.Files
+import java.nio.file.Path
+import java.nio.file.Paths
 import java.util.*
 
 
@@ -119,6 +126,33 @@ class CocktailService(val cocktailRepository: CocktailRepository,
         return cocktailRepository.getCategories()
     }
 
-    private val log = LoggerFactory.getLogger(CocktailService::class.java)
+
+    fun storeImageScript(){
+        val sqlFile = File("C:/Users/sindre.flood/Documents/CocktailApplication/temp.txt")
+        val cocktails = getCocktails()
+        val cocktail = cocktails[0]
+        //for(cocktail:Cocktail in cocktails){
+            val imageName = cocktail.name.replace(' ', '_').replace(Regex("[\\/]"), "_")
+        try{
+            val file = Files.readAllBytes(Paths.get("C:/Users/sindre.flood/Documents/CocktailApplication/barapplication/src/main/resources/public/images/drinks/$imageName.jpg") )
+            //cocktailRepository.storeCocktailImage(file, cocktail.name, sqlFile)
+            //cocktailRepository.storeCocktailImage(file,cocktail.name)
+        }catch (e: NoSuchFileException){
+            LOG.info(cocktail.name)
+        }
+        //}
+    }
+
+    fun storeCocktailImage(bytes: ByteArray, name: String){
+        cocktailRepository.storeCocktailImage(bytes, name)
+    }
+
+    fun getCocktailImage(name: String): ByteArray{
+        return cocktailRepository.getCocktailImage(name)
+    }
+
+    companion object {
+        private val LOG = LoggerFactory.getLogger(CocktailService::class.java)
+    }
 
 }

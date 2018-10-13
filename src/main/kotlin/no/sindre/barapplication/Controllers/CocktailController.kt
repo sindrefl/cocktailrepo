@@ -42,6 +42,13 @@ class CocktailController(
         cocktailService.addCocktail(cocktail)
     }
 
+    @PostMapping("/simage")
+    fun store(
+        @RequestPart image : ByteArray,
+        @RequestPart name: String
+    ){
+        cocktailService.storeCocktailImage(image, name)
+    }
 
     fun downloadImage(url: String?, name: String) {
         var fileName = name
@@ -137,7 +144,7 @@ class CocktailController(
     @GetMapping("/images/drinks", produces = [MediaType.IMAGE_JPEG_VALUE])
     fun getdrinkImage(@RequestParam path: String, response: HttpServletResponse) {
         if (env.getProperty("MODE").equals("local")) {
-            try {
+            /*try {
                 val imgFile = ClassPathResource("/public/images/drinks/$path")
                 response.setHeader("Content-type", MediaType.IMAGE_JPEG_VALUE)
                 StreamUtils.copy(imgFile.inputStream, response.outputStream)
@@ -145,6 +152,8 @@ class CocktailController(
                 Log.info("IOException thrown")
                 Log.info(e.message)
             }
+            */
+            StreamUtils.copy(cocktailService.getCocktailImage(path).inputStream(), response.outputStream)
         } else {
             try {
                 val obj = awsService.getObject("drinks/$path")

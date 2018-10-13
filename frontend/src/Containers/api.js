@@ -1,16 +1,14 @@
-
-
-
 export const getGlassImage = (glass) => {
     return `/api/images/glass?path=${glass.toUpperCase()}.jpg`
-}
+};
 
 export const getCategoryImage = (category) => {
     return `/api/images/categories?path=${category.name.replace(/\//g,"")}.jpg`
 }
 
 export const getDrinkImage = (drink) => {
-    return `/api/images/drinks?path=${drink.name.replace(/ /g,'_').replace(/[èé]/g, 'e')}.jpg`
+    //return `/api/images/drinks?path=${drink.name.replace(/ /g,'_').replace(/[èé]/g, 'e')}.jpg`
+    return `/api/images/drinks?path=${drink.name}`;
 }
 
 export async function getRandomDrink(){
