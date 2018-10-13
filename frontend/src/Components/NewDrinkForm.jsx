@@ -4,7 +4,8 @@ import '../css/App.css';
 
 import update from 'immutability-helper';
 import { Autocomplete } from '../Containers/Automplete';
-import { getCategories, getGlassTypes, getIngredients, postDrink } from '../Containers/api';
+import { getCategories, getGlassTypes, getIngredients, postDrink, saveImageFiles, saveImageFile } from '../Containers/api';
+import UploadImage from './UploadImage';
 
 class NewDrinkForm extends Component {
     
@@ -21,14 +22,18 @@ class NewDrinkForm extends Component {
             image_link: undefined,
             description: "",
             glass: "HIGHBALL",
-            submitted : false
+            submitted : false,
+            image: [],
+            imageInvalid: []
         }
 
         this.setField = this.setField.bind(this);
         this.submitForm = this.submitForm.bind(this);
+        this.submitImage = this.submitImage.bind(this);
         this.addIngredient = this.addIngredient.bind(this);
         this.setIngredientNameField = this.setIngredientNameField.bind(this);
         this.setAmountsNameField = this.setAmountsNameField.bind(this);
+        this.onDrop = this.onDrop.bind(this);
         
     }
 
@@ -77,6 +82,13 @@ class NewDrinkForm extends Component {
             });
     }
 
+    submitImage = (e) => {
+        e.preventDefault()
+        console.log(this.state.image)
+        console.log(this.state.image.map(image => image.name.split('\.')[0].replace(/_/g, ' ')))
+        saveImageFiles(this.state.image, this.state.image.map(image => image.name.split('\.')[0].replace(/_/g, ' '))).then(response => console.log(response))
+    }
+
     setIngredientNameField = (changeEvent) => {
         const {target} = changeEvent
         const index = target.getAttribute("index");
@@ -99,8 +111,30 @@ class NewDrinkForm extends Component {
         this.setState({[key]: changeEvent.target.value})
     }
 
-    render() {
-        const {glassTypes,allCategories,allIngredients, category, name, ingredients, glass, submitted} = this.state
+    onDrop(accepted, rejected){
+        this.setState(prevState => ({
+            image: [...prevState.image, ...accepted],
+            imageInvalid: [...prevState.imageInvalid, ...rejected]
+        }))
+    }
+    render(){
+        const {glassTypes,allCategories,allIngredients, category, name, ingredients, glass, submitted, image, imageInvalid} = this.state
+        let finishedLoading = (glassTypes && allCategories && allIngredients)
+        const {handleClose} = this.props
+        return(
+            <div>
+                <UploadImage 
+                        files={image}
+                        invalid={imageInvalid}
+                        onDrop={this.onDrop}
+                    />
+                <button type="submit" onClick={this.submitImage}>Send</button>
+            </div>
+        )
+    }
+    
+    renderAll() {
+        const {glassTypes,allCategories,allIngredients, category, name, ingredients, glass, submitted, image, imageInvalid} = this.state
         let finishedLoading = (glassTypes && allCategories && allIngredients)
         const {handleClose} = this.props
         return (
@@ -116,6 +150,12 @@ class NewDrinkForm extends Component {
                         <button className="topright" onClick={handleClose}>X</button>
                     </div>
 
+                    <UploadImage 
+                        files={image}
+                        invalid={imageInvalid}
+                        onDrop={this.onDrop}
+                    />
+                    
                     <ul>
                         <li>
                             <input

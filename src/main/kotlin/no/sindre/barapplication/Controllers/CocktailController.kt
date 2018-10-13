@@ -6,6 +6,7 @@ import no.sindre.barapplication.Services.AWSService
 import no.sindre.barapplication.Services.CSVService
 import no.sindre.barapplication.Services.CocktailService
 import org.slf4j.LoggerFactory
+import org.slf4j.Logger
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.env.Environment
@@ -45,9 +46,10 @@ class CocktailController(
     @PostMapping("/simage")
     fun store(
         @RequestPart image : ByteArray,
-        @RequestPart name: String
+        @RequestPart name: String,
+        @RequestPart fileName: String
     ){
-        cocktailService.storeCocktailImage(image, name)
+        cocktailService.storeCocktailImage(image, name,fileName)
     }
 
     fun downloadImage(url: String?, name: String) {
@@ -142,8 +144,7 @@ class CocktailController(
     }
 
     @GetMapping("/images/drinks", produces = [MediaType.IMAGE_JPEG_VALUE])
-    fun getdrinkImage(@RequestParam path: String, response: HttpServletResponse) {
-        if (env.getProperty("MODE").equals("local")) {
+    fun getdrinkImage(@RequestParam id: Int, response: HttpServletResponse) {
             /*try {
                 val imgFile = ClassPathResource("/public/images/drinks/$path")
                 response.setHeader("Content-type", MediaType.IMAGE_JPEG_VALUE)
@@ -153,17 +154,7 @@ class CocktailController(
                 Log.info(e.message)
             }
             */
-            StreamUtils.copy(cocktailService.getCocktailImage(path).inputStream(), response.outputStream)
-        } else {
-            try {
-                val obj = awsService.getObject("drinks/$path")
-                response.contentType = MediaType.IMAGE_JPEG_VALUE
-                StreamUtils.copy(obj.objectContent, response.outputStream)
-            } catch (e: Exception) {
-                LOG.info("Aws failed")
-                LOG.info(e.message)
-            }
-        }
+            StreamUtils.copy(cocktailService.getCocktailImage(id).inputStream(), response.outputStream)
     }
 
     @GetMapping("/images/categories", produces = [MediaType.IMAGE_JPEG_VALUE])
@@ -217,8 +208,8 @@ class CocktailController(
     }
 
     companion object {
-        val LOG = LoggerFactory.getLogger(CocktailController::class.java.name)
-        val PAGE_SIZE = 20
+         val LOG: Logger  = LoggerFactory.getLogger(CocktailController::class.java.name)
+        const val PAGE_SIZE = 20
 
     }
 }

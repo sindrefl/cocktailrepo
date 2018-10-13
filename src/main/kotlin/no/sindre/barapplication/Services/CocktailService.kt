@@ -40,24 +40,6 @@ class CocktailService(val cocktailRepository: CocktailRepository,
         return false
     }
 
-    //to filter out potential unwanted queries
-    private fun getParamsFromString(searchString: String):List<Pair<String,String>>{
-        val filt = searchString.replace(Regex("%20"), " ").replace(Regex("%2F"), "/")
-        LOG.info("This is the searchstr: $filt")
-        val split = filt.split('&')
-        LOG.info("THIS IS THE SPLIT $split")
-        val params = emptyList<Pair<String,String>>().toMutableList()
-        for(string in split){
-            val sub = string.split("=")
-            when(sub[0]){
-                "category" -> params.add(Pair("cocktail.category",sub[1].replace(regex,"")))
-                "glass" -> params.add(Pair("cocktail.glass",sub[1].replace(regex,"")))
-            }
-        }
-        return params
-    }
-
-
     fun getPageCount(glass: String, category: String) : Int = cocktailRepository.getPageCount(glass, category)
 
     fun getFilteredDrinkList(category: Category, glass: Glass) : List<Cocktail>{
@@ -68,9 +50,8 @@ class CocktailService(val cocktailRepository: CocktailRepository,
         return getCocktails(cocktailRepository.getIdsFromFilter(category))
     }
 
-    val regex = Regex("[^a-zA-Z'èéÈÉ0-9\\/\\s]")
+    val regex = Regex("[^a-zA-Z0-9\\/\\s]")
     fun addCocktail(cocktail: Cocktail){
-
         cocktail.name = cocktail.name.replace(regex,"")
         cocktail.ingredients = cocktail.ingredients.map { Ingredient(it.name.replace(regex,""), it.description.replace(regex,""), it.type.replace(regex,""), it.isBattery) }.toList()
         cocktail.category = Category(cocktail.category.name.replace(regex,""))
@@ -88,6 +69,7 @@ class CocktailService(val cocktailRepository: CocktailRepository,
         cocktailPair.first.ingredients = getIngredients(cocktailPair.second)
         return cocktailPair.first
     }
+
     fun getCocktails() : List<Cocktail> {
         val cocktailPairs = cocktailRepository.getAll()
 
@@ -143,12 +125,14 @@ class CocktailService(val cocktailRepository: CocktailRepository,
         //}
     }
 
-    fun storeCocktailImage(bytes: ByteArray, name: String){
-        cocktailRepository.storeCocktailImage(bytes, name)
+    //fun storeCocktailImage(bytes: ByteArray, cocktailId: Int, fileName: String){
+    fun storeCocktailImage(bytes: ByteArray, cocktailName: String, fileName: String){
+        val cocktailId = cocktailRepository.getIdFromName(cocktailName.replace('_', ' ' ))
+        cocktailRepository.storeCocktailImage(bytes, cocktailId,fileName, "/api/images/drinks?id=$cocktailId")
     }
 
-    fun getCocktailImage(name: String): ByteArray{
-        return cocktailRepository.getCocktailImage(name)
+    fun getCocktailImage(id: Int): ByteArray{
+        return cocktailRepository.getCocktailImage(id)
     }
 
     companion object {
