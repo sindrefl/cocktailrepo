@@ -122,7 +122,7 @@ class NewDrinkForm extends Component {
         let finishedLoading = (glassTypes && allCategories && allIngredients)
         const {handleClose} = this.props
         return(
-            <div>
+            <div className="horizontal-list-container">
                 <UploadImage 
                         files={image}
                         invalid={imageInvalid}
