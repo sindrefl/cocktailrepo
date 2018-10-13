@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import {Link} from 'react-router-dom'
-import NewDrinkForm from './NewDrinkForm';
+import NewDrinkForm from './Modals/NewDrinkForm';
 import ReactModal from 'react-modal'
 
 class Navbar extends Component {

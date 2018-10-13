@@ -1,18 +1,18 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types'
-import DrinkCard from '../Components/DrinkCard';
-import {Autocomplete} from './Automplete'; 
+import DrinkCard from '../Components/Cards/DrinkCard';
+import { Autocomplete } from '../Components/Autocomplete'; 
 import { withRouter } from 'react-router';
-import {Link} from 'react-router-dom';
-import AlcoholModal from '../Components/AlcoholModal';
+import AlcoholModal from '../Components/Modals/AlcoholModal';
 import { getDrinkImage, getFilteredDrinks, getCategories, getGlassTypes, getPageSize} from './api';
 
-class CategoryList extends Component {
+class FilteredCocktailList extends Component {
     static propTypes = {
         match: PropTypes.object.isRequired,
         location: PropTypes.object.isRequired,
         history: PropTypes.object.isRequired
     }
+
     constructor(props){
         super(props);
         this.state = {
@@ -21,6 +21,7 @@ class CategoryList extends Component {
             glassTypes: [],
             glass: "",
             drinks: [],
+            specificDrink: "",
             modal: undefined,
             modal_url: undefined,
             page: 1,
@@ -30,7 +31,12 @@ class CategoryList extends Component {
         this.toggleModal = this.toggleModal.bind(this);
         this.submit = this.submit.bind(this);  
         this.setField = this.setField.bind(this); 
-        this.update = this.update.bind(this);     
+        this.update = this.update.bind(this);
+        this.searchDrinkByName = this.searchDrinkByName.bind(this);     
+    }
+
+    searchDrinkByName = (e) => {
+        e.preventDefault()
     }
 
     submit(e){
@@ -73,37 +79,58 @@ class CategoryList extends Component {
     }
     
     render(){
-        const {category, categories, glass,glassTypes, drinks, modal, modal_url, maxPages} = this.state;
+        const {category, categories, glass,glassTypes, drinks, modal, modal_url, maxPages, specificDrink} = this.state;
         return <div>
-                    <div>
+                    <div className="Grid-header-container">
                         <form className="Grid-header">
                             <div className="header-item input-text">
                                 <Autocomplete 
-                                type="text"
-                                name="category"
-                                placeholder="Category"
-                                items={categories.map(cat => cat.name.toLowerCase())}
-                                value={category}
-                                setField={this.setField}
-                                />
+                                    type="text"
+                                    name="category"
+                                    placeholder="Category"
+                                    items={categories.map(cat => cat.name.toLowerCase())}
+                                    value={category}
+                                    setField={this.setField}
+                                    text="Search by category"
+                                    />
                             </div>
-                        <div className="header-item input-text">
-                            <Autocomplete 
-                                type="text"
-                                name="glass"
-                                placeholder="Glass Type"
-                                items={glassTypes.map(glass => glass.toLowerCase())}
-                                value={glass}
-                                setField={this.setField}
-                                />
-                            </div>
+                            <div className="header-item input-text">
+                                <Autocomplete 
+                                    type="text"
+                                    name="glass"
+                                    placeholder="Glass Type"
+                                    items={glassTypes.map(glass => glass.toLowerCase())}
+                                    value={glass}
+                                    setField={this.setField}
+                                    text="search by glass type"
+                                    />
+                                </div>
                         <div className="header-item">
                             <div>
                                 <button type="submit" onClick={this.submit}>SEARCH</button>
                             </div>
                         </div>
                         </form>
+
+                        <form className="Grid-header">
+                            <div className="header-item">
+                                <Autocomplete 
+                                    type="text"
+                                    name="specificDrink"
+                                    placeholder="Drink"
+                                    items={['Hardcoded']}
+                                    value={specificDrink}
+                                    setField={this.setField}
+                                    text="search by specific drink name"
+                                    />
+                            </div>
+                            <div className="header-item">
+                                <button type="submit" onClick={this.searchDrinkByName}>SEARCH</button>
+                            </div>
+                        </form>
                     </div>
+
+
                     {modal && <AlcoholModal isOpen={modal !== undefined} contentLabel={'AlcoholModal'} toggleModal={this.toggleModal} drink={modal} drinkUrl={modal_url}/>}    
                     
                     
@@ -112,7 +139,6 @@ class CategoryList extends Component {
                             {drinks && drinks.length === 0 && <div>There are no drinks for category <h4>{category}</h4> and glass <h4>{glass}</h4></div>}
                             {drinks && drinks.length > 0 && drinks.map((drink,index) => {
                                                                         const drinkUrl = getDrinkImage(drink)
-
                                                                         return<span onClick={(e) => this.toggleModal(drink,drinkUrl)}>
                                                                             <DrinkCard 
                                                                                 key={index} 
@@ -149,4 +175,4 @@ const HorizontalButtons = ({maxPages, update}) => {
             </ul>
 }
 
-export default withRouter(CategoryList);
+export default withRouter(FilteredCocktailList);

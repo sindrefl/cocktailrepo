@@ -1,14 +1,13 @@
 import React, {Component} from 'react';
-import '../css/App.css';
+import '../../css/App.css';
 
 
 import update from 'immutability-helper';
-import { Autocomplete } from '../Containers/Automplete';
-import { getCategories, getGlassTypes, getIngredients, postDrink, saveImageFiles, saveImageFile } from '../Containers/api';
-import UploadImage from './UploadImage';
+import { Autocomplete } from '../Autocomplete';
+import { getCategories, getGlassTypes, getIngredients, postDrink, saveImageFiles, saveImageFile } from '../../Containers/api';
+import UploadImage from '../UploadImage';
 
 class NewDrinkForm extends Component {
-    
     constructor(props) {
         super(props);
         
@@ -172,7 +171,8 @@ class NewDrinkForm extends Component {
                                 placeholder="Type of Drink"
                                 value={category}
                                 setField={this.setField}
-                                items={allCategories.map(cat => cat.name)}>
+                                items={allCategories.map(cat => cat.name)}
+                                text="">
                                 
                             </Autocomplete>
                         </li>
@@ -196,7 +196,9 @@ class NewDrinkForm extends Component {
                                             placeholder = "Ingredient Name"
                                             value = {ingredients[index]}
                                             items={allIngredients}
-                                            setField = {this.setIngredientNameField}>
+                                            setField = {this.setIngredientNameField}
+                                            text= ""
+                                            >
                                         </Autocomplete>
                                         <input
                                             type = "text"

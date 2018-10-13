@@ -5,7 +5,7 @@ import Navbar from '../Components/Navbar'
 
 import {Route, Switch} from 'react-router-dom'
 import CocktailDashboard from './CocktailDashboard';
-import CategoryList from './CategoryList';
+import FilteredCocktailList from './FilteredCocktailList';
 import MyBarPage from './MyBarPage'
 import { getRandomDrink, getTopNCategories, getTopNGlassTypes } from './api';
 
@@ -48,8 +48,8 @@ class Main extends Component {
 
             <Switch>
                 <Route path="/" exact render= {() => <CocktailDashboard randomDrink={this.state.randomDrink} categories={this.state.categories} glassTypes={this.state.glassTypes}/>}></Route>
-                <Route path="/filtered" render={() => <CategoryList></CategoryList>}></Route>
-                <Route path="/home/bar" render={() => <MyBarPage></MyBarPage>}></Route>
+                <Route path="/filtered" render={() => <FilteredCocktailList/>}></Route>
+                <Route path="/home/bar" render={() => <MyBarPage/>}></Route>
             </Switch>
     
             </div>

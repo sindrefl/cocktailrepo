@@ -118,19 +118,23 @@ class CocktailRepository(val namedParameterJdbcTemplate: NamedParameterJdbcTempl
 
     fun getIdsFromFilter(category: Category) : List<Int>{
         val sql = "SELECT COCKTAIL_ID FROM COCKTAIL_DB.COCKTAIL WHERE category ILIKE ('%" + category.name + "%')"
-        LOG.info(sql)
         val ids = namedParameterJdbcTemplate.queryForList(sql, MapSqlParameterSource()).map { it.get("cocktail_id").toString().toInt()}
         return ids
     }
 
-    val nRegex = Regex("\\\n")
+    fun getIdsFromFilter(drinkName: String) : List<Int>{
+        val sql = "SELECT COCKTAIL_ID FROM COCKTAIL_DB.COCKTAIL WHERE name ILIKE ('%" + drinkName + "%')"
+        val ids = namedParameterJdbcTemplate.queryForList(sql, MapSqlParameterSource()).map { it.get("cocktail_id").toString().toInt()}
+        return ids
+    }
+
 
     fun getPageCount(glass: String,category: String): Int {
         val sql = """
             SELECT COUNT(COCKTAIL_ID)
             FROM COCKTAIL_DB.COCKTAIL
             WHERE category ILIKE ('%$category%') AND glass ILIKE ('%$glass%')
-            """.trimIndent().replace(nRegex," ")
+            """.trimIndent().regexReplace()
         val totalCount = namedParameterJdbcTemplate.queryForObject(sql, MapSqlParameterSource(), Int::class.java)!!
         return if (totalCount == 0){
             0
@@ -145,7 +149,6 @@ class CocktailRepository(val namedParameterJdbcTemplate: NamedParameterJdbcTempl
         parameters.addValue("image", SqlLobValue(ByteArrayInputStream(bytes), bytes.size, DefaultLobHandler()), Types.BLOB)
         parameters.addValue("image_filename", fileName)
         parameters.addValue("image_link", imageUrl)
-        //f.bufferedWriter().use{ out -> out.writeLn("update cocktail_db.cocktail set image=\'\\x${bytes.joinToString("") { "${String.format("%02X", it).toLowerCase()}" }}\' where name=\'$cocktailName\';")}
         return namedParameterJdbcTemplate.update("update cocktail_db.cocktail set image=:image, image_filename=:image_filename, img_link=:image_link where cocktail_id=:id", parameters)
     }
 
@@ -154,8 +157,27 @@ class CocktailRepository(val namedParameterJdbcTemplate: NamedParameterJdbcTempl
         return namedParameterJdbcTemplate.queryForObject(sql, MapSqlParameterSource(hashMapOf("cocktail_id" to id)), { rs, rowNum -> rs.getBytes(1) })!!
     }
 
-    fun BufferedWriter.writeLn(line: String) {
-        this.write(line)
-        this.newLine()
+    fun getSpecificDrinkSuggestions(drink: String): List<String> {
+        val sql = """
+            SELECT DISTINCT name
+            FROM cocktail_db.cocktail
+            WHERE name ILIKE $drink
+            """.trimIndent().regexReplace()
+        return namedParameterJdbcTemplate.queryForList(sql, MapSqlParameterSource()).map { it["name"].toString() }
+    }
+
+    fun getCategorySuggestions(category: String): List<String> {
+        val sql = """
+            SELECT DISTINCT category
+            FROM cocktail_db.cocktail
+            WHERE category ILIKE $category
+            """.trimIndent().regexReplace()
+        return namedParameterJdbcTemplate.queryForList(sql, MapSqlParameterSource()).map { it["category"].toString() }
+    }
+
+    fun String.regexReplace() :String {
+        val nRegex = Regex("\\\n")
+        return this.replace(nRegex,"")
+
     }
 }

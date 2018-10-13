@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import ReactModal from 'react-modal';
-import RandomDrinkCard from './RandomDrink';
+import RandomDrinkCard from '../Cards/RandomDrink';
 
 ReactModal.setAppElement('#root')
 
