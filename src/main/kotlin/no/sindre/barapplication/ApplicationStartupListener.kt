@@ -27,8 +27,8 @@ class ApplicationStartupListener(
     var started = true
     @EventListener
     override fun onApplicationEvent(event: ApplicationReadyEvent) {
-        LOG.info("Event caught")
-        if(started) cocktailService!!.storeImageScript()
-        started = false
+        //LOG.info("Event caught")
+        //if(started) cocktailService!!.storeImageScript()
+        //started = false
     }
 }

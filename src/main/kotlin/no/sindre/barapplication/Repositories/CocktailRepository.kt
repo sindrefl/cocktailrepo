@@ -11,9 +11,6 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.springframework.stereotype.Repository
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource
 import org.springframework.jdbc.support.GeneratedKeyHolder
-import java.io.FileInputStream
-import com.oracle.util.Checksums.update
-import java.sql.Types.BLOB
 import org.springframework.jdbc.support.lob.DefaultLobHandler
 import java.io.ByteArrayInputStream
 import org.springframework.jdbc.core.support.SqlLobValue
