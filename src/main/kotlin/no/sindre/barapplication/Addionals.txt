@@ -1,4 +1,0 @@
-#creating a data dump
-pg_dump -d cocktail_db -U postgres > database
-
-#creating init script from data dump:

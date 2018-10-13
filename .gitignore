@@ -4,6 +4,16 @@
 /src/main/resources/public
 .env
 
+/src/main/kotlin/no/sindre/barapplication/Additionals.txt
+/src/main/kotlin/no/sindre/barapplication/initCock.sql
+/src/main/kotlin/no/sindre/barapplication/initDb.sql
+/src/main/kotlin/no/sindre/barapplication/initIngred.sql
+/src/main/kotlin/no/sindre/barapplication/migration.sql
+/src/main/kotlin/no/sindre/barapplication/schemas.sql
+/src/main/kotlin/no/sindre/barapplication/TestRepo.kt
+
+
+
 ### STS ###
 .apt_generated
 .classpath
