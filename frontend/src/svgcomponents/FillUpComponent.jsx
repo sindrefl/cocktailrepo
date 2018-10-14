@@ -1,6 +1,5 @@
 import React from 'react';
 import JugSvg from './JugSvg';
-import VodkaSvg from './VodkaSvg';
 
 
 const wrapWithType = (inner, type) => {

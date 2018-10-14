@@ -9,10 +9,11 @@ import { getGlassImage, getCategoryImage, getDrinkImage} from './api';
 
 class CocktailDashboard extends Component {
     render() {
-        const {randomDrink, glassTypes,categories} = this.props
+        const {randomDrink, glassTypes,categories, updateRandomDrink} = this.props
         return (
             <div className="Main">
                 {randomDrink && 
+                <div>
                     <RandomDrinkCard
                         name={randomDrink.name}
                         imageUrl={getDrinkImage(randomDrink)}
@@ -21,6 +22,9 @@ class CocktailDashboard extends Component {
                         glass={randomDrink.glass}
                         ingredients={randomDrink.ingredients}
                         amounts={randomDrink.amounts}/>
+                    
+                    <button type="submit" onClick={updateRandomDrink}>New random drink</button>
+                </div>
                     }
                 {glassTypes && <GlassTypesList glassTypes={glassTypes} />}
 
@@ -30,46 +34,50 @@ class CocktailDashboard extends Component {
     }
 }
 
-const GlassTypesList = ({glassTypes}) =>  
-    <div className="Grid-container">
-        <div className="Grid-header-container">
-            <div className="Grid-header">
-                <h1>Find drinks by glass type</h1>
-            </div>
-        </div>
-        <div className="Grid">
-            {glassTypes.map((glass, index) => {
-                return <div key={index}>
-                    <Link key={glass} to={{pathname:'/filtered', state: {glass, category:"", page:1}}}>
-                        <CategoryCard
-                            imageUrl={getGlassImage(glass)}
-                            name={glass}/>
-                    </Link>
+const GlassTypesList = ({glassTypes}) =>{
+    return (
+        <div className="Grid-container">
+            <div className="Grid-header-container">
+                <div className="Grid-header">
+                    <h1>Find drinks by glass type</h1>
                 </div>
-            })}
-        </div>
-    </div>
-
-const CategoriesList = ({categories}) => 
-    <div className="Grid-container">
-        <div className="Grid-header-container">
-            <div className="Grid-header">
-                <h1>Find drinks by category</h1>
             </div>
-        </div>
-        <div className="Grid">
-            {categories.map((cat, index) => {
-                return 
-                    <div key={index}>
-                        <Link to={{pathname:"/filtered", state:{glass: "", category:cat.name, page:1}}}>
+            <div className="Grid">
+                {glassTypes.map((glass, index) => {
+                    return <div key={index}>
+                        <Link key={glass} to={{pathname:'/filtered', state: {glass, category:"", page:1}}}>
                             <CategoryCard
-                                imageUrl={getCategoryImage(cat)}
-                                name={cat.name}/>
+                                imageUrl={getGlassImage(glass)}
+                                name={glass}/>
                         </Link>
                     </div>
-            })}
-        </div>
-    </div>
-
+                })}
+            </div>
+        </div>)
+}  
+    
+const CategoriesList = ({categories}) => {
+return (<div className="Grid-container">
+            <div className="Grid-header-container">
+                <div className="Grid-header">
+                    <h1>Find drinks by category</h1>
+                </div>
+            </div>
+            <div className="Grid">
+                {categories.map((cat, index) => {
+                    return( 
+                        <div key={index}>
+                            <Link to={{pathname:"/filtered", state:{glass: "", category:cat.name, page:1}}}>
+                                <CategoryCard
+                                    imageUrl={getCategoryImage(cat)}
+                                    name={cat.name}/>
+                            </Link>
+                        </div>
+                        )
+                })}
+            </div>
+        </div>)
+}
+    
 
 export default CocktailDashboard;

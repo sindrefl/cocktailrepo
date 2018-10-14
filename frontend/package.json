@@ -14,7 +14,8 @@
     "react-modal": "^3.6.1",
     "react-router": "^4.3.1",
     "react-router-dom": "^4.3.1",
-    "react-scripts": "1.1.5"
+    "react-scripts": "1.1.5",
+    "throttle-debounce": "^2.0.1"
   },
   "scripts": {
     "start": "react-scripts start",

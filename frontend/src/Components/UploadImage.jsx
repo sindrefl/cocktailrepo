@@ -16,7 +16,6 @@ class UploadImage extends Component {
     }
     render() {
         const {files, invalid} = this.props;
-        console.log(files);
         return (
           <section>
             <div className="dropzone">

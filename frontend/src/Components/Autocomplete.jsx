@@ -34,13 +34,13 @@ export const Autocomplete = ({items, value, name, setField, text}) => {
                     </div>
                     <ul className="downshift-dropdown" {...getMenuProps()}>
                         {isOpen && items ? items.length > 10
-                            ? items.slice(0,10).filter(item => !inputValue || item.indexOf(inputValue) !== -1).map((item, index) => (
+                            ? items.filter(item => !inputValue || item.indexOf(inputValue) !== -1).slice(0,10).map((item, index) => (
                                 <li
                                     {...getItemProps({ key: item, index, item, style: { backgroundColor: highlightedIndex === index ? 'lightgray' : 'white', fontWeight: selectedItem === item ? 'bold' : 'normal', }, })}>
                                     {item}
                                 </li>
                             ))
-                            : items.slice(0,10).filter(item => !inputValue || item.indexOf(inputValue) !== -1).map((item, index) => (
+                            : items.filter(item => !inputValue || item.indexOf(inputValue) !== -1).slice(0,10).map((item, index) => (
                                 <li
                                     {...getItemProps({ key: item, index, item, style: { backgroundColor: highlightedIndex === index ? 'lightgray' : 'white', fontWeight: selectedItem === item ? 'bold' : 'normal', }, })}>
                                     {item}

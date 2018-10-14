@@ -8,6 +8,7 @@ import CocktailDashboard from './CocktailDashboard';
 import FilteredCocktailList from './FilteredCocktailList';
 import MyBarPage from './MyBarPage'
 import { getRandomDrink, getTopNCategories, getTopNGlassTypes } from './api';
+import update from 'immutability-helper';
 
 class Main extends Component {
     constructor(props) {
@@ -17,8 +18,20 @@ class Main extends Component {
             categories: [],
             glassTypes: [],
         }
+        this.updateRandomDrink = this.updateRandomDrink.bind(this);
     }
 
+    updateRandomDrink(e){
+        e.preventDefault();
+        getRandomDrink().then(response => {
+            let drink = response
+            this.setState({randomDrink: drink})
+        })
+        .catch((error) => {
+            console.warn(error);
+        });
+        
+    }
  
     componentDidMount() {
         getRandomDrink().then(response => {
@@ -47,7 +60,7 @@ class Main extends Component {
             <Navbar glassTypes={this.state.glassTypes}/>
 
             <Switch>
-                <Route path="/" exact render= {() => <CocktailDashboard randomDrink={this.state.randomDrink} categories={this.state.categories} glassTypes={this.state.glassTypes}/>}></Route>
+                <Route path="/" exact render= {() => <CocktailDashboard randomDrink={this.state.randomDrink} categories={this.state.categories} glassTypes={this.state.glassTypes} updateRandomDrink={this.updateRandomDrink}/>}></Route>
                 <Route path="/filtered" render={() => <FilteredCocktailList/>}></Route>
                 <Route path="/home/bar" render={() => <MyBarPage/>}></Route>
             </Switch>

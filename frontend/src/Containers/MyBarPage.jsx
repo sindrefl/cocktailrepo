@@ -4,7 +4,6 @@ import React, {Component} from 'react';
 import FillUpComponent from '../svgcomponents/FillUpComponent';
 import RandomDrinkCard from '../Components/Cards/RandomDrink';
 import { getRandomDrink, getDrinkImage } from './api';
-import JugSvg from '../svgcomponents/JugSvg';
 
 
 class MyBarPage extends Component {

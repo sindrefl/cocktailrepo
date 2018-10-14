@@ -161,7 +161,8 @@ class CocktailRepository(val namedParameterJdbcTemplate: NamedParameterJdbcTempl
         val sql = """
             SELECT DISTINCT name
             FROM cocktail_db.cocktail
-            WHERE name ILIKE $drink
+            WHERE name ILIKE ('%$drink%')
+            LIMIT 10
             """.trimIndent().regexReplace()
         return namedParameterJdbcTemplate.queryForList(sql, MapSqlParameterSource()).map { it["name"].toString() }
     }
@@ -170,14 +171,15 @@ class CocktailRepository(val namedParameterJdbcTemplate: NamedParameterJdbcTempl
         val sql = """
             SELECT DISTINCT category
             FROM cocktail_db.cocktail
-            WHERE category ILIKE $category
+            WHERE category ILIKE ('%$category%')
+            LIMIT 10
             """.trimIndent().regexReplace()
         return namedParameterJdbcTemplate.queryForList(sql, MapSqlParameterSource()).map { it["category"].toString() }
     }
 
     fun String.regexReplace() :String {
         val nRegex = Regex("\\\n")
-        return this.replace(nRegex,"")
+        return this.replace(nRegex," ")
 
     }
 }

@@ -1,3 +1,4 @@
+//Get Image Links:
 export const getGlassImage = (glass) => {
     return `/api/images/glass?path=${glass.toUpperCase()}.jpg`
 };
@@ -7,10 +8,10 @@ export const getCategoryImage = (category) => {
 }
 
 export const getDrinkImage = (drink) => {
-    //return `/api/images/drinks?path=${drink.name.replace(/ /g,'_').replace(/[èé]/g, 'e')}.jpg`
     return `/api/images/drinks?id=${drink.cocktail_id}`;
 }
 
+//Get lists of objects:
 export async function getRandomDrink(){
     return await fetch('/api/random', {
         method : 'GET'
@@ -47,14 +48,28 @@ export async function getCategories(){
     }).then(response => response.json())
  }
 
+ //Filtering:
  export async function getFilteredDrinks(glass, category,page){
-    return await fetch(`/api/filteredDrinks?category=${category}&glass=${glass.toUpperCase()}&page=${page}`).then(response => response.json())
+    return await fetch(`/api/filtered/drinks?category=${category}&glass=${glass.toUpperCase()}&page=${page}`).then(response => response.json())
  }
+
+ export async function getFilteredDrinksBySpecificDrink(specificDrink){
+     return await fetch(`/api/filtered/specificDrink?name=${specificDrink}`).then(response => response.json())
+ }
+
+ export async function getDrinkSuggestions(input) {
+    return await fetch(`/api/filtered/suggestions/drink?drink=${input}`, {
+        method: 'GET'
+    }).then(response => response.json())
+}
 
  export async function getPageSize(glass, category){
-     return await fetch(`/api/pagecount?category=${category}&glass=${glass.toUpperCase()}`).then(response => response.json())
+     return await fetch(`/api/filtered/pagecount?category=${category}&glass=${glass.toUpperCase()}`).then(response => response.json())
  }
 
+
+
+ //POST:
  export async function postDrink(body){ 
     return await fetch('/api/addDrink', {
         method:'POST',
@@ -71,8 +86,6 @@ export async function getCategories(){
  }
 
  export async function saveImageFile(file, name){
-    console.log(file)
-    console.log(name)
     var data = new FormData()
     data.append('image', file)
     data.append('fileName', file.name)
@@ -83,3 +96,5 @@ export async function getCategories(){
         body: data
     })
  }
+
+ 
