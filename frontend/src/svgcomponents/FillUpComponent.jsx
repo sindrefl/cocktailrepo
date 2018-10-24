@@ -1,5 +1,6 @@
 import React from 'react';
 import JugSvg from './JugSvg';
+import CointreauSvg from './CointreauSvg';
 
 
 const wrapWithType = (inner, type) => {
@@ -28,7 +29,7 @@ const FillUpComponent = (props) => {
                 <JugSvg percent={percent} name={type}/>, type)
         case "Triple-Sec":
             return wrapWithType(
-                <JugSvg percent={percent} name={type}/>, type)
+                <CointreauSvg percent={percent} name={type}/>, type)
         case "Gin":
             return wrapWithType(
                 <JugSvg percent={percent} name={type}/>, type)
