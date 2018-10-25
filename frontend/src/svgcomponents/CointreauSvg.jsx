@@ -1,49 +1,48 @@
 import React from 'react'
 
-const getStop = (offset, percent, color) => {
-  return <stop offset={offset} stopColor={color}>
-          <animate
-            attributeName="offset"
-            values={`${offset};${percent + offset};${percent + offset}`}
-            dur={`${percent*10}s`}
-            begin="0s"
-            fill="freeze"
-          />
-        </stop>
-    }
-
-
-
-const CointreauSvg = props => (
-  <svg
-    xmlnsXlink="http://www.w3.org/1999/xlink"
-    width="210mm"
-    height="297mm"
-    viewBox="0 0 210 297"
-    {...props}
-  >
-    <defs>
-      <linearGradient id="cointreau-flow">
-        {getStop(0.03,props.percent, '#a40')}
-        {getStop(0.04,props.percent, '#d45500')}
-        {getStop(0.06,props.percent, '#fff')}
-        <stop offset={1} stopColor="#fff" stopOpacity={0} />
-      </linearGradient>
-      <clipPath clipPathUnits="userSpaceOnUse" id="c">
-        <use xlinkHref="#a" width="100%" height="100%" />
-      </clipPath>
+  const getStop = (offset, percent, color, opacity) => {
+    return <stop offset={offset} stopColor={color} stopOpacity={opacity}>
+            <animate
+              attributeName="offset"
+              values={`${offset};${percent + offset};${percent + offset}`}
+              dur={`${percent*10}s`}
+              begin="0s"
+              fill="freeze"
+            />
+          </stop>
+      }
+  
+  
+  const SvgComponent = props => (
+    <svg
+      xmlnsXlink="http://www.w3.org/1999/xlink"
+      width="15em"
+      height="15em"
+      viewBox="0 0 210 297"
+      {...props}
+    >
+      <defs>
+        <linearGradient id="cointreau-linear">
+        {getStop(0.,props.percent, '#a40',1)}
+        {getStop(0.03,props.percent, '#d45500',1)}
+        {getStop(0.04,props.percent, '#dfff', 0)}
+          <stop offset={1} stopColor="#fff" stopOpacity={0} />
+        </linearGradient>
+        <clipPath clipPathUnits="userSpaceOnUse" id="d">
+          <use xlinkHref="#cointreau-a" width="100%" height="100%" />
+        </clipPath>
       <linearGradient
-        xlinkHref="#cointreau-flow"
-        id="cointreau-gradient"
+        xlinkHref="#cointreau-linear"
+        id="cointreau-c"
+        gradientUnits="userSpaceOnUse"
+        gradientTransform="matrix(1.01853 0 0 .51906 1073.955 387.593)"
         x1={-949.828}
         y1={-173.078}
         x2={-951.344}
         y2={-748.358}
-        gradientUnits="userSpaceOnUse"
-        gradientTransform="matrix(.48481 0 0 .51099 -829.147 134.878)"
       />
     </defs>
-    <g transform="matrix(.48481 0 0 .3062 435.78 134.03)" fill="#fca">
+    <g transform="matrix(1.01853 0 0 .51906 806.855 138.103)" fill="#fca">
       <rect
         ry={9.393}
         rx={0}
@@ -67,47 +66,46 @@ const CointreauSvg = props => (
         strokeWidth={0.444}
       />
     </g>
+    <path
+      d="M82.595 70.606L85.107-.847h47.262l-.77 71.453s1.014 15.634 33.048 7.451c32.035-8.183 46.05 33.356 46.05 33.356l.539 186.343H4.89l.343-186.343S16.001 68.75 49.546 78.057c33.545 9.307 33.049-7.451 33.049-7.451z"
+      fill="url(#cointreau-c)"
+      strokeWidth={1.879}
+      strokeOpacity={0}
+    />
     <rect
-      width={49.11}
-      height={99.107}
-      x={78.412}
-      y={118.285}
-      rx={1.992}
-      ry={2.585}
+      width={103.175}
+      height={168.007}
+      x={56.065}
+      y={111.413}
+      rx={4.186}
+      ry={4.381}
       fill="#ffe6d5"
-      strokeWidth={0.125}
+      strokeWidth={0.236}
     />
     <path
-      d="M68.898 127.886s71.823-29.345 70.402-4.25c-1.421 25.094-.92 16.866-.92 16.866s-22.236-7.87-68.946 12.886"
+      d="M36.077 127.688s150.892-49.746 147.907-7.205c-2.985 42.54-1.934 28.591-1.934 28.591s-46.713-13.34-144.845 21.847"
       fill="#ff7f2a"
       stroke="#000"
-      strokeWidth={0.119}
+      strokeWidth={0.225}
     />
     <path
-      d="M69.286 139.363l-.699 20.787"
+      d="M36.893 147.145l-1.467 35.238"
       fill="none"
       stroke="#000"
-      strokeWidth={0.132}
+      strokeWidth={0.249}
     />
     <rect
-      width={22.68}
-      height={20.19}
-      x={91.276}
-      y={52.062}
-      ry={1.634}
-      rx={2.777}
+      width={47.648}
+      height={34.227}
+      x={83.091}
+      y={-0.849}
+      ry={2.77}
+      rx={5.834}
       fill="#a40"
       stroke="#000"
-      strokeWidth={0.015}
-    />
-    <path
-      d="M-1301.026-177.182l1.196-70.343h22.496l-.366 70.342s.482 15.392 15.73 7.336c15.249-8.056 21.92 32.838 21.92 32.838l.256 183.446h-98.219l.164-183.446s5.125-42 21.092-32.838c15.968 9.163 15.731-7.335 15.731-7.335z"
-      fill="url(#cointreau-gradient)"
-      strokeWidth={1.286}
-      strokeOpacity={0}
-      transform="matrix(1 0 0 .59921 1392.065 200.383)"
+      strokeWidth={0.028}
     />
   </svg>
 )
 
-export default CointreauSvg
+export default SvgComponent

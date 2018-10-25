@@ -1,6 +1,10 @@
 import React from 'react';
 import JugSvg from './JugSvg';
 import CointreauSvg from './CointreauSvg';
+import VodkaSvg from './VodkaSvg';
+import GinSvg from './GinSvg';
+import RumSvg from './RumSvg';
+import TequilaSvg from './TequilaSvg';
 
 
 const wrapWithType = (inner, type) => {
@@ -20,19 +24,19 @@ const FillUpComponent = (props) => {
                 <JugSvg percent={percent} name={type}/>, type)
         case "Vodka":
             return wrapWithType(
-                <JugSvg percent={percent} name={type}/>, type)
+                <VodkaSvg percent={percent} name={type}/>, type)
         case "Tequila":
             return wrapWithType(
-                <JugSvg percent={percent} name={type}/>, type)
+                <TequilaSvg percent={percent} name={type}/>, type)
         case "Rum":
             return wrapWithType(
-                <JugSvg percent={percent} name={type}/>, type)
+                <RumSvg percent={percent} name={type}/>, type)
         case "Triple-Sec":
             return wrapWithType(
                 <CointreauSvg percent={percent} name={type}/>, type)
         case "Gin":
             return wrapWithType(
-                <JugSvg percent={percent} name={type}/>, type)
+                <GinSvg percent={percent} name={type}/>, type)
         default:
             return <JugSvg percent={percent} name={type}/>
     }
