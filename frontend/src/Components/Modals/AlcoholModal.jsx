@@ -24,10 +24,10 @@ class AlcoholModal extends Component {
                       glass={drink.glass}
                       ingredients={drink.ingredients}
                       amounts={drink.amounts}
+                      recipe={drink.recipe}
                     >
 
                     </RandomDrinkCard>
-                    <button onClick={(e) => toggleModal(e)}>Close Modal</button>
                 </ReactModal>
             </div>
         );

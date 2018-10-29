@@ -6,7 +6,6 @@ const HorizontalButtons = ({maxPages, update}) => {
                 new Array(maxPages).fill(undefined).map((_,it) => 
                     <li key={it}>
                         <button 
-                            className="horizontal-list" 
                             type="button" 
                             onClick={() => update(it + 1)}>
                             {it + 1}

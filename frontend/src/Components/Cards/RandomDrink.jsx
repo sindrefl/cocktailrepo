@@ -2,45 +2,46 @@ import React, {Component} from 'react';
 
 class RandomDrinkCard extends Component {
     render() {
+        const {name, imageUrl,altUrl,glass,amounts,ingredients,recipe,updateRandomDrink, showUpdateButton} = this.props;
         return (
             <div className="Random-Card-Container">
-                <h1>{this.props.name}</h1>
-                <div className="Random-Card">
-                    <img
-                        width="200px"
-                        height="200px"
-                        src={this.props.imageUrl}
-                        alt={this.props.altUrl}></img>
-                    <div className="flex-horizontal-container">
-                        <div className="flex-vertical">
-                            Served in a 
-                            <strong> {this.props.glass} </strong>
-                             glass.
-                            <div className="flex-horizontal-container">
+                <h1>{name}</h1>
+                <div className="Random-Card flex-container-vertical">
+                    <div className="flex-container-horizontal flex-space-between">
+                        <div>
+                            <img
+                                width="300px"
+                                height="300px"
+                                src={imageUrl}
+                                alt={altUrl}></img>
+                            </div>
+                        <div className="flex-container-vertical padding-listtext">
+                            <div>
+                                Served in a 
+                                <strong> {glass} </strong>
+                                glass.
+                            </div>
+                            <div className="flex-container-horizontal">
                                 <div>
                                     <ul>
-                                        {this
-                                            .props
-                                            .amounts
-                                            .map((amount,index) => <li key={index}>{amount}</li>)}
+                                        {amounts.map((amount,index) => <li key={index}>{amount}</li>)}
                                     </ul>
                                 </div>
                                 <div>
                                     <ul>
-                                        {this
-                                            .props
-                                            .ingredients
-                                            .map((ingredient,index) => <li key={index}>
+                                        {ingredients.map((ingredient,index) => <li key={index}>
                                                 {ingredient.name}</li>)
 }
                                     </ul>
 
                                 </div>
                             </div>
-                            {this.props.description}
-                        </div>
-
+                            </div>
                     </div>
+                    <h3>{recipe}</h3>
+                    {showUpdateButton && <div>
+                        <button type="submit" onClick={updateRandomDrink}>New random drink</button>
+                    </div>}
                 </div>
             </div>
         );

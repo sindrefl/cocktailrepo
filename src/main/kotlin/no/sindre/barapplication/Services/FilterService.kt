@@ -4,11 +4,13 @@ import no.sindre.barapplication.Models.Category
 import no.sindre.barapplication.Models.Cocktail
 import no.sindre.barapplication.Models.Glass
 import no.sindre.barapplication.Repositories.CocktailRepository
+import no.sindre.barapplication.Repositories.IngredientsRepository
 import org.springframework.stereotype.Service
 
 @Service
 class FilterService(val cocktailService: CocktailService,
-                    val cocktailRepository: CocktailRepository){
+                    val cocktailRepository: CocktailRepository,
+                    val ingredientsRepository: IngredientsRepository){
 
     fun getPageCount(glass: String, category: String) : Int = cocktailRepository.getPageCount(glass, category)
 
@@ -30,6 +32,16 @@ class FilterService(val cocktailService: CocktailService,
 
     fun getCategorySuggestions(category: String): List<String> {
         return cocktailRepository.getCategorySuggestions(category)
+    }
+
+    fun getIngredientSuggestions(ingredient: String): List<String> {
+        return ingredientsRepository.getIngredientSuggestions(ingredient)
+    }
+
+    fun getFilteredByIngredients(ingredients: Array<String>): List<Cocktail>{
+        val ids = ingredientsRepository.getFilteredCocktailIds(ingredients)
+        return cocktailService.getCocktails(ids)
+
     }
 
 }

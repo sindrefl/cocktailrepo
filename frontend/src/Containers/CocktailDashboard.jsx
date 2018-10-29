@@ -21,9 +21,11 @@ class CocktailDashboard extends Component {
                         description={randomDrink.description}
                         glass={randomDrink.glass}
                         ingredients={randomDrink.ingredients}
-                        amounts={randomDrink.amounts}/>
-                    
-                    <button type="submit" onClick={updateRandomDrink}>New random drink</button>
+                        amounts={randomDrink.amounts}
+                        recipe={randomDrink.recipe}
+                        showUpdateButton={true}
+                        updateRandomDrink={updateRandomDrink}
+                        />
                 </div>
                     }
                 {glassTypes && <GlassTypesList glassTypes={glassTypes} />}

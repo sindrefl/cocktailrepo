@@ -2,8 +2,8 @@ import React from 'react';
 import {Autocomplete} from './Autocomplete';
 
 
-const HeaderWithSearch = ({categories, glassTypes, category,glass, specificDrink, setField, submit,searchDrinkByName, setFieldWithBackendCall, drinkSuggestions}) => {
-    return (<div className="Grid-header-container">
+const HeaderWithSearch = ({submitIngredients,categories, glassTypes, category,glass, specificDrink, setField, submit,searchDrinkByName, setFieldWithBackendCall, drinkSuggestions, ingredients,allIngredients, addIngredient,setIngredientNameField, removeIngredient}) => {
+    return (<div className="Grid-header-container-square">
     <form className="Grid-header">
         <div className="header-item input-text">
             <Autocomplete 
@@ -34,6 +34,7 @@ const HeaderWithSearch = ({categories, glassTypes, category,glass, specificDrink
     </div>
     </form>
 
+    <ListAutoComplete submit={submitIngredients} addIngredient={addIngredient} removeIngredient={removeIngredient} ingredients={ingredients} allIngredients={allIngredients} updateArrayField={setIngredientNameField}></ListAutoComplete>
     <form className="Grid-header">
         <div className="header-item">
             <Autocomplete 
@@ -52,5 +53,34 @@ const HeaderWithSearch = ({categories, glassTypes, category,glass, specificDrink
     </form>
 </div>)
 }
+
+
+const ListAutoComplete = ({addIngredient,removeIngredient,ingredients,allIngredients,updateArrayField, submit}) =>
+    (<form className="Grid-header">
+        <div className="flex-container-horizontal">
+        <div className="header-item">
+        {ingredients && ingredients.length < 3 && <button type="button" onClick={addIngredient}>Add another ingredient</button>}
+            {ingredients.map((i, index) => (
+                                        <div className="flex-container-horizontal">
+                                            <Autocomplete
+                                                type = "text"
+                                                name = "ingredients"
+                                                placeholder = "Ingredient Name"
+                                                value = {ingredients[index]}
+                                                items={allIngredients}
+                                                setField = {(e) => updateArrayField(e, index)}
+                                                text= ""
+                                                >
+                                            </Autocomplete>
+                                        <button className="small-button" type="button" onClick={() => removeIngredient(index)}>X</button>  
+                                        </div>                                      
+                                    )
+                            )
+            }
+        </div>
+        <button onClick={submit}>SEARCH</button>
+        </div>
+    </form>
+    )
 
 export default HeaderWithSearch;
