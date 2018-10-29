@@ -3,7 +3,7 @@
 
 .App {
   text-align: center;
-  background: rgb(212, 209, 209);
+  background: rgb(139, 69, 69);
   font-family: Indie Flower; 
 }
 
@@ -13,8 +13,10 @@
 }
 
 .App-header {
-  background-image: url("../assets/background.jpg");
-  height: 150px;
+  background-image: url("../assets/background5.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  min-height: 380px;
   padding: 20px;
   font-size: 32px;
   color: red;
@@ -79,57 +81,62 @@
   justify-content: center;
   text-align: center;
 }
-.horizontal-list{
-  float: left;
-  display: block;
-  color: white;
-  padding: 16px;
-  text-decoration: none;
-  margin: 0;
-}
+
 
 .Random-Card{
   background: #fff;
-  height: 300px;
-  width: 400px;
-  display: flex;
-  flex-direction: row;
+  height: 30em;
+  width: 38em;
   opacity: 0.8;
   margin: 0;
-  padding : 2em;
   align-self: center;
   opacity: 0.8;
-  border-radius: 10%;
-  box-shadow: 5px 10px rgb(100,100,10,0.7);
 }
 
+.padding-listtext {
+  padding-right: 2.7em;
+  padding-left: 2.7em;
+  padding-top: 2em;
+}
 
 .Card-Container{
   margin: 2em;
-  padding : 2em;
-  background: rgb(230, 224, 224);
-  border-radius: 2em;
+  padding-top : 2em;
+  padding-bottom: 2em;
+  border-radius: 1em;
+  background: #111;
   color : #fff;
   font-family: Indie Flower; 
-  width: 18em;
-  height: 30em;
+  width: 22em;
+  height: 34em;
 }
 
 .CategoryCard-Container{
-  margin: 2em;
-  padding : 2em;
-  background: rgb(230, 224, 224);
-  border-radius: 2em;
+  margin-top: 2em;
+  height: 300px;
+  width: 300px;
+  background: #222;
   color : #fff;
-  font-family: Merriweather
+  font-family: Merriweather;
+  overflow: hidden;
+}
+.CategoryCard-header{
+  padding: 2em;
 }
 
+.DrinkCard-header{
+}
 .Drink-Card{
   display: flex;
   flex-direction: row;
   justify-content: center;
   opacity: 0.8;
-  padding : 1em;
+}
+
+.Drink-Card img{
+  height: 100%;
+  width: 100%;
+  margin: auto;
 }
 
 .Drink-Card:hover{
@@ -159,12 +166,33 @@ h2{
   margin-block-end: 0;
 }
 
+button{
+  padding: 1em;
+  background-color: #eee;
+  color: black;
+  border: 2px solid rgb(139, 69, 69);;
+}
+.small-button{
+  height: 1.8em;
+  width: 2em;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0px;
+}
+
 .Grid-header-container{
   background: #aaaaaa;
-  border-radius: 2em 2em 0 0;
+  border-radius: 1em 1em 1em 1em;
   height: 10em;
   display: flex;
   justify-content: space-around  
+}
+
+.Grid-header-container-square{
+  background: #aaaaaa;
+  height: 10em;
+  display: flex;
+  justify-content: space-around   
 }
 
 .Grid-header{
@@ -180,7 +208,6 @@ h2{
   flex-wrap: wrap;
   justify-content: space-around;
   padding: 2em;
-  background: #fff;
 }
 
 
@@ -228,17 +255,20 @@ h2{
 cursor: pointer;
 }
 
-.flex-horizontal-container{
+.flex-container-horizontal{
   display: flex;
   justify-content: space-around;
-}
-
-.flex-horizontal{
-  flex-direction: column;
-}
-
-.flex-vertical{
   flex-direction: row;
+}
+
+.flex-space-between{
+ justify-content: space-between;
+}
+
+.flex-container-vertical{
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
 }
 
 .bottleIcon{

@@ -32,11 +32,11 @@ class MyBarPage extends Component {
         const {randomDrink,batteri} = this.state
         return <div>
             YOUR BAR
-        <div className="flex-horizontal-container">
+        <div className="flex-container-horizontal">
         {batteri && batteri.map((icon,index) => <div className="fifth" key={index}><FillUpComponent type={icon.type} percent={icon.percent}/></div>)}
         
         </div>
-        <div className="flex-horizontal-container">
+        <div className="flex-container-horizontal">
         <div>
         {randomDrink && <RandomDrinkCard
                     name={randomDrink.name}

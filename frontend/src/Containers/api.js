@@ -57,8 +57,20 @@ export async function getCategories(){
      return await fetch(`/api/filtered/specificDrink?name=${specificDrink}`).then(response => response.json())
  }
 
+ export async function getFilteredDrinksByIngredients(ingredients){
+    let requeststring = ingredients.map(ing => "ingredients=" + ing).join('&')
+    console.log(`/api/filtered/ingredients?${requeststring}`)
+    return await fetch(`/api/filtered/ingredients?${requeststring}`).then(response => response.json())
+}
+
  export async function getDrinkSuggestions(input) {
     return await fetch(`/api/filtered/suggestions/drink?drink=${input}`, {
+        method: 'GET'
+    }).then(response => response.json())
+}
+
+export async function getIngredientSuggestions(input) {
+    return await fetch(`/api/filtered/suggestions/ingredient?ingredient=${input}`, {
         method: 'GET'
     }).then(response => response.json())
 }

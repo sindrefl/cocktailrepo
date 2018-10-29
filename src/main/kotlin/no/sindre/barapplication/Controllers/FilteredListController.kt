@@ -3,6 +3,7 @@ package no.sindre.barapplication.Controllers
 import no.sindre.barapplication.Models.Category
 import no.sindre.barapplication.Models.Cocktail
 import no.sindre.barapplication.Models.Glass
+import no.sindre.barapplication.Models.Log
 import no.sindre.barapplication.Services.CocktailService
 import no.sindre.barapplication.Services.FilterService
 import org.springframework.web.bind.annotation.GetMapping
@@ -23,10 +24,17 @@ class FilteredListController(val cocktailService: CocktailService,
     @GetMapping("/suggestions/category")
     fun getCateg(@RequestParam category: String) =
             filterService.getCategorySuggestions(category)
+    @GetMapping("/suggestions/ingredient")
+    fun getIng(@RequestParam ingredient: String) =
+            filterService.getIngredientSuggestions(ingredient)
 
     @GetMapping("/specificDrink")
     fun searchForSpecific(@RequestParam name: String) =
             filterService.getFilteredDrinkList(name)
+
+    @GetMapping("/ingredients")
+    fun searchByIng(@RequestParam ingredients: Array<String>) =
+            filterService.getFilteredByIngredients(ingredients)
 
 
     @GetMapping("/drinks")

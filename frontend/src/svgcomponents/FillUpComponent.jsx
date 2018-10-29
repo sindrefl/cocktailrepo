@@ -16,8 +16,6 @@ const wrapWithType = (inner, type) => {
 
 const FillUpComponent = (props) => {
     const {type, percent} = props;
-    console.log(percent);
-    console.log(type);
     switch (type) {
         case "Jug":
             return wrapWithType(

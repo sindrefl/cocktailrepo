@@ -180,6 +180,5 @@ class CocktailRepository(val namedParameterJdbcTemplate: NamedParameterJdbcTempl
     fun String.regexReplace() :String {
         val nRegex = Regex("\\\n")
         return this.replace(nRegex," ")
-
     }
 }

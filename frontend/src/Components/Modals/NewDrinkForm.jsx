@@ -116,7 +116,7 @@ class NewDrinkForm extends Component {
             imageInvalid: [...prevState.imageInvalid, ...rejected]
         }))
     }
-    render(){
+    renderAll(){
         const {glassTypes,allCategories,allIngredients, category, name, ingredients, glass, submitted, image, imageInvalid} = this.state
         let finishedLoading = (glassTypes && allCategories && allIngredients)
         const {handleClose} = this.props
@@ -132,7 +132,7 @@ class NewDrinkForm extends Component {
         )
     }
     
-    renderAll() {
+    render() {
         const {glassTypes,allCategories,allIngredients, category, name, ingredients, glass, submitted, image, imageInvalid} = this.state
         let finishedLoading = (glassTypes && allCategories && allIngredients)
         const {handleClose} = this.props

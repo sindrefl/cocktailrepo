@@ -1,6 +1,7 @@
 package no.sindre.barapplication.Repositories
 
 import no.sindre.barapplication.Models.Ingredient
+import no.sindre.barapplication.Models.Log
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.jdbc.BadSqlGrammarException
@@ -84,6 +85,53 @@ class IngredientsRepository(val namedParameterJdbcTemplate: NamedParameterJdbcTe
             res.add(Ingredient(row.get("name").toString(),row.get("ing_description").toString(), row.get("type").toString(), row.get("isBattery").toString().equals("1")))
         }
         return res
+    }
+
+    fun getIngredientSuggestions(ingredient: String): List<String> {
+        val sql = """
+            SELECT DISTINCT name
+            FROM cocktail_db.ingredient
+            WHERE name ILIKE ('%$ingredient%')
+            LIMIT 10
+            """.trimIndent().regexReplace()
+        return namedParameterJdbcTemplate.queryForList(sql, MapSqlParameterSource()).map { it["name"].toString() }
+    }
+
+    fun getFilteredCocktailIds(ingredients: Array<String>): List<Int>{
+        /*
+        val sql = """
+            SELECT COCKTAIL_ID
+            FROM COCKTAIL_DB.INGREDIENT JOIN COCKTAIL_DB.COCKTAILHASINGREDIENT
+            ON COCKTAIL_DB.COCKTAILHASINGREDIENT.INGREDIENT_ID=COCKTAIL_DB.INGREDIENT.INGREDIENT_ID
+            WHERE COCKTAIL_DB.INGREDIENT.NAME ILIKE ${ingredients.map{item ->"('%$item%')"}.joinToString(" OR COCKTAIL_DB.INGREDIENT.NAME ILIKE ")}
+            """.trimIndent().regexReplace()
+
+        return namedParameterJdbcTemplate.queryForList(sql, MapSqlParameterSource()).map { it["cocktail_id"].toString().toInt() }.toList().groupingBy { it }.eachCount().filter { it.value >= ingredients.size }.keys.toList()
+    */
+        val ids = ingredients.map { it ->
+            namedParameterJdbcTemplate.queryForList(
+                    """
+            SELECT COCKTAIL_ID
+            FROM COCKTAIL_DB.INGREDIENT JOIN COCKTAIL_DB.COCKTAILHASINGREDIENT
+            ON COCKTAIL_DB.COCKTAILHASINGREDIENT.INGREDIENT_ID=COCKTAIL_DB.INGREDIENT.INGREDIENT_ID
+            WHERE COCKTAIL_DB.INGREDIENT.NAME ILIKE ${"('%$it%')"}
+            """.trimIndent().regexReplace()
+                    , MapSqlParameterSource()).map {it["cocktail_id"].toString().toInt()
+             }}.toList()
+
+        var res = ids[0].toSet()
+        for(idList in ids){
+            res = res.intersect(idList)
+        }
+        Log.info(res.toString())
+
+        return res.toList()
+
+    }
+
+    fun String.regexReplace() :String {
+        val nRegex = Regex("\\\n")
+        return this.replace(nRegex," ")
     }
 
 }

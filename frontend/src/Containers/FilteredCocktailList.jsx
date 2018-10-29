@@ -3,9 +3,11 @@ import PropTypes from 'prop-types'
 import DrinkCard from '../Components/Cards/DrinkCard';
 import { withRouter } from 'react-router';
 import AlcoholModal from '../Components/Modals/AlcoholModal';
-import { getDrinkImage, getFilteredDrinks, getCategories, getGlassTypes, getPageSize, getDrinkSuggestions, getFilteredDrinksBySpecificDrink} from './api';
+import { getFilteredDrinksByIngredients, getIngredientSuggestions, getDrinkImage, getFilteredDrinks, getCategories, getGlassTypes, getPageSize, getDrinkSuggestions, getFilteredDrinksBySpecificDrink} from './api';
 import {throttle, debounce} from 'throttle-debounce';
 import HeaderWithSearch from '../Components/HeaderWithSearch';
+
+import update from 'immutability-helper';
 
 import HorizontalButtons from '../Components/HorizontalButtons';
 
@@ -23,10 +25,12 @@ class FilteredCocktailList extends Component {
             categories: [],
             glassTypes: [],
             drinkSuggestions: [],
+            allIngredients: [],
             //forms
             category: "",
             glass: "",        
             specificDrink: "",
+            ingredients: [""],
             //modal         
             modal: undefined,
             modal_url: undefined,
@@ -42,14 +46,20 @@ class FilteredCocktailList extends Component {
         this.toggleModal = this.toggleModal.bind(this);
         this.submit = this.submit.bind(this);  
         this.setField = this.setField.bind(this); 
-        this.update = this.update.bind(this);
+        this.updatePage = this.updatePage.bind(this);
         this.searchDrinkByName = this.searchDrinkByName.bind(this);    
         this.onLoad = this.onLoad.bind(this); 
         this.suggestionsLoaded = this.suggestionsLoaded.bind(this);
         this.drinkSuggestions = this.drinkSuggestions.bind(this);
         this.drinkSuggestionsThrottled = throttle(500, this.drinkSuggestions);
         this.drinkSuggestionsDebounced = debounce(1000, this.drinkSuggestions);
+        this.ingredientSuggestionsThrottled = throttle(500, this.ingredientSuggestions);
+        this.ingredientSuggestionsDebounced = debounce(1000, this.ingredientSuggestions);
         this.setFieldWithSuggestion = this.setFieldWithSuggestion.bind(this);
+        this.setListFieldWithSuggestion = this.setListFieldWithSuggestion.bind(this);
+        this.setIngredientNameField = this.setIngredientNameField.bind(this);
+        this.ingredientSuggestions = this.ingredientSuggestions.bind(this);
+        this.searchDrinkByIngredients = this.searchDrinkByIngredients.bind(this);
     }
 
     suggestionsLoaded = () => {
@@ -70,18 +80,36 @@ class FilteredCocktailList extends Component {
         })
     }
 
+    searchDrinkByIngredients = (e) => {
+        e.preventDefault()
+        getFilteredDrinksByIngredients(this.state.ingredients).then(response => {
+            this.setState({
+                drinks: response,
+                maxPages: 1
+            })
+        })
+    }
+
     drinkSuggestions = (input) => {
         getDrinkSuggestions(input).then(response => this.setState({
             drinkSuggestions: response
         }))
     }
 
-    submit(e){
-        e.preventDefault()
-        this.update(1)
+    ingredientSuggestions = (input) => {
+        getIngredientSuggestions(input).then(response =>
+            this.setState({
+                allIngredients: response
+            })
+        )
     }
 
-    update(page){
+    submit(e){
+        e.preventDefault()
+        this.updatePage(1)
+    }
+
+    updatePage(page){
         const {category, glass} = this.state
         this.setState({loadedImages:0})
         getFilteredDrinks(glass,category, page).then((response) => {
@@ -94,10 +122,46 @@ class FilteredCocktailList extends Component {
         })
     }
 
-    componentDidMount(){
-        let {category, glass,page} = this.props.location.state
-        if (!page) page = 1
+
+    setIngredientNameField = (changeEvent, index) => {
+        const {target} = changeEvent
+        this.setState({
+            ingredients: update(this.state.ingredients, {[index]:{$set: target.value}})
+          })
+    }
+
+    addIngredient = () => {  
+        this.setState(prevstate => ({ingredients: [...prevstate.ingredients, ""]}))
+    }
+
+    removeIngredient = (index) => {
+        if(index === 0){
+            this.setState(prevstate => ({ingredients: [...prevstate.ingredients.slice(1, this.state.ingredients.length)]}))
+        }
+        else if (index === this.state.ingredients.length){
+            this.setState(prevstate => ({ingredients: [...prevstate.ingredients.slice(0, this.state.ingredients.length - 1)]}))
+        }
+        else{
+            this.setState(prevstate => ({
+                ingredients: [...prevstate.ingredients.slice(0,index), ...prevstate.ingredients.slice(index + 1, prevstate.ingredients.length)] 
+            })
+            )
+        }
+    }
+
+    componentDidMount(){    
+        let category = ""
+        let glass = ""
+        let page = 1
+        
+        if (this.props.location.state){
+            const state = this.props.location.state;
+            category = state.category;
+            glass = state.glass;
+            page = state.page;
+        }
         this.setState({category,glass})
+
         getCategories().then(response => this.setState({categories: response}))
         getGlassTypes().then(response => this.setState({glassTypes: response}))
         getFilteredDrinks(glass,category, page).then(response => this.setState({drinks: response}))
@@ -111,6 +175,16 @@ class FilteredCocktailList extends Component {
         }
         else{
             this.drinkSuggestionsDebounced(changeEvent.target.value)
+        }
+    }
+
+    setListFieldWithSuggestion(changeEvent, index){
+        this.setIngredientNameField(changeEvent, index);
+        if(changeEvent.target.value < 5){
+            this.ingredientSuggestionsThrottled(changeEvent.target.value)
+        }
+        else{
+            this.ingredientSuggestionsDebounced(changeEvent.target.value)
         }
     }
 
@@ -128,7 +202,7 @@ class FilteredCocktailList extends Component {
     render(){
         const {category, glass,drinks, modal, modal_url, maxPages, loadedImages} = this.state;
         return <div>
-                    {this.suggestionsLoaded && <HeaderWithSearch  {...this.state} setField={this.setField} setFieldWithBackendCall={this.setFieldWithSuggestion} submit={this.submit} searchDrinkByName={this.searchDrinkByName}/>}
+                    {this.suggestionsLoaded && <HeaderWithSearch  {...this.state} submitIngredients={this.searchDrinkByIngredients} removeIngredient={this.removeIngredient} addIngredient={this.addIngredient} setIngredientNameField={this.setListFieldWithSuggestion} setField={this.setField} setFieldWithBackendCall={this.setFieldWithSuggestion} submit={this.submit} searchDrinkByName={this.searchDrinkByName}/>}
 
                     {modal && <AlcoholModal isOpen={modal !== undefined} contentLabel={'AlcoholModal'} toggleModal={this.toggleModal} drink={modal} drinkUrl={modal_url}/>}    
                     
@@ -156,7 +230,7 @@ class FilteredCocktailList extends Component {
                                 }
                             </div>
                         </div>
-                        {loadedImages > 2 && <HorizontalButtons update={this.update} maxPages={maxPages}/>}
+                        {loadedImages > 2 && <HorizontalButtons update={this.updatePage} maxPages={maxPages}/>}
                         
                 </div>
     }
