@@ -1,7 +1,7 @@
 import React from 'react'
 import Downshift from 'downshift'
 
-export const Autocomplete = ({items, value, name, setField, text}) => {
+export const Autocomplete = ({items, value, name, setField, text, placeholder}) => {
     return (
         <Downshift
             onStateChange={changes => {
@@ -30,7 +30,7 @@ export const Autocomplete = ({items, value, name, setField, text}) => {
                         <label {...getLabelProps()}>{text}</label>
                     </div>
                     <div>
-                        <input {...getInputProps()}/>
+                        <input {...getInputProps()} placeholder={placeholder}/>
                     </div>
                     <ul className="downshift-dropdown" {...getMenuProps()}>
                         {isOpen && items ? items.length > 10

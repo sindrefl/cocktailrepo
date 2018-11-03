@@ -17,15 +17,23 @@ import java.sql.ResultSet
 class IngredientsRepository(val namedParameterJdbcTemplate: NamedParameterJdbcTemplate) {
 
     val LOG = LoggerFactory.getLogger("com.example.IngredientRepository")
-    final val INSERT_INGREDIENT_SQL = "INSERT INTO COCKTAIL_DB.INGREDIENT (name,ing_description,type,isBattery) VALUES (:name,:description,:type,:battery) "
-    val SELECTBYNAMESQL = " SELECT INGREDIENT_ID FROM COCKTAIL_DB.INGREDIENT WHERE INGREDIENT.NAME=:name"
+    val INSERT_INGREDIENT_SQL = """
+        INSERT INTO COCKTAIL_DB.INGREDIENT
+        (name,ing_description,type,isBattery)
+        VALUES
+        (:name,:description,:type,:battery)
+        """.trimIndent().regexReplace()
+    val SELECTBYNAMESQL = """
+        SELECT INGREDIENT_ID
+        FROM COCKTAIL_DB.INGREDIENT
+        WHERE INGREDIENT.NAME=:name
+        """.trimIndent().regexReplace()
 
     fun addIngredient(ingredient: Ingredient): Int {
 
         val already = namedParameterJdbcTemplate.queryForList(SELECTBYNAMESQL, MapSqlParameterSource(hashMapOf("name" to ingredient.name)))
 
         if(!already.isEmpty()){
-
             return already[0]["INGREDIENT_ID"].toString().toInt()
         }
 
@@ -54,7 +62,12 @@ class IngredientsRepository(val namedParameterJdbcTemplate: NamedParameterJdbcTe
         return res
     }
 
-    val INSERTINGREDIENTSSQL = "INSERT INTO COCKTAIL_DB.COCKTAILHASINGREDIENT (COCKTAIL_ID, INGREDIENT_ID, AMOUNT) VALUES (:cid,:iid,:amount)"
+    val INSERTINGREDIENTSSQL = """
+        INSERT INTO COCKTAIL_DB.COCKTAILHASINGREDIENT
+        (COCKTAIL_ID, INGREDIENT_ID, AMOUNT)
+        VALUES
+        (:cid,:iid,:amount)
+        """.trimIndent().regexReplace()
 
 
     fun addCocktailIngredients(amounts: List<String>, cocktail_id: Int, ingredient_ids: List<Int>) {
@@ -64,7 +77,11 @@ class IngredientsRepository(val namedParameterJdbcTemplate: NamedParameterJdbcTe
         }
     }
 
-    val SELECT_INGREDIENT_SQL = "SELECT NAME,ING_DESCRIPTION,TYPE,ISBATTERY FROM COCKTAIL_DB.INGREDIENT WHERE INGREDIENT.INGREDIENT_ID=(:id)"
+    val SELECT_INGREDIENT_SQL = """
+        SELECT NAME,ING_DESCRIPTION,TYPE,ISBATTERY
+        FROM COCKTAIL_DB.INGREDIENT
+        WHERE INGREDIENT.INGREDIENT_ID=(:id)
+        """.trimIndent().regexReplace()
 
     fun getIngredient(id : Int) : Ingredient {
         return namedParameterJdbcTemplate.queryForObject(SELECT_INGREDIENT_SQL, MapSqlParameterSource(hashMapOf("id" to id)), {rs, _ -> Ingredient(rs.getString("name").toString(), rs.getString("ing_description"), rs.getString("type"), rs.getBoolean("isBattery"))})!!
@@ -82,19 +99,22 @@ class IngredientsRepository(val namedParameterJdbcTemplate: NamedParameterJdbcTe
         val res = emptyList<Ingredient>().toMutableList()
         val ingredientsMap = namedParameterJdbcTemplate.queryForList("SELECT NAME FROM COCKTAIL_DB.INGREDIENT", MapSqlParameterSource())
         for (row in ingredientsMap){
-            res.add(Ingredient(row.get("name").toString(),row.get("ing_description").toString(), row.get("type").toString(), row.get("isBattery").toString().equals("1")))
+            res.add(Ingredient(row["name"].toString(),row["ing_description"].toString(), row["type"].toString(), row["isBattery"].toString() == "1"))
         }
         return res
     }
 
     fun getIngredientSuggestions(ingredient: String): List<String> {
+        val namedParameters = MapSqlParameterSource(hashMapOf(
+                "ingredient" to "%$ingredient%"
+        ))
         val sql = """
             SELECT DISTINCT name
             FROM cocktail_db.ingredient
-            WHERE name ILIKE ('%$ingredient%')
+            WHERE name ILIKE :ingredient
             LIMIT 10
             """.trimIndent().regexReplace()
-        return namedParameterJdbcTemplate.queryForList(sql, MapSqlParameterSource()).map { it["name"].toString() }
+        return namedParameterJdbcTemplate.queryForList(sql, namedParameters).map { it["name"].toString() }
     }
 
     fun getFilteredCocktailIds(ingredients: Array<String>): List<Int>{
@@ -105,7 +125,6 @@ class IngredientsRepository(val namedParameterJdbcTemplate: NamedParameterJdbcTe
             ON COCKTAIL_DB.COCKTAILHASINGREDIENT.INGREDIENT_ID=COCKTAIL_DB.INGREDIENT.INGREDIENT_ID
             WHERE COCKTAIL_DB.INGREDIENT.NAME ILIKE ${ingredients.map{item ->"('%$item%')"}.joinToString(" OR COCKTAIL_DB.INGREDIENT.NAME ILIKE ")}
             """.trimIndent().regexReplace()
-
         return namedParameterJdbcTemplate.queryForList(sql, MapSqlParameterSource()).map { it["cocktail_id"].toString().toInt() }.toList().groupingBy { it }.eachCount().filter { it.value >= ingredients.size }.keys.toList()
     */
         val ids = ingredients.map { it ->
@@ -114,9 +133,9 @@ class IngredientsRepository(val namedParameterJdbcTemplate: NamedParameterJdbcTe
             SELECT COCKTAIL_ID
             FROM COCKTAIL_DB.INGREDIENT JOIN COCKTAIL_DB.COCKTAILHASINGREDIENT
             ON COCKTAIL_DB.COCKTAILHASINGREDIENT.INGREDIENT_ID=COCKTAIL_DB.INGREDIENT.INGREDIENT_ID
-            WHERE COCKTAIL_DB.INGREDIENT.NAME ILIKE ${"('%$it%')"}
+            WHERE COCKTAIL_DB.INGREDIENT.NAME ILIKE :it
             """.trimIndent().regexReplace()
-                    , MapSqlParameterSource()).map {it["cocktail_id"].toString().toInt()
+                    , MapSqlParameterSource(hashMapOf("it" to "%$it%"))).map {it["cocktail_id"].toString().toInt()
              }}.toList()
 
         var res = ids[0].toSet()

@@ -39,7 +39,8 @@ class FilteredCocktailList extends Component {
             maxPages: 1,
 
             loadedImages: 0,
-            drinks: [],       
+            drinks: [],
+            emptyResponse: false,       
 
         }
         
@@ -164,7 +165,9 @@ class FilteredCocktailList extends Component {
 
         getCategories().then(response => this.setState({categories: response}))
         getGlassTypes().then(response => this.setState({glassTypes: response}))
-        getFilteredDrinks(glass,category, page).then(response => this.setState({drinks: response}))
+        getFilteredDrinks(glass,category, page).then(response => {
+            this.setState({drinks: response, emptyResponse: response.length === 0})
+        })
         getPageSize(glass, category).then(response => this.setState({maxPages: response}))
     }
 
@@ -201,18 +204,20 @@ class FilteredCocktailList extends Component {
     
     render(){
         const {category, glass,drinks, modal, modal_url, maxPages, loadedImages} = this.state;
+        console.log(drinks && drinks.length > 0 && loadedImages > 0)
+        console.log(loadedImages)
         return <div>
                     {this.suggestionsLoaded && <HeaderWithSearch  {...this.state} submitIngredients={this.searchDrinkByIngredients} removeIngredient={this.removeIngredient} addIngredient={this.addIngredient} setIngredientNameField={this.setListFieldWithSuggestion} setField={this.setField} setFieldWithBackendCall={this.setFieldWithSuggestion} submit={this.submit} searchDrinkByName={this.searchDrinkByName}/>}
 
                     {modal && <AlcoholModal isOpen={modal !== undefined} contentLabel={'AlcoholModal'} toggleModal={this.toggleModal} drink={modal} drinkUrl={modal_url}/>}    
                     
-                    {loadedImages < 2 && <div className="loader"></div>}
+                    {loadedImages === 0 && <div className="loader"></div>}
                     <div className="Grid-container">
                         <div className="Grid">
-                            {loadedImages > 2 && drinks && drinks.length === 0 && <div>There are no drinks for category <h4>{category}</h4> and glass <h4>{glass}</h4></div>}
+                            {drinks && drinks.length === 0 && <div>There are no drinks for category <h4>{category}</h4> and glass <h4>{glass}</h4></div>}
                             {drinks && drinks.length > 0 && drinks.map((drink,index) => {
                                                                         const drinkUrl = getDrinkImage(drink)
-                                                                        return <span key={index} onClick={(e) => this.toggleModal(drink,drinkUrl)}>
+                                                                        return <span key={index + 1} onClick={(e) => this.toggleModal(drink,drinkUrl)}>
                                                                             <DrinkCard 
                                                                                 imageUrl={drinkUrl} 
                                                                                 altUrl={drink.image_link}
@@ -223,14 +228,14 @@ class FilteredCocktailList extends Component {
                                                                                 amounts ={drink.amounts}
                                                                                 onImageLoad={this.onLoad}
                                                                                 onImageError={this.onLoad}
-                                                                                show={loadedImages > 2}
+                                                                                show={loadedImages > 0}
                                                                                 />
                                                                         </span>
                                                                         })
                                 }
                             </div>
                         </div>
-                        {loadedImages > 2 && <HorizontalButtons update={this.updatePage} maxPages={maxPages}/>}
+                        {loadedImages > 0 && <HorizontalButtons update={this.updatePage} maxPages={maxPages}/>}
                         
                 </div>
     }
