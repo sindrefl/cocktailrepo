@@ -40,7 +40,6 @@ class FilteredCocktailList extends Component {
 
             loadedImages: 0,
             drinks: [],
-            emptyResponse: false,       
 
         }
         
@@ -166,7 +165,7 @@ class FilteredCocktailList extends Component {
         getCategories().then(response => this.setState({categories: response}))
         getGlassTypes().then(response => this.setState({glassTypes: response}))
         getFilteredDrinks(glass,category, page).then(response => {
-            this.setState({drinks: response, emptyResponse: response.length === 0})
+            this.setState({drinks: response})
         })
         getPageSize(glass, category).then(response => this.setState({maxPages: response}))
     }
