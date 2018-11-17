@@ -1,3 +1,6 @@
+
+ import { API_BASE_URL, ACCESS_TOKEN } from '../constants';
+
 //Get Image Links:
 export const getGlassImage = (glass) => {
     return `/api/images/glass?path=${glass.toUpperCase()}.jpg`
@@ -13,37 +16,37 @@ export const getDrinkImage = (drink) => {
 
 //Get lists of objects:
 export async function getRandomDrink(){
-    return await fetch('/api/random', {
+    return await fetch('/api/cocktail/random', {
         method : 'GET'
     }).then((response) => response.json());
 }
 
 export async function getIngredients(){
-    return await fetch('/api/ingredients',{
+    return await fetch('/api/cocktail/ingredients',{
         method: 'GET'
     }).then(response => response.json())
 }
 
 export async function getTopNCategories(i){
-   return await fetch(`/api/categories/${i}`,{
+   return await fetch(`/api/cocktail/categories/${i}`,{
         method:'GET'
    }).then(response => response.json())
 }
 
 export async function getCategories(){
-    return await fetch(`/api/categories`,{
+    return await fetch(`/api/cocktail/categories`,{
          method:'GET'
     }).then(response => response.json())
  }
  
  export async function getTopNGlassTypes(i){
-    return await fetch(`/api/glassTypes/${i}`, {
+    return await fetch(`/api/cocktail/glassTypes/${i}`, {
          method: 'GET'
     }).then(response => response.json())
  }
  
  export async function getGlassTypes(){
-    return await fetch(`/api/glassTypes`, {
+    return await fetch(`/api/cocktail/glassTypes`, {
          method: 'GET'
     }).then(response => response.json())
  }
@@ -83,7 +86,7 @@ export async function getIngredientSuggestions(input) {
 
  //POST:
  export async function postDrink(body){ 
-    return await fetch('/api/addDrink', {
+    return await fetch('/api/cocktail/addDrink', {
         method:'POST',
         headers: {
             'Accept': 'application/json',
@@ -109,4 +112,39 @@ export async function getIngredientSuggestions(input) {
     })
  }
 
- 
+
+ //LOGIN AND SO ON:
+
+const request = (options) => {
+    const headers = new Headers({
+        'Content-Type': 'application/json',
+    })
+    
+    if(localStorage.getItem(ACCESS_TOKEN)) {
+        headers.append('Authorization', 'Bearer ' + localStorage.getItem(ACCESS_TOKEN))
+    }
+
+    const defaults = {headers: headers};
+    options = Object.assign({}, defaults, options);
+
+    return fetch(options.url, options)
+    .then(response => 
+        response.json().then(json => {
+            if(!response.ok) {
+                return Promise.reject(json);
+            }
+            return json;
+        })
+    );
+};
+
+export function getCurrentUser() {
+    if(!localStorage.getItem(ACCESS_TOKEN)) {
+        return Promise.reject("No access token set.");
+    }
+
+    return request({
+        url: API_BASE_URL + "/user/me",
+        method: 'GET'
+    });
+}
