@@ -1,10 +1,33 @@
 import React, { Component } from 'react';
 import './Login.css';
-import { GOOGLE_AUTH_URL, FACEBOOK_AUTH_URL, GITHUB_AUTH_URL, ACCESS_TOKEN } from '../../constants';
+import { GOOGLE_AUTH_URL, FACEBOOK_AUTH_URL, GITHUB_AUTH_URL } from '../../../constants';
 import {Redirect } from 'react-router-dom'
-import fbLogo from '../../assets/fb-logo.png';
-import googleLogo from '../../assets/google-logo.png';
-import githubLogo from '../../assets/github-logo.png';
+import fbLogo from '../../../assets/fb-logo.png';
+import googleLogo from '../../../assets/google-logo.png';
+import githubLogo from '../../../assets/github-logo.png';
+import ReactModal from 'react-modal';
+import {withRouter} from 'react-router'
+
+ReactModal.setAppElement('#root')
+
+const modalStyle = {
+    content: {
+        top: '50%',
+        left: '50%',
+        right: 'auto',
+        bottom: 'auto',
+        background: '#fff',
+        boxShadow: '0 1px 11px rgba(0, 0, 0, 0.27)',
+        borderRadius: '2px',
+        width: '500px',
+        display: 'inline-block',
+        marginTop: '30px',
+        verticalAlign: 'middle',
+        position: 'relative',
+        padding: '35px',
+        transform: 'translate(-50%,-50%)'
+    }
+}
 
 class Login extends Component {
     componentDidMount() {
@@ -31,12 +54,14 @@ class Login extends Component {
         }
 
         return (
-            <div className="login-container">
-                <div className="login-content">
-                    <h1 className="login-title">Login to ...</h1>
-                    <SocialLogin />
+                <div className="login-container">
+                    <ReactModal isOpen={this.props.isOpen} style={modalStyle} onRequestClose={this.props.close}>
+                            <h1 className="login-title">Login to access your barpage</h1>
+                            <SocialLogin />
+                        </ReactModal>
+
                 </div>
-            </div>
+            
         );
     }
 }
@@ -56,4 +81,4 @@ class SocialLogin extends Component {
     }
 }
 
-export default Login
+export default withRouter(Login)

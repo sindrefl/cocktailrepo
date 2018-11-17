@@ -15,7 +15,7 @@ class UserRepository(val namedParameterJdbcTemplate: NamedParameterJdbcTemplate)
 
     fun findByEmail(email: String): User {
         //TODO
-        val mock = User("This","is", "an example", AuthProvider.facebook, "streng")
+        val mock = User("Sindre Flood","is", "an example", AuthProvider.github, "streng")
         mock.id = 1
         return mock
     }

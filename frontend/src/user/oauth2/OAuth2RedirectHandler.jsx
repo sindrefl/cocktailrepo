@@ -15,14 +15,10 @@ class OAuth2RedirectHandler extends Component {
     render() {        
         const token = this.getUrlParameter('token');
         const error = this.getUrlParameter('error');
-
-        console.log(token)
-        console.log(error)
-
         if(token) {
             localStorage.setItem(ACCESS_TOKEN, token);
             return <Redirect to={{
-                pathname: "/home/bar",
+                pathname: "/",
                 state: { from: this.props.location }
             }}/>; 
         } else {
