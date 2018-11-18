@@ -5,7 +5,7 @@
 
 	<groupId>no.sindre</groupId>
 	<artifactId>barapplication</artifactId>
-	<version>2.0.0</version>
+	<version>3.0.0</version>
 	<packaging>jar</packaging>
 
 	<name>barapplication</name>
