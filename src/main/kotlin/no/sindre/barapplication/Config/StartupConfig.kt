@@ -1,4 +1,4 @@
-package no.sindre.barapplication
+package no.sindre.barapplication.Config
 
 import com.amazonaws.auth.AWSStaticCredentialsProvider
 import com.amazonaws.auth.BasicAWSCredentials

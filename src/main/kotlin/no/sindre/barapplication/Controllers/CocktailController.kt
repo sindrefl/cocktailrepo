@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*
 
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/cocktail")
 class CocktailController(
         val cocktailService: CocktailService,
         val randomCocktailService: RandomCocktailService,

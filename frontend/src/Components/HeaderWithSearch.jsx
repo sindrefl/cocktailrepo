@@ -14,7 +14,6 @@ const HeaderWithSearch = ({submitIngredients,categories, glassTypes, category,gl
                 value={category}
                 setField={setField}
                 text="Search by category"
-                placeholder="Category"
                 />
         </div>
         <div className="header-item input-text">
@@ -26,7 +25,6 @@ const HeaderWithSearch = ({submitIngredients,categories, glassTypes, category,gl
                 value={glass}
                 setField={setField}
                 text="search by glass type"
-                placeholder="Glass type"
                 />
             </div>
     <div className="header-item">
@@ -42,12 +40,11 @@ const HeaderWithSearch = ({submitIngredients,categories, glassTypes, category,gl
             <Autocomplete 
                 type="text"
                 name="specificDrink"
-                placeholder="Drink"
+                placeholder="Drink name"
                 items={drinkSuggestions}
                 value={specificDrink}
                 setField={setFieldWithBackendCall}
                 text="search by specific drink name"
-                placeholder="Drink name"
                 />
         </div>
         <div className="header-item">
@@ -73,7 +70,6 @@ const ListAutoComplete = ({addIngredient,removeIngredient,ingredients,allIngredi
                                                 items={allIngredients}
                                                 setField = {(e) => updateArrayField(e, index)}
                                                 text= ""
-                                                placeholder="Ingredient name"
                                                 >
                                             </Autocomplete>
                                         <button className="small-button" type="button" onClick={() => removeIngredient(index)}>X</button>  

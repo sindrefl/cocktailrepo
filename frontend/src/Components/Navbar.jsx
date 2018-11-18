@@ -41,13 +41,21 @@ this.setState({ showAddNewDrink: false });
             >
           <NewDrinkForm glassTypes={this.props.glassTypes}></NewDrinkForm>
         </ReactModal>
-          <div className="header-item">
-            Hello Sindre
-            </div>
+        <div className="header-item">
+          {this.props.user ? 
+          `Logged in as: ${this.props.user.name}`
+          :
+          "You are not logged in"
+          }
+          </div>
             <div className="header-item">
-          <Link to={"/home/bar"}><img className="icon" src={require("../assets/profile4.png")} alt="Profile icon"></img></Link>
+          {this.props.user ? <Link to={"/home/bar"}><img className="icon" src={require("../assets/profile4.png")} alt="Profile icon"></img></Link> : <img className="icon clickable" src={require("../assets/profile4.png")} alt="plus icon" onClick={this.props.openLogin}></img>}
+        </div>
+        <div className="header-item">
+            <button onClick={this.props.user ? this.props.logout : this.props.openLogin}>{this.props.user ? "Log Out": "Login"}</button>
         </div>
         </div>
+        
         </header>
     );
   }

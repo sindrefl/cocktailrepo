@@ -48,12 +48,12 @@ const GenerateLists = ({amounts, ingredients}) => {
         return <div className="flex-container-horizontal">
         <div>
             <ul>
-                {amounts.slice(0,6).map((amount,i) => <li key={i}>{i==5 ? "..." : amount}</li>)}
+                {amounts.slice(0,6).map((amount,i) => <li key={i}>{i === 5 ? "..." : amount}</li>)}
             </ul>
         </div>
         <div>
             <ul>
-                {ingredients.slice(0,6).map((ingredient,i) => <li key={i}>{ i == 5 ? "..." : ingredient.name}</li>)}
+                {ingredients.slice(0,6).map((ingredient,i) => <li key={i}>{ i === 5 ? "..." : ingredient.name}</li>)}
             </ul>
         </div>
     </div>
