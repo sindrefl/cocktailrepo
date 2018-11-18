@@ -1,5 +1,6 @@
 package no.sindre.barapplication.Services
 
+import com.amazonaws.services.cognitoidp.model.UserNotFoundException
 import no.sindre.barapplication.Repositories.UserRepository
 import no.sindre.barapplication.Security.UserPrincipal
 import org.springframework.security.core.userdetails.UserDetails
@@ -22,8 +23,7 @@ class CustomUserDetailsService(val userRepository: UserRepository): UserDetailsS
 
     @Transactional
     fun loadUserById(id: Long): UserDetails {
-        val user = userRepository.findById(id)
-
+        val user = userRepository.findById(id) ?: throw UserNotFoundException("")
         return UserPrincipal.create(user)
     }
 }
