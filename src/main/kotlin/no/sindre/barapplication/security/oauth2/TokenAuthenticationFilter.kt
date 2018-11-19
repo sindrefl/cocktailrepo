@@ -27,9 +27,9 @@ class TokenAuthenticationFilter(
     @Throws(ServletException::class, IOException::class)
     override fun doFilterInternal(request: HttpServletRequest, response: HttpServletResponse, filterChain: FilterChain) {
         try {
-            val jwt = getJwtFromRequest(request) ?: throw BadRequestException("Request has incorrect bearer token header")
+            val jwt = getJwtFromRequest(request)
 
-            if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
+            if (jwt != null && StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
                 val userId = tokenProvider.getUserIdFromToken(jwt)
 
                 val userDetails = customUserDetailsService.loadUserById(userId!!)
