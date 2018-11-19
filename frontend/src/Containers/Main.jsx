@@ -12,6 +12,7 @@ import {ACCESS_TOKEN} from '../constants'
 import PrivateRoute from '../Components/PrivateRoute'
 import Login from '../Components/Modals/login/Login'
 import OAuth2RedirectHandler from '../user/oauth2/OAuth2RedirectHandler'
+import Privacy from './Privacy';
 
 class Main extends Component {
     constructor(props) {
@@ -119,6 +120,7 @@ class Main extends Component {
                             <PrivateRoute path="/home/bar" authenticated={this.state.authenticated} loaded={this.state.loading} currentUser={this.state.currentUser} component={MyBarPage}/>
                             <Route path="/login" render={(props) => <Login authenticated={this.state.authenticated} {...props} />} />
                             <Route path="/oauth2/redirect" render={() => <OAuth2RedirectHandler/>}></Route>
+                            <Route path="/privacy" render={() => <Privacy/>}/>
                         </Switch>
             
                     </div>
