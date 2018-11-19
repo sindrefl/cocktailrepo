@@ -24,7 +24,7 @@ internal constructor(private val tokenProvider: TokenProvider, private val appPr
 
     @Throws(IOException::class, ServletException::class)
     override fun onAuthenticationSuccess(request: HttpServletRequest, response: HttpServletResponse, authentication: Authentication) {
-        println("AUTHENTICATION SUCCESS RUN")
+        logger.info("AUTHENTICATION SUCCESS RUN")
         val targetUrl = determineTargetUrl(request, response, authentication)
 
         if (response.isCommitted) {

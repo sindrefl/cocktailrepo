@@ -1,14 +1,10 @@
 package no.sindre.barapplication.security.oauth2
 
-import com.amazonaws.services.pinpoint.model.BadRequestException
 import no.sindre.barapplication.security.TokenProvider
 import no.sindre.barapplication.services.CustomUserDetailsService
-import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
-import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource
 import org.springframework.util.StringUtils
 import org.springframework.web.filter.OncePerRequestFilter
@@ -20,8 +16,8 @@ import javax.servlet.http.HttpServletResponse
 import java.io.IOException
 
 class TokenAuthenticationFilter(
-        val tokenProvider: TokenProvider,
-        val customUserDetailsService: CustomUserDetailsService
+        private val tokenProvider: TokenProvider,
+        private val customUserDetailsService: CustomUserDetailsService
 ) : OncePerRequestFilter() {
 
     @Throws(ServletException::class, IOException::class)
@@ -33,13 +29,15 @@ class TokenAuthenticationFilter(
                 val userId = tokenProvider.getUserIdFromToken(jwt)
 
                 val userDetails = customUserDetailsService.loadUserById(userId!!)
+                LOG.info("Userdetails from TokenAuthenticationFilter:")
+                LOG.info(userDetails.toString())
                 val authentication = UsernamePasswordAuthenticationToken(userDetails, null, userDetails.authorities)
                 authentication.details = WebAuthenticationDetailsSource().buildDetails(request)
 
                 SecurityContextHolder.getContext().authentication = authentication
             }
         } catch (ex: Exception) {
-            logger.error("Could not set user authentication in security context", ex)
+            LOG.error("Could not set user authentication in security context", ex)
         }
 
         filterChain.doFilter(request, response)
@@ -53,7 +51,6 @@ class TokenAuthenticationFilter(
     }
 
     companion object {
-
-        private val logger = LoggerFactory.getLogger(TokenAuthenticationFilter::class.java)
+        private val LOG = LoggerFactory.getLogger(TokenAuthenticationFilter::class.java)
     }
 }

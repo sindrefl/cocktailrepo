@@ -26,7 +26,7 @@ class OAuth2AuthenticationFailureHandler : SimpleUrlAuthenticationFailureHandler
 
         HttpCookieOAuth2AuthorizationRequestRepository.removeAuthorizationRequest(request, response)
 
-        println("AUTHENTICATION FAILURE RUN")
+        logger.info("AUTHENTICATION FAILURE RUN")
         redirectStrategy.sendRedirect(request, response, targetUrl)
     }
 }

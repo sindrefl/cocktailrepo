@@ -8,6 +8,7 @@ import no.sindre.barapplication.security.UserPrincipal
 import no.sindre.barapplication.security.oauth2.user.OAuth2UserInfo
 import no.sindre.barapplication.security.oauth2.user.OAuth2UserInfoFactory
 import no.sindre.barapplication.exception.OAuth2AuthenticationProcessingException
+import org.slf4j.LoggerFactory
 import org.springframework.security.authentication.InternalAuthenticationServiceException
 import org.springframework.security.core.AuthenticationException
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService
@@ -57,6 +58,7 @@ class CustomOAuth2UserService(val userRepository: UserRepository) : DefaultOAuth
     }
 
     private fun registerNewUser(oAuth2UserRequest: OAuth2UserRequest, oAuth2UserInfo: OAuth2UserInfo): User {
+        LOG.info("REGISTER NEW USER")
         val user = User(
                 oAuth2UserInfo.getName(),
                 oAuth2UserInfo.getEmail(),
@@ -74,4 +76,8 @@ class CustomOAuth2UserService(val userRepository: UserRepository) : DefaultOAuth
         return userRepository.updateExisting(existingUser)
     }
 
+
+    companion object {
+        val LOG = LoggerFactory.getLogger(CustomOAuth2UserService::class.java)
+    }
 }
