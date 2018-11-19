@@ -1,1 +1,1 @@
-web: java -jar target/barapplication-3.0.0.jar
+web: java -jar target/barapplication-3.1.0.jar
