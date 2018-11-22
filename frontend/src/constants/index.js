@@ -1,4 +1,4 @@
-export const API_BASE_URL = window.location.origin === 'http://localhost:3000' ? 'http://localhost:8080' : window.location.origin;
+export const API_BASE_URL = window.location.origin === 'http://localhost:3000' ? 'http://localhost:8080' : '';
 export const ACCESS_TOKEN = 'accessToken';
 
 export const OAUTH2_REDIRECT_URI = window.location.origin + '/oauth2/redirect'
