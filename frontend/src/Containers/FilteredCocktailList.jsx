@@ -203,8 +203,6 @@ class FilteredCocktailList extends Component {
     
     render(){
         const {category, glass,drinks, modal, modal_url, maxPages, loadedImages} = this.state;
-        console.log(drinks && drinks.length > 0 && loadedImages > 0)
-        console.log(loadedImages)
         return <div>
                     {this.suggestionsLoaded && <HeaderWithSearch  {...this.state} submitIngredients={this.searchDrinkByIngredients} removeIngredient={this.removeIngredient} addIngredient={this.addIngredient} setIngredientNameField={this.setListFieldWithSuggestion} setField={this.setField} setFieldWithBackendCall={this.setFieldWithSuggestion} submit={this.submit} searchDrinkByName={this.searchDrinkByName}/>}
 
