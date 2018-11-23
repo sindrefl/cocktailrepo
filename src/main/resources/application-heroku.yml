@@ -25,7 +25,7 @@ spring:
             github:
               clientId: ${GITHUB_APP_ID}
               clientSecret: ${GITHUB_APP_SECRET}
-              redirectUriTemplate: "http://mycocktailbar.herokuapp.com/oauth2/callback/{registrationId}"
+              redirectUriTemplate: "{baseUrl}/oauth2/callback/{registrationId}"
               scope:
                 - user:email
                 - read:user
