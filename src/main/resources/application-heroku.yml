@@ -2,6 +2,7 @@ server.port: ${PORT:8080}
 awskey: ${AWS_ACCESS_KEY_ID}
 awssecret: ${AWS_SECRET_ACCESS_KEY}
 
+rooturl: https://mycocktailbar.herokuapp.com/#
 
 spring:
     security:
@@ -45,6 +46,5 @@ app:
     # We're not using cookies because they won't work well in mobile clients.
     authorizedRedirectUris:
       - https://mycocktailbar.herokuapp.com/oauth2/redirect
-      - http://mycocktailbar.herokuapp.com/oauth2/redirect
       #- myandroidapp://oauth2/redirect
       #- myiosapp://oauth2/redirect

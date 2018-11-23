@@ -1,6 +1,8 @@
 awskey: ${AWS_ACCESS_KEY_ID}
 awssecret: ${AWS_SECRET_ACCESS_KEY}
 
+rooturl: http://localhost:3000/#
+
 #https://vkuzel.com/spring-boot-jpa-hibernate-atomikos-postgresql-exception
 spring:
     datasource:

@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.Authentication
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler
 import org.springframework.stereotype.Component
-import org.springframework.web.util.UriComponentsBuilder
 
 import javax.servlet.ServletException
 import javax.servlet.http.HttpServletRequest
@@ -17,10 +16,12 @@ import java.io.IOException
 import java.net.URI
 
 import no.sindre.barapplication.security.oauth2.HttpCookieOAuth2AuthorizationRequestRepository.Companion;
+import org.springframework.core.env.Environment
+import org.springframework.core.env.get
 
 @Component
 class OAuth2AuthenticationSuccessHandler @Autowired
-internal constructor(private val tokenProvider: TokenProvider, private val appProperties: AppProperties) : SimpleUrlAuthenticationSuccessHandler() {
+internal constructor(private val tokenProvider: TokenProvider, private val appProperties: AppProperties, val environment: Environment) : SimpleUrlAuthenticationSuccessHandler() {
 
     @Throws(IOException::class, ServletException::class)
     override fun onAuthenticationSuccess(request: HttpServletRequest, response: HttpServletResponse, authentication: Authentication) {
@@ -37,17 +38,14 @@ internal constructor(private val tokenProvider: TokenProvider, private val appPr
     }
 
     protected fun determineTargetUrl(request: HttpServletRequest, response: HttpServletResponse, authentication: Authentication): String {
-        val redirectUri = CookieUtils.getCookie(request, Companion.REDIRECT_URI_PARAM_COOKIE_NAME)?.value ?: defaultTargetUrl
+        val urlStringFromCookie = CookieUtils.getCookie(request, Companion.REDIRECT_URI_PARAM_COOKIE_NAME)?.value ?: defaultTargetUrl
 
-        if (!isAuthorizedRedirectUri(redirectUri)) {
+        if (!isAuthorizedRedirectUri(urlStringFromCookie)) {
             throw BadRequestException("Sorry! We've got an Unauthorized Redirect URI and can't proceed with the authentication")
         }
 
         val token = tokenProvider.createToken(authentication)
-
-        return UriComponentsBuilder.fromUriString(redirectUri)
-                .queryParam("token", token)
-                .build().toUriString()
+        return environment["rooturl"] + urlStringFromCookie + "?token=$token"
     }
 
     protected fun clearAuthenticationAttributes(request: HttpServletRequest, response: HttpServletResponse) {
@@ -62,9 +60,8 @@ internal constructor(private val tokenProvider: TokenProvider, private val appPr
         return appProperties.oauth2.authorizedRedirectUris
                 .stream()
                 .anyMatch { authorizedRedirectUri ->
-                    // Only validate host and port. Let the clients use different paths if they want to
                     val authorizedURI = URI.create(authorizedRedirectUri)
-                    authorizedURI.host.equals(clientRedirectUri.host, ignoreCase = true) && authorizedURI.port == clientRedirectUri.port
+                    authorizedURI.host.equals(clientRedirectUri.host, ignoreCase = true) && authorizedURI.port == clientRedirectUri.port && clientRedirectUri.path == authorizedURI.path
                 }
     }
 }

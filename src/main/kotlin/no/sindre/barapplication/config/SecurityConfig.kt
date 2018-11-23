@@ -113,6 +113,7 @@ class SecurityConfig(val customUserDetailsService: CustomUserDetailsService,
 
         // Add our custom Token based authentication filter
         http.addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter::class.java)
+
     }
 
     /*
