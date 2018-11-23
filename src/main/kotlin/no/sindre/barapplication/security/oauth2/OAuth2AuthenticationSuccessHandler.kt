@@ -38,14 +38,14 @@ internal constructor(private val tokenProvider: TokenProvider, private val appPr
     }
 
     protected fun determineTargetUrl(request: HttpServletRequest, response: HttpServletResponse, authentication: Authentication): String {
-        val urlStringFromCookie = CookieUtils.getCookie(request, Companion.REDIRECT_URI_PARAM_COOKIE_NAME)?.value ?: defaultTargetUrl
+        val urlStringFromCookie = environment["rooturl"] + CookieUtils.getCookie(request, Companion.REDIRECT_URI_PARAM_COOKIE_NAME)?.value ?: defaultTargetUrl
 
         if (!isAuthorizedRedirectUri(urlStringFromCookie)) {
             throw BadRequestException("Sorry! We've got an Unauthorized Redirect URI and can't proceed with the authentication")
         }
 
         val token = tokenProvider.createToken(authentication)
-        return environment["rooturl"] + urlStringFromCookie + "?token=$token"
+        return "$urlStringFromCookie?token=$token"
     }
 
     protected fun clearAuthenticationAttributes(request: HttpServletRequest, response: HttpServletResponse) {
@@ -61,7 +61,7 @@ internal constructor(private val tokenProvider: TokenProvider, private val appPr
                 .stream()
                 .anyMatch { authorizedRedirectUri ->
                     val authorizedURI = URI.create(authorizedRedirectUri)
-                    authorizedURI.host.equals(clientRedirectUri.host, ignoreCase = true) && authorizedURI.port == clientRedirectUri.port
+                    authorizedURI.host.equals(clientRedirectUri.host, ignoreCase = true) && authorizedURI.port == clientRedirectUri.port && clientRedirectUri.path == authorizedURI.path
                 }
     }
 }
