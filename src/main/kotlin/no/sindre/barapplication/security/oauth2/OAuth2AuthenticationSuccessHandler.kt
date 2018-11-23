@@ -61,7 +61,7 @@ internal constructor(private val tokenProvider: TokenProvider, private val appPr
                 .stream()
                 .anyMatch { authorizedRedirectUri ->
                     val authorizedURI = URI.create(authorizedRedirectUri)
-                    authorizedURI.host.equals(clientRedirectUri.host, ignoreCase = true) && authorizedURI.port == clientRedirectUri.port && clientRedirectUri.path == authorizedURI.path
+                    authorizedURI.host.equals(clientRedirectUri.host, ignoreCase = true) && authorizedURI.port == clientRedirectUri.port
                 }
     }
 }
