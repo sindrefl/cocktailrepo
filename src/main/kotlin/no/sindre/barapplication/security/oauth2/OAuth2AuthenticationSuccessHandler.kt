@@ -64,10 +64,10 @@ internal constructor(private val tokenProvider: TokenProvider, private val appPr
                     val authorizedURI = URI.create(authorizedRedirectUri)
                     logger.info(authorizedURI.host)
                     logger.info(authorizedURI.fragment)
-                    logger.info(authorizedURI.port)
+                    logger.info(authorizedURI.path)
                     logger.info(clientRedirectUri.host)
                     logger.info(clientRedirectUri.fragment)
-                    logger.info(clientRedirectUri.port)
+                    logger.info(clientRedirectUri.path)
                     authorizedURI.host.equals(clientRedirectUri.host, ignoreCase = true) && authorizedURI.port == clientRedirectUri.port
                 }
     }
