@@ -74,6 +74,9 @@ class SecurityConfig(val customUserDetailsService: CustomUserDetailsService,
                 .and()
                 .authorizeRequests()
                 .antMatchers("/",
+                        "/filtered",
+                        "/privacy",
+                        "/oauth2/redirect",
                         "/error",
                         "/favicon.ico",
                         "/**/*.png",
