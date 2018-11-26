@@ -15,6 +15,7 @@ class CocktailDashboard extends Component {
                 {randomDrink && 
                 <div>
                     <RandomDrinkCard
+                        drinkId={randomDrink.id}
                         name={randomDrink.name}
                         imageUrl={getDrinkImage(randomDrink)}
                         altUrl={randomDrink.imageUrl}

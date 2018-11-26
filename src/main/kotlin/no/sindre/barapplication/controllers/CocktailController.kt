@@ -75,7 +75,7 @@ class CocktailController(
     */
 
     companion object {
-         val LOG: Logger  = LoggerFactory.getLogger(CocktailController::class.java.name)
+         val LOG: Logger  = LoggerFactory.getLogger(CocktailController::class.java)
         const val PAGE_SIZE = 20
     }
 }

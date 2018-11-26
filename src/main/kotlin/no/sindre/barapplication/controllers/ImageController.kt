@@ -71,13 +71,4 @@ class ImageController(val imageService: ImageService,
             }
         }
     }
-    @PostMapping("/store")
-    fun store(
-            @RequestPart image : ByteArray,
-            @RequestPart name: String,
-            @RequestPart fileName: String
-    ){
-        imageService.storeCocktailImage(image, name,fileName)
-    }
-
 }

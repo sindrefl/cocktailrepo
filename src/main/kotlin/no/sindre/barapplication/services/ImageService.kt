@@ -10,8 +10,7 @@ import java.nio.file.Paths
 class ImageService(val cocktailService: CocktailService,
                    val cocktailRepository: CocktailRepository) {
     //fun storeCocktailImage(bytes: ByteArray, cocktailId: Int, fileName: String){
-    fun storeCocktailImage(bytes: ByteArray, cocktailName: String, fileName: String) {
-        val cocktailId = cocktailRepository.getIdFromName(cocktailName.replace('_', ' '))
+    fun storeCocktailImage(bytes: ByteArray, fileName: String, cocktailId: Int) {
         cocktailRepository.storeCocktailImage(bytes, cocktailId, fileName, "/api/images/drinks?id=$cocktailId")
     }
 

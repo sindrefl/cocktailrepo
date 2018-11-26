@@ -74,9 +74,6 @@ class SecurityConfig(val customUserDetailsService: CustomUserDetailsService,
                 .and()
                 .authorizeRequests()
                 .antMatchers("/",
-                        "/filtered",
-                        "/privacy",
-                        "/oauth2/redirect",
                         "/error",
                         "/favicon.ico",
                         "/**/*.png",
@@ -95,6 +92,8 @@ class SecurityConfig(val customUserDetailsService: CustomUserDetailsService,
                 ).permitAll()
                 .antMatchers("/auth/**", "/oauth2/**")
                 .permitAll()
+                .antMatchers("/api/admin/**")
+                .hasRole("ADMIN")
                 .anyRequest()
                 .authenticated()
                 .and()

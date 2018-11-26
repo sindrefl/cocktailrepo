@@ -1,10 +1,18 @@
 import React, {Component} from 'react';
+import { deleteCocktail } from '../../Containers/api';
+
 
 class RandomDrinkCard extends Component {
     render() {
-        const {name, imageUrl,altUrl,glass,amounts,ingredients,recipe,updateRandomDrink, showUpdateButton} = this.props;
+        const {drinkId, toggleEdit, name, imageUrl,altUrl,glass,
+            amounts,ingredients,recipe,updateRandomDrink, showUpdateButton, admin, deleteCocktail} = this.props;
         return (
             <div className="Random-Card-Container">
+                {admin && <div className="flex-container-horizontal flex-space-between">
+                    <button onClick={toggleEdit}>Edit</button>
+                    <button onClick={() => deleteCocktail(drinkId)}>Delete</button>
+                </div>
+                }
                 <h1>{name}</h1>
                 <div className="Random-Card flex-container-vertical">
                     <div className="flex-container-horizontal flex-space-between">

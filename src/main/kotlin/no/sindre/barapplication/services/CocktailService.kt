@@ -61,6 +61,14 @@ class CocktailService(val cocktailRepository: CocktailRepository,
         return cocktailRepository.getCategories()
     }
 
+    fun deleteById(id: Int){
+        cocktailRepository.deleteCocktail(id)
+    }
+
+    fun updateCocktail(newCocktail: Cocktail, id: Int){
+        cocktailRepository.updateCocktail(newCocktail, id)
+    }
+
     //prevent sql injection
     private fun filterSqlQueries(string: String):Boolean {
         val illegals = listOf<String>("join","select","drop","insert")

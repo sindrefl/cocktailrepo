@@ -12,6 +12,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder
 import org.springframework.jdbc.support.lob.DefaultLobHandler
 import java.io.ByteArrayInputStream
 import org.springframework.jdbc.core.support.SqlLobValue
+import org.springframework.transaction.annotation.Transactional
 import java.sql.Types
 
 
@@ -238,6 +239,40 @@ class CocktailRepository(val namedParameterJdbcTemplate: NamedParameterJdbcTempl
             LIMIT 10
             """.trimIndent().regexReplace()
         return namedParameterJdbcTemplate.queryForList(sql, namedParameters).map { it["category"].toString() }
+    }
+
+    @Transactional
+    fun deleteCocktail(id: Int){
+        val sql1 = """
+            DELETE FROM cocktail_db.cocktailhasingredient
+            WHERE cocktail_id=:cocktailId
+            """.trimIndent().regexReplace()
+        val map = MapSqlParameterSource(
+                hashMapOf(
+                        "cocktailId" to id
+                )
+        )
+        namedParameterJdbcTemplate.update(sql1, map)
+        val sql2 = """
+            DELETE FROM cocktail_db.cocktail
+            WHERE cocktail_id=:cocktailId
+            """.trimIndent().regexReplace()
+        namedParameterJdbcTemplate.update(sql2, map)
+    }
+
+    fun updateCocktail(newCocktail: Cocktail, id: Int){
+        val sql = """
+            UPDATE cocktail_db.cocktail
+            SET name=:name, recipe=:recipe, glass=:glass
+            WHERE cocktail_id=:id
+            """.trimIndent().regexReplace()
+        val map = MapSqlParameterSource(hashMapOf(
+                "name" to newCocktail.name,
+                "recipe" to newCocktail.recipe,
+                "glass" to newCocktail.glass.toString(),
+                "id" to id
+        ))
+        namedParameterJdbcTemplate.update(sql, map)
     }
 
     fun String.regexReplace() :String {

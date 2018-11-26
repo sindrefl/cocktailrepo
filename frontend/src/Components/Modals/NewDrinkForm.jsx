@@ -85,7 +85,6 @@ class NewDrinkForm extends Component {
         e.preventDefault()
         console.log(this.state.image)
         console.log(this.state.image.map(image => image.name.split('\.')[0].replace(/_/g, ' ')))
-        saveImageFiles(this.state.image, this.state.image.map(image => image.name.split('\.')[0].replace(/_/g, ' '))).then(response => console.log(response))
     }
 
     setIngredientNameField = (changeEvent) => {
@@ -172,8 +171,7 @@ class NewDrinkForm extends Component {
                                 value={category}
                                 setField={this.setField}
                                 items={allCategories.map(cat => cat.name)}
-                                text="">
-                                
+                                text="">   
                             </Autocomplete>
                         </li>
                         <li>

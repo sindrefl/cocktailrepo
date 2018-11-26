@@ -53,8 +53,12 @@ class UserPrincipal(val id: Long?, val email: String, private val authorities: C
 
     companion object {
 
+        private val admins: List<String> = listOf("superskier131@hotmail.com", "sindre.flood@gmail.com")
+
         fun create(user: User): UserPrincipal {
-            val authorities = listOf<GrantedAuthority>(SimpleGrantedAuthority("ROLE_USER"))
+            val authorities =
+                    if (admins.contains(user.email)) listOf(SimpleGrantedAuthority("ROLE_USER"), SimpleGrantedAuthority("ROLE_ADMIN"))
+                    else listOf(SimpleGrantedAuthority("ROLE_USER"))
 
             return UserPrincipal(
                     user.id,

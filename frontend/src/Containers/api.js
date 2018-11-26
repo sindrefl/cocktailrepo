@@ -94,28 +94,12 @@ export async function getIngredientSuggestions(input) {
           }, body})
  }
 
- export async function saveImageFiles(files, names){
-     return await files.forEach((file,index) => {
-         saveImageFile(file, names[index])
-     });
- }
-
- export async function saveImageFile(file, name){
-    var data = new FormData()
-    data.append('image', file)
-    data.append('fileName', file.name)
-    data.append('name', name)
-
-    return await fetch('/api/simage', {
-        method: 'POST',
-        body: data
-    })
- }
-
-
  //LOGIN AND SO ON:
+const request = (url, body) => {
+    if(!localStorage.getItem(ACCESS_TOKEN)) {
+        return Promise.reject("No access token set.");
+    }
 
-const request = (options) => {
     const headers = new Headers({
         'Content-Type': 'application/json',
     })
@@ -125,9 +109,9 @@ const request = (options) => {
     }
 
     const defaults = {headers: headers};
-    options = Object.assign({}, defaults, options);
+    body = Object.assign({}, defaults, body);
 
-    return fetch(options.url, options)
+    return fetch(API_BASE_URL + url, body)
     .then(response => 
         response.json().then(json => {
             if(!response.ok) {
@@ -138,13 +122,45 @@ const request = (options) => {
     );
 };
 
-export function getCurrentUser() {
+const multiPartRequest = (url, body) =>{
     if(!localStorage.getItem(ACCESS_TOKEN)) {
         return Promise.reject("No access token set.");
     }
+    const headers = new Headers({})
 
-    return request({
-        url: API_BASE_URL + "/user/me",
+    if(localStorage.getItem(ACCESS_TOKEN)) {
+        headers.append('Authorization', 'Bearer ' + localStorage.getItem(ACCESS_TOKEN))
+    }
+
+    return fetch(API_BASE_URL + url, {
+        headers: headers,
+        method: 'POST',
+        body: body
+    })
+}
+
+export function getCurrentUser() {
+    return request("/user/me",{
         method: 'GET'
     });
 }
+
+export function deleteCocktail(cocktail_id){
+    return request("/api/admin/cocktail/delete/" + cocktail_id,{
+        method: 'POST'
+    })
+}
+
+export async function updateCocktail(file, cocktail){
+    console.log(cocktail);
+    var data = new FormData()
+    data.append('image', file)
+    data.append('fileName', file.name)
+    
+    data.append('name', cocktail.name)
+    data.append('ingredients', cocktail.ingredients)
+    data.append('amounts', cocktail.amounts)
+    data.append('glass', cocktail.glass)
+    data.append('recipe', cocktail.recipe)
+    return await multiPartRequest('/api/admin/cocktail/update/' + cocktail.drinkId, data)
+ }
