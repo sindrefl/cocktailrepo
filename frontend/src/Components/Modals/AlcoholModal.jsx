@@ -37,7 +37,7 @@ class AlcoholModal extends Component {
     }
 
     render() {
-        const {isOpen, toggleModal, contentLabel, drink, drinkUrl, admin, isLoading} = this.props;
+        const {isOpen, toggleModal, contentLabel, drink, drinkUrl, admin, isLoading, authenticated} = this.props;
         console.log(isLoading)
         return (
             <div>
@@ -76,6 +76,7 @@ class AlcoholModal extends Component {
                                 admin={admin}
                                 toggleEdit={this.toggleEdit}
                                 deleteCocktail={this.delete}
+                                authenticated = {authenticated}
                             />
                             }
                         </div>

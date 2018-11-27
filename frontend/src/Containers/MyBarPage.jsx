@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 
 import FillUpComponent from '../svgcomponents/FillUpComponent';
 import RandomDrinkCard from '../Components/Cards/RandomDrink';
-import { getRandomDrink, getDrinkImage } from './api';
+import { getRandomDrink, getDrinkImage, getBatteriLevels } from './api';
 
 
 class MyBarPage extends Component {
@@ -11,13 +11,19 @@ class MyBarPage extends Component {
         super(props);
         this.state = {
             lastProps : this.props,
-            batteri : [{type : "Vodka", percent : 0.5}, {type: "Gin", percent: 0.7}, {type:"Rum", percent : 0.6}, {type:"Triple-Sec", percent: 0.5}, {type:"Tequila", percent: 0.4}],
+            batteri : [],
             randomDrink : undefined
         }
     }
 
     componentDidMount(){
-        getRandomDrink().then(drink => {
+        getBatteriLevels()
+            .then(response =>
+                this.setState({batteri: response})
+        )
+        
+        getRandomDrink()
+            .then(drink => {
                 this.setState({randomDrink: drink})
             }).catch(function (error) {
                 console.warn(error);
@@ -30,10 +36,12 @@ class MyBarPage extends Component {
 
     render() {
         const {randomDrink,batteri} = this.state
+        console.log(batteri)
         return <div>
             YOUR BAR
         <div className="flex-container-horizontal">
-        {batteri && batteri.map((icon,index) => <div className="fifth" key={index}><FillUpComponent type={icon.type} percent={icon.percent}/></div>)}
+        {batteri && Object.keys(batteri).map((key,index) => <div className="fifth" key={key}><FillUpComponent type={key} percent={batteri[key]}/></div>)}
+        
         
         </div>
         <div className="flex-container-horizontal">

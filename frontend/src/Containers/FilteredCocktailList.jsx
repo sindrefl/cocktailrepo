@@ -149,7 +149,7 @@ class FilteredCocktailList extends Component {
         }
     }
 
-    componentDidMount(){    
+    componentWillMount(){    
         let category = ""
         let glass = ""
         let page = 1
@@ -203,12 +203,36 @@ class FilteredCocktailList extends Component {
     
     render(){
         const {category, glass,drinks, modal, modal_url, maxPages, loadedImages} = this.state;
+        const{admin, authenticated} = this.props;
         return <div>
-                    {this.suggestionsLoaded && <HeaderWithSearch  {...this.state} submitIngredients={this.searchDrinkByIngredients} removeIngredient={this.removeIngredient} addIngredient={this.addIngredient} setIngredientNameField={this.setListFieldWithSuggestion} setField={this.setField} setFieldWithBackendCall={this.setFieldWithSuggestion} submit={this.submit} searchDrinkByName={this.searchDrinkByName}/>}
+                    {this.suggestionsLoaded && 
+                        <HeaderWithSearch  
+                            {...this.state}
+                            submitIngredients={this.searchDrinkByIngredients} 
+                            removeIngredient={this.removeIngredient}
+                            addIngredient={this.addIngredient}
+                            setIngredientNameField={this.setListFieldWithSuggestion}
+                            setField={this.setField}
+                            setFieldWithBackendCall={this.setFieldWithSuggestion}
+                            submit={this.submit}
+                            searchDrinkByName={this.searchDrinkByName}
+                            />
+                    }
 
-                    {loadedImages > 0 && modal && <AlcoholModal admin={this.props.admin} isOpen={modal !== undefined} contentLabel={'AlcoholModal'} toggleModal={this.toggleModal} drink={modal} drinkUrl={modal_url} isLoading = {drinks.filter(drink => drink === modal).length === 0}/>}    
+                    {loadedImages > 0 && modal && 
+                        <AlcoholModal 
+                            admin={admin} 
+                            isOpen={modal !== undefined} 
+                            contentLabel={'AlcoholModal'} 
+                            toggleModal={this.toggleModal} 
+                            drink={modal} drinkUrl={modal_url} 
+                            isLoading = {drinks.filter(drink => drink === modal).length === 0}
+                            authenticated={authenticated}        
+                            />
+                    }    
                     
                     {loadedImages === 0 && <div className="loader"></div>}
+                    
                     <div className="Grid-container">
                         <div className="Grid">
                             {drinks && drinks.length === 0 && <div>There are no drinks for category <h4>{category}</h4> and glass <h4>{glass}</h4></div>}
@@ -233,8 +257,8 @@ class FilteredCocktailList extends Component {
                                 }
                             </div>
                         </div>
+
                         {loadedImages > 0 && <HorizontalButtons update={this.updatePage} maxPages={maxPages}/>}
-                        
                 </div>
     }
 }

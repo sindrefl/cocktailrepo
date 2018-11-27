@@ -107,7 +107,6 @@ class Main extends Component {
       }
 
     render() {
-       console.log(this.state.admin)
         return (
             <div className="Main">
              {this.state.loading && <div className="loader"></div>}
@@ -120,7 +119,7 @@ class Main extends Component {
 
                         <Switch>
                             <Route path="/" exact render= {() => <CocktailDashboard randomDrink={this.state.randomDrink} categories={this.state.categories} glassTypes={this.state.glassTypes} updateRandomDrink={this.updateRandomDrink}/>}/>
-                            <Route path="/filtered" render={() => <FilteredCocktailList admin={this.state.admin}/>}/>
+                            <Route path="/filtered" render={() => <FilteredCocktailList admin={this.state.admin} authenticated={this.state.authenticated}/>}/>
                             <PrivateRoute path="/home/bar" authenticated={this.state.authenticated} loaded={this.state.loading} currentUser={this.state.currentUser} component={MyBarPage}/>
                             <Route path="/login" render={(props) => <Login authenticated={this.state.authenticated} {...props} />} />
                             <Route path="/oauth2/redirect" render={() => <OAuth2RedirectHandler/>}></Route>

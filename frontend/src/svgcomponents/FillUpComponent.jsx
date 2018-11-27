@@ -15,24 +15,25 @@ const wrapWithType = (inner, type) => {
 }
 
 const FillUpComponent = (props) => {
-    const {type, percent} = props;
+    let {type, percent} = props;
+    percent = percent / 70;
     switch (type) {
-        case "Jug":
+        case "jug":
             return wrapWithType(
                 <JugSvg percent={percent} name={type}/>, type)
-        case "Vodka":
+        case "vodka":
             return wrapWithType(
                 <VodkaSvg percent={percent} name={type}/>, type)
-        case "Tequila":
+        case "tequila":
             return wrapWithType(
                 <TequilaSvg percent={percent} name={type}/>, type)
-        case "Rum":
+        case "rum":
             return wrapWithType(
                 <RumSvg percent={percent} name={type}/>, type)
-        case "Triple-Sec":
+        case "triple_sec":
             return wrapWithType(
                 <CointreauSvg percent={percent} name={type}/>, type)
-        case "Gin":
+        case "gin":
             return wrapWithType(
                 <GinSvg percent={percent} name={type}/>, type)
         default:

@@ -164,3 +164,9 @@ export async function updateCocktail(file, cocktail){
     data.append('recipe', cocktail.recipe)
     return await multiPartRequest('/api/admin/cocktail/update/' + cocktail.drinkId, data)
  }
+
+ export async function getBatteriLevels(){
+     return request('/api/bar/batteri', {
+         method: 'GET'
+     })
+ }

@@ -38,6 +38,9 @@
 .header-item{
   margin : 5px;
 }
+.align-end{
+  align-self: flex-end;
+}
 
 .autocomplete{
   position: relative;
