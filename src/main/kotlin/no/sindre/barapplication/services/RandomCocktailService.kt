@@ -11,15 +11,14 @@ import java.util.*
 @Service
 class RandomCocktailService(val cocktailRepository: CocktailRepository,
                             val ingredientsRepository: IngredientsRepository,
-                            val cocktailService: CocktailService){
+                            val cocktailService: CocktailService) {
 
 
+    var randomCocktail: Cocktail = Cocktail("jsaf", Glass.BALLOON, Category("ds"), emptyList(), emptyList(), ",", "")
 
-    var randomCocktail : Cocktail = Cocktail("jsaf", Glass.BALLOON, Category("ds"), emptyList(), emptyList(),",","")
-
-    fun updateRandomCocktail() : Unit {
+    fun updateRandomCocktail() {
         val range = cocktailRepository.getMinMax()
-        val rand : Random = Random()
+        val rand = Random()
         randomCocktail = cocktailService.getCocktail(rand.nextInt(range.second - range.first + 1) + range.first)
     }
 

@@ -38,18 +38,19 @@ class EditableDrink extends Component {
         }))
 
         const {name, glass,amounts,ingredients,recipe} = this.props;
+        const newIngredients = ingredients.map(ing => ing.name)
         this.setState(prevState => ({
             name,
             glass,
             amounts,
-            ingredients,
+            ingredients: newIngredients,
             recipe,
         }))
     }
 
     onDrop = (accepted, rejected) => {
         if(accepted.length > 0){
-            this.setState({image: accepted[0]})
+            this.setState({image: [accepted[0]]})
         }
     }
 
@@ -93,7 +94,7 @@ class EditableDrink extends Component {
         const {name, ingredients,amounts,glass,recipe} = this.state;
         console.log(this.props)
         const {drinkId} = this.props;
-        updateCocktail(this.state.image,
+        updateCocktail(this.state.image[0],
             {  
                 drinkId,
                 name,
@@ -146,7 +147,7 @@ class EditableDrink extends Component {
                                         submit={this.submitIngredients} 
                                         addIngredient={this.addIngredient} 
                                         removeIngredient={this.removeIngredient} 
-                                        ingredients={ingredients.map(ing => ing.name)} 
+                                        ingredients={ingredients} 
                                         allIngredients={allIngredients.map(ing => ing.name)} 
                                         updateArrayField={this.setIngredientNameField}
                                         maxNItems={10}

@@ -122,11 +122,11 @@ const request = (url, body) => {
     );
 };
 
-const multiPartRequest = (url, body) =>{
+const postRequest = (url, body) =>{
     if(!localStorage.getItem(ACCESS_TOKEN)) {
         return Promise.reject("No access token set.");
     }
-    const headers = new Headers({})
+    const headers = new Headers({'Content-Type': 'application/json'})
 
     if(localStorage.getItem(ACCESS_TOKEN)) {
         headers.append('Authorization', 'Bearer ' + localStorage.getItem(ACCESS_TOKEN))
@@ -138,6 +138,24 @@ const multiPartRequest = (url, body) =>{
         body: body
     })
 }
+
+const postRequestNoContentType = (url, body) =>{
+    if(!localStorage.getItem(ACCESS_TOKEN)) {
+        return Promise.reject("No access token set.");
+    }
+    const headers = new Headers()
+
+    if(localStorage.getItem(ACCESS_TOKEN)) {
+        headers.append('Authorization', 'Bearer ' + localStorage.getItem(ACCESS_TOKEN))
+    }
+
+    return fetch(API_BASE_URL + url, {
+        headers: headers,
+        method: 'POST',
+        body: body
+    })
+}
+
 
 export function getCurrentUser() {
     return request("/user/me",{
@@ -151,16 +169,29 @@ export function deleteCocktail(cocktail_id){
     })
 }
 
-export async function updateCocktail(file, cocktail){
-    console.log(cocktail);
-    var data = new FormData()
+async function updateCocktailImage(file, cocktailId){
+    console.log(file)
+    var data = new FormData();
     data.append('image', file)
     data.append('fileName', file.name)
+
+    return await postRequestNoContentType(`/api/admin/cocktail/updateImage/${cocktailId}`, data)
+}
+
+export async function updateCocktail(file, cocktail){
+    console.log(cocktail);
+    if(file) {
+        updateCocktailImage(file, cocktail.drinkId)
+    }
     
-    data.append('name', cocktail.name)
-    data.append('ingredients', cocktail.ingredients)
-    data.append('amounts', cocktail.amounts)
-    data.append('glass', cocktail.glass)
-    data.append('recipe', cocktail.recipe)
-    return await multiPartRequest('/api/admin/cocktail/update/' + cocktail.drinkId, data)
+    const data = JSON.stringify({
+        drinkId: cocktail.drinkId,
+        name: cocktail.name,
+        ingredients: cocktail.ingredients,
+        amounts: cocktail.amounts,
+        glass: cocktail.glass,
+        recipe: cocktail.recipe
+    })
+    
+    return await postRequest('/api/admin/cocktail/update', data)
  }

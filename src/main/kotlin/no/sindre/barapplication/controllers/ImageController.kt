@@ -22,6 +22,7 @@ class ImageController(val imageService: ImageService,
 
     @GetMapping("/drinks", produces = [MediaType.IMAGE_JPEG_VALUE])
     fun getdrinkImage(@RequestParam id: Int, response: HttpServletResponse) {
+        val img = imageService.getCocktailImage(id)
         StreamUtils.copy(imageService.getCocktailImage(id).inputStream(), response.outputStream)
     }
 

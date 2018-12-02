@@ -4,6 +4,7 @@ import no.sindre.barapplication.controllers.CocktailController
 import no.sindre.barapplication.models.Category
 import no.sindre.barapplication.models.Cocktail
 import no.sindre.barapplication.models.Glass
+import no.sindre.barapplication.payload.CocktailChangeRequest
 import org.slf4j.LoggerFactory
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.springframework.stereotype.Repository
@@ -260,7 +261,7 @@ class CocktailRepository(val namedParameterJdbcTemplate: NamedParameterJdbcTempl
         namedParameterJdbcTemplate.update(sql2, map)
     }
 
-    fun updateCocktail(newCocktail: Cocktail, id: Int){
+    fun updateCocktail(newCocktail: CocktailChangeRequest){
         val sql = """
             UPDATE cocktail_db.cocktail
             SET name=:name, recipe=:recipe, glass=:glass
@@ -270,7 +271,7 @@ class CocktailRepository(val namedParameterJdbcTemplate: NamedParameterJdbcTempl
                 "name" to newCocktail.name,
                 "recipe" to newCocktail.recipe,
                 "glass" to newCocktail.glass.toString(),
-                "id" to id
+                "id" to newCocktail.drinkId
         ))
         namedParameterJdbcTemplate.update(sql, map)
     }

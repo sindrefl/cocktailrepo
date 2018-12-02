@@ -2,6 +2,7 @@ package no.sindre.barapplication.services
 
 
 import no.sindre.barapplication.models.*
+import no.sindre.barapplication.payload.CocktailChangeRequest
 import no.sindre.barapplication.repositories.CocktailRepository
 import no.sindre.barapplication.repositories.IngredientsRepository
 import org.slf4j.LoggerFactory
@@ -13,7 +14,7 @@ class CocktailService(val cocktailRepository: CocktailRepository,
                       val ingredientsRepository: IngredientsRepository,
                       val ingredientsService: IngredientsService) {
 
-    val regex = Regex("[^a-zA-Z0-9\\/\\s]")
+    val regex = Regex("[^a-zA-Z0-9\\/\\s\\.]")
     fun addCocktail(cocktail: Cocktail){
         cocktail.name = cocktail.name.replace(regex,"")
         cocktail.ingredients = cocktail.ingredients.map { Ingredient(it.name.replace(regex,""), it.description.replace(regex,""), it.type.replace(regex,""), it.isBattery) }.toList()
@@ -65,8 +66,10 @@ class CocktailService(val cocktailRepository: CocktailRepository,
         cocktailRepository.deleteCocktail(id)
     }
 
-    fun updateCocktail(newCocktail: Cocktail, id: Int){
-        cocktailRepository.updateCocktail(newCocktail, id)
+    fun updateCocktail(newCocktail: CocktailChangeRequest){
+        val ingredientIds = ingredientsRepository.addIngredients(newCocktail.ingredients.map { Ingredient(it, "","", false) })
+        cocktailRepository.updateCocktail(newCocktail)
+        //ingredientsRepository.updateCocktailIngredients()
     }
 
     //prevent sql injection

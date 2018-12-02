@@ -3,12 +3,14 @@ package no.sindre.barapplication.controllers
 import no.sindre.barapplication.models.Category
 import no.sindre.barapplication.models.Cocktail
 import no.sindre.barapplication.models.Glass
+import no.sindre.barapplication.payload.CocktailChangeRequest
 import no.sindre.barapplication.repositories.UserRepository
 import no.sindre.barapplication.services.CocktailService
 import no.sindre.barapplication.services.ImageService
 import org.slf4j.LoggerFactory
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import org.springframework.web.multipart.MultipartFile
 
 @RestController
 @RequestMapping("/api/admin")
@@ -21,29 +23,28 @@ class AdminController(
     @PostMapping("cocktail/updateImage/{id}")
     fun upd(
             @PathVariable id: Int,
-            @RequestPart image : ByteArray,
-            @RequestPart fileName: String
+            @RequestParam image: MultipartFile,
+            @RequestParam fileName: String
             ){
-        imageService.storeCocktailImage(image,fileName, id)
+
+        imageService.storeCocktailImage(image.bytes,fileName, id)
     }
 
-    @PostMapping("/cocktail/update/{id}")
+    @PostMapping("/cocktail/update")
     fun store(
-            @PathVariable id: Int,
-            @RequestParam amounts: List<String>,
-            @RequestParam map : Map<String, Any>
+            @RequestBody cocktail: CocktailChangeRequest
     ){
-        val newCocktail = Cocktail(
-                name = map["name"]!!.toString(),
-                glass = Glass.valueOf(map["glass"].toString()),
-                amounts = amounts,
-                category = Category(""),
-                description = "",
-                ingredients = emptyList(),
-                recipe = map["recipe"].toString()
-        )
-        cocktailService.updateCocktail(newCocktail, id)
-
+//        val newCocktail = Cocktail(
+//                name = map["name"]!!.toString(),
+//                glass = Glass.valueOf(map["glass"].toString()),
+//                amounts = amounts,
+//                category = Category(""),
+//                description = "",
+//                ingredients = emptyList(),
+//                recipe = map["recipe"].toString()
+//        )
+//        cocktailService.updateCocktail(newCocktail, id)
+        cocktailService.updateCocktail(cocktail)
     }
 
     @PostMapping("/cocktail/delete/{id}")
