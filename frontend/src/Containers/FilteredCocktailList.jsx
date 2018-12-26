@@ -214,7 +214,7 @@ class FilteredCocktailList extends Component {
                             {drinks && drinks.length === 0 && <div>There are no drinks for category <h4>{category}</h4> and glass <h4>{glass}</h4></div>}
                             {drinks && drinks.length > 0 && drinks.map((drink,index) => {
                                                                         const drinkUrl = getDrinkImage(drink)
-                                                                        return <span key={index + 1} onClick={(e) => this.toggleModal(drink,drinkUrl)}>
+                                                                        return <span className="clickable-card-content" key={index + 1} onClick={(e) => this.toggleModal(drink,drinkUrl)}>
                                                                             <DrinkCard
                                                                                 drinkId={drink.id}
                                                                                 imageUrl={drinkUrl} 

@@ -38,7 +38,6 @@ class AlcoholModal extends Component {
 
     render() {
         const {isOpen, toggleModal, contentLabel, drink, drinkUrl, admin, isLoading} = this.props;
-        console.log(isLoading)
         return (
             <div>
                 <ReactModal

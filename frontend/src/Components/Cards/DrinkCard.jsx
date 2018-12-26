@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import Media from 'react-media';
 
 class DrinkCard extends Component {
     render() {
@@ -18,9 +19,14 @@ class DrinkCard extends Component {
                 </div>
                     <div className="flex-container-vertical">
                         <div className="flex-vertical">
-                            Served in a 
-                            <strong> {glass} </strong>
-                            glass.
+                            <Media query="(min-width: 768px)">
+                            {match => match && 
+                                <span>
+                                    Served in a 
+                                    <strong> {glass} </strong>
+                                    glass.
+                                </span>}
+                            </Media>
                             <GenerateLists amounts={amounts} ingredients={ingredients}/>
                             {description}
                         </div>
@@ -33,11 +39,14 @@ class DrinkCard extends Component {
 const GenerateLists = ({amounts, ingredients}) => {
     if(ingredients.length <= 6){
         return <div className="flex-container-horizontal">
-        <div    >
-            <ul>
-                {amounts && amounts.map((amount,i) => <li key={i}>{amount}</li>)}
-            </ul>
-        </div>
+        <Media query="(min-width: 768px)">
+            {match => match && 
+            <div>
+                <ul>
+                    {amounts && amounts.map((amount,i) => <li key={i}>{amount}</li>)}
+                </ul>
+            </div> }
+        </Media>
         <div>
             <ul>
                 {ingredients && ingredients.map((ingredient,i) => <li key={i}>{ingredient.name}</li>)}

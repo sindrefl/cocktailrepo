@@ -69,10 +69,19 @@
   margin: 2em;
 }
 
-.Random-Card-Container{
-  margin: 2em;
-  display: flex;
-  flex-direction: column;
+@media(min-width: 768px){
+  .Random-Card-Container{
+    margin: 2em;
+    display: flex;
+    flex-direction: column;
+  }  
+}
+@media(max-width: 768px){
+  .Random-Card-Container{
+    margin: 0.5em;
+    display: flex;
+    flex-direction: column;
+  }
 }
 
 .horizontal-list-container{
@@ -85,31 +94,67 @@
 
 .Random-Card{
   background: #fff;
-  height: 30em;
+  /*height: 30em;
   width: 38em;
+  */
   opacity: 0.8;
   margin: 0;
   align-self: center;
   opacity: 0.8;
 }
 
-.padding-listtext {
-  padding-right: 2.7em;
-  padding-left: 2.7em;
-  padding-top: 2em;
+
+/*Should be same as card-container widths:*/
+@media(max-width: 768px){
+  .clickable-card-content{
+    width: 48%;
+    padding-bottom: 1em;
+  }  
+  .Card-Container{
+    margin: 0;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    border-radius: 0.5em;
+    background: #111;
+    color : #fff;
+    font-family: Indie Flower; 
+  }
+  .padding-listtext {
+    padding-left: 1em;
+  }
+  .padding-listtext-left {
+    padding-right: 1em;
+  }
+  .padding-listtext-right{
+    padding-left: 1em;
+  }
+
+  
+}
+@media(min-width: 768px){
+  .clickable-card-content{
+    width: 26em;
+    height: 36em;
+  }  
+  .Card-Container{
+    margin: 2em;
+    padding-top : 2em;
+    padding-bottom: 2em;
+    border-radius: 1em;
+    background: #111;
+    color : #fff;
+    font-family: Indie Flower; 
+    width: 22em;
+    height: 34em;
+  }
+  .padding-listtext {
+    padding-right: 2.7em;
+    padding-left: 2.7em;
+    padding-top: 2em;
+  }
+    
 }
 
-.Card-Container{
-  margin: 2em;
-  padding-top : 2em;
-  padding-bottom: 2em;
-  border-radius: 1em;
-  background: #111;
-  color : #fff;
-  font-family: Indie Flower; 
-  width: 22em;
-  height: 34em;
-}
 
 .CategoryCard-Container{
   margin-top: 2em;
@@ -148,6 +193,10 @@
   width: 200px;
   height: 200px;
 
+}
+
+ul{
+  padding-left: 0px;
 }
 
 li{
@@ -203,16 +252,27 @@ button{
   
 }
 
-.Grid{
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-  padding: 2em;
+@media(max-width: 768px){
+  .Grid{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    padding: 0.3em;
+  }
+  .Grid-container{
+    margin: 0.3em;
+  }
 }
-
-
-.Grid-container{
-  margin: 2em;
+@media(min-width: 768px){
+  .Grid{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    padding: 2em;
+  }
+  .Grid-container{
+    margin: 2em;
+  }   
 }
 
 @keyframes App-logo-spin {
@@ -230,14 +290,26 @@ button{
   font-family: Indie Flower;
 }
 
-.modal-main {
-  position:fixed;
-  background: white;
-  width: 700px;
-  height: 700px;
-  top:50%;
-  left:50%;
-  transform: translate(-50%,-50%);
+@media(min-width: 768px){
+  .modal-main {
+    position:fixed;
+    background: white;
+    width: 50%;
+    top:50%;
+    left:50%;
+    transform: translate(-50%,-50%);
+  }  
+}
+
+@media(max-width: 768px){
+  .modal-main {
+    position:fixed;
+    background: white;
+    width: 90%;
+    top:50%;
+    left:50%;
+    transform: translate(-50%,-50%);
+  }  
 }
 
 .display-block {

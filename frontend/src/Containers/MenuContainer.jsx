@@ -23,7 +23,7 @@ class MenuContainer extends Component {
             drinks: response
         }))
     }
-    
+
     onLoad(){
 
     }
@@ -46,7 +46,7 @@ class MenuContainer extends Component {
                         <div className="Grid">
                             {drinks && drinks.length > 0 && drinks.map((drink,index) => {
                                                                         const drinkUrl = getDrinkImage(drink)
-                                                                        return <span key={index + 1} onClick={(e) => this.toggleModal(drink,drinkUrl)}>
+                                                                        return <span className="clickable-card-content" key={index + 1} onClick={(e) => this.toggleModal(drink,drinkUrl)}>
                                                                             <DrinkCard
                                                                                 drinkId={drink.id}
                                                                                 imageUrl={drinkUrl} 
