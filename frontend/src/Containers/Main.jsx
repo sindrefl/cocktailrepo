@@ -13,6 +13,7 @@ import PrivateRoute from '../Components/PrivateRoute'
 import Login from '../Components/Modals/login/Login'
 import OAuth2RedirectHandler from '../user/oauth2/OAuth2RedirectHandler'
 import Privacy from './Privacy';
+import MenuContainer from './MenuContainer';
 
 const adminList = ['sindre.flood@gmail.com', 'superskier131@hotmail.com']
 
@@ -115,21 +116,20 @@ class Main extends Component {
                     <div>
                         <Navbar openLogin={this.openLogin} user={this.state.currentUser} glassTypes={this.state.glassTypes} logout={this.handleLogout}/>
 
-                         <Login isOpen={this.state.openLoginModal} close={this.quitLoginModal}/>
-
+                        <Login isOpen={this.state.openLoginModal} close={this.quitLoginModal}/>
 
                         <Switch>
                             <Route path="/" exact render= {() => <CocktailDashboard randomDrink={this.state.randomDrink} categories={this.state.categories} glassTypes={this.state.glassTypes} updateRandomDrink={this.updateRandomDrink}/>}/>
                             <Route path="/filtered" render={() => <FilteredCocktailList admin={this.state.admin}/>}/>
                             <PrivateRoute path="/home/bar" authenticated={this.state.authenticated} loaded={this.state.loading} currentUser={this.state.currentUser} component={MyBarPage}/>
                             <Route path="/login" render={(props) => <Login authenticated={this.state.authenticated} {...props} />} />
-                            <Route path="/oauth2/redirect" render={() => <OAuth2RedirectHandler/>}></Route>
+                            <Route path="/oauth2/redirect" render={() => <OAuth2RedirectHandler/>}/>
                             <Route path="/privacy" render={() => <Privacy/>}/>
+                            <Route path="/menu" render={() => <MenuContainer/>} />
                         </Switch>
             
                     </div>
                     }
-
             </div>
         );
     }

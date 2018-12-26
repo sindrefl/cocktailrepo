@@ -88,7 +88,8 @@ class SecurityConfig(val customUserDetailsService: CustomUserDetailsService,
                         "/manifest.json",
                         "/api/cocktail/**",
                         "/api/images/**",
-                        "/api/filtered/**"
+                        "/api/filtered/**",
+                        "/api/menu/**"
                 ).permitAll()
                 .antMatchers("/auth/**", "/oauth2/**")
                 .permitAll()

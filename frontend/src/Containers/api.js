@@ -83,6 +83,9 @@ export async function getIngredientSuggestions(input) {
  }
 
 
+ export async function getMenu(){
+     return await fetch(`/api/menu`).then(response => response.json())
+ }
 
  //POST:
  export async function postDrink(body){ 
