@@ -12,6 +12,10 @@
   height: 80px;
 }
 
+.main{
+  display: flex;
+}
+
 @media(min-width: 768px){
   .App-header {
     background-image: url("../assets/background5.jpg");
@@ -84,6 +88,12 @@
 
 .tempClass li {
   margin: 2em;
+}
+
+@media(min-width: 768px){
+  .dashboard-random{
+    max-width: 50%;
+  }  
 }
 
 @media(min-width: 768px){
@@ -178,18 +188,38 @@
     
 }
 
+@media(max-width: 768px){
+  .cardlistcontainer{
+    width: 47%;
+    height: 200px;
+    overflow: hidden;
+  }
 
-.CategoryCard-Container{
-  margin-top: 2em;
-  height: 300px;
-  width: 300px;
-  background: #222;
-  color : #fff;
-  font-family: Merriweather;
-  overflow: hidden;
+  .CategoryCard-Container{
+    margin-top: 2em;
+    background: #222;
+    color : #fff;
+    font-family: Merriweather;
+    overflow: hidden;
+  }
+  .CategoryCard-header{
+    padding: 0.7em;
+  }  
 }
-.CategoryCard-header{
-  padding: 2em;
+
+@media(min-width: 768px){
+  .CategoryCard-Container{
+    margin-top: 2em;
+    height: 300px;
+    width: 300px;
+    background: #222;
+    color : #fff;
+    font-family: Merriweather;
+    overflow: hidden;
+  }
+  .CategoryCard-header{
+    padding: 2em;
+  }  
 }
 
 .DrinkCard-header{
@@ -218,6 +248,15 @@
 
 }
 
+@media(max-width: 768px){
+  h2{
+    font-size: 20px !important;
+  }
+  input{
+    width: 100%;
+  }
+}
+
 ul{
   padding-left: 0px;
 }
@@ -244,6 +283,12 @@ button{
   color: black;
   border: 2px solid rgb(139, 69, 69);;
 }
+
+button:disabled,
+button[disabled]{
+  opacity: 0.6;
+}
+
 .small-button{
   height: 1.8em;
   width: 2em;
@@ -260,20 +305,37 @@ button{
   justify-content: space-around  
 }
 
-.Grid-header-container-square{
-  background: #aaaaaa;
-  height: 10em;
-  display: flex;
-  justify-content: space-around   
-}
-
-.Grid-header{
-  padding: 2em;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
+@media(min-width: 768px){
+  .Grid-header-container-square{
+    background: #aaaaaa;
+    height: 10em;
+    display: flex;
+    justify-content: space-around   
+  }  
+  .Grid-header{
+    padding: 2em;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
   
 }
+
+@media(max-width: 768px){
+  .Grid-header-container-square{
+    background: #aaaaaa;
+    padding: 0.3em;
+    display: flex;
+  }
+  
+  .Grid-header{
+    padding: 0.7em;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
 
 @media(max-width: 768px){
   .Grid{

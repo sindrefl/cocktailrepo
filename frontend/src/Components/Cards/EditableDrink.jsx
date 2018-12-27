@@ -92,7 +92,6 @@ class EditableDrink extends Component {
 
     updateDrink = () => {
         const {name, ingredients,amounts,glass,recipe} = this.state;
-        console.log(this.props)
         const {drinkId} = this.props;
         updateCocktail(this.state.image[0],
             {  

@@ -31,6 +31,7 @@ class FilteredCocktailList extends Component {
             glass: "",        
             specificDrink: "",
             ingredients: [""],
+            searchType: "cat",
             //modal         
             modal: undefined,
             modal_url: undefined,
@@ -122,6 +123,10 @@ class FilteredCocktailList extends Component {
         })
     }
 
+    setSearchType = (event) => {
+        event.preventDefault();
+        this.setState({searchType: event.target.value});
+    }
 
     setIngredientNameField = (changeEvent, index) => {
         const {target} = changeEvent
@@ -202,9 +207,23 @@ class FilteredCocktailList extends Component {
     }
     
     render(){
-        const {category, glass,drinks, modal, modal_url, maxPages, loadedImages} = this.state;
+        const {category, glass,drinks, modal, modal_url, maxPages, loadedImages,searchType} = this.state;
         return <div>
-                    {this.suggestionsLoaded && <HeaderWithSearch  {...this.state} submitIngredients={this.searchDrinkByIngredients} removeIngredient={this.removeIngredient} addIngredient={this.addIngredient} setIngredientNameField={this.setListFieldWithSuggestion} setField={this.setField} setFieldWithBackendCall={this.setFieldWithSuggestion} submit={this.submit} searchDrinkByName={this.searchDrinkByName}/>}
+                    {this.suggestionsLoaded && 
+                        <HeaderWithSearch  
+                            {...this.state}
+                            submitIngredients={this.searchDrinkByIngredients}
+                            removeIngredient={this.removeIngredient} 
+                            addIngredient={this.addIngredient} 
+                            setIngredientNameField={this.setListFieldWithSuggestion} 
+                            setField={this.setField} 
+                            setFieldWithBackendCall={this.setFieldWithSuggestion} 
+                            submit={this.submit} 
+                            searchDrinkByName={this.searchDrinkByName}
+                            setSearchType={this.setSearchType}
+                            searchType={searchType}
+                            />
+                        }
 
                     {loadedImages > 0 && modal && 
                         <AlcoholModal 

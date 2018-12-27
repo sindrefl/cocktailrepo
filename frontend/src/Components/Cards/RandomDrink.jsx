@@ -17,11 +17,11 @@ class RandomDrinkCard extends Component {
                 {isOrderable && 
                 <div className="flex-container-horizontal flex-space-around">
                     <div style={{paddingRight: "0.5em", paddingLeft:"0.5em"}}>
-                        <label>Tlf (brukes for Vipps):</label>
-                        <input type="text" placeholder="TLF"/>
+                        <label>Tlf (used for Vipps):</label>
+                        <input value={this.props.phoneNumber} type="text" placeholder="TLF" onChange={this.props.updatePhoneNumber}/>
                     </div>
                     <div style={{paddingRight: "0.5em", paddingLeft:"0.5em"}}>
-                        <button onClick={() => orderCocktail(drinkId)}>Bestill nå: 25,-</button>                
+                        <button disabled={this.props.phoneNumber === ""} onClick={() => orderCocktail(drinkId)}>Order now: 25,-</button>                
                     </div>
                 </div>
                 } 

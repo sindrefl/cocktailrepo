@@ -13,6 +13,7 @@ class AlcoholModal extends Component {
             edit: false,
             deleted: false,
             ordered: false,
+            phoneNumber: "",
         }
         this.toggleEdit = this.toggleEdit.bind(this);
         this.delete = this.delete.bind(this);
@@ -24,6 +25,7 @@ class AlcoholModal extends Component {
         this.renderDrink = this.renderDrink.bind(this);
         this.renderDrinkDeleted = this.renderDrinkDeleted.bind(this);
         this.renderDrinkOrdered = this.renderDrinkOrdered.bind(this);
+        this.updatePhoneNumber = this.updatePhoneNumber.bind(this);
     }
 
     toggleEdit = () => {
@@ -52,12 +54,18 @@ class AlcoholModal extends Component {
 
     order(id){
         console.log("ordered");
+        console.log(this.state.phoneNumber);
         this.setState({ordered: true});
         /*deleteCocktail(id).then(response => {
             if(response.ok === 'ok') this.setState({order: true})
             }
         )
         */
+    }
+
+    updatePhoneNumber(e){
+        e.preventDefault();
+        this.setState({phoneNumber: e.target.value});
     }
 
     renderEditDrink(){
@@ -95,6 +103,8 @@ class AlcoholModal extends Component {
                 deleteCocktail={this.delete}
                 orderCocktail={this.order}
                 isOrderable={isOrderable}
+                updatePhoneNumber={this.updatePhoneNumber}
+                phoneNumber={this.state.phoneNumber}
             />
         );
         
@@ -112,7 +122,7 @@ class AlcoholModal extends Component {
     renderDrinkOrdered(){
         return(
             <div>
-                <h3>Drink has been ordered. Payment to cover material cost will be requested via Vipps to the number you provided.</h3>
+                <h3>Drink has been ordered. Payment to cover material cost will be requested via Vipps to the number you provided ({this.state.phoneNumber}).</h3>
                 <button onClick={this.closeAfterOrder}>Close</button>
             </div>
         )

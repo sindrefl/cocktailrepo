@@ -13,21 +13,23 @@ class CocktailDashboard extends Component {
         return (
             <div className="Main">
                 {randomDrink && 
-                <div>
-                    <RandomDrinkCard
-                        drinkId={randomDrink.id}
-                        name={randomDrink.name}
-                        imageUrl={getDrinkImage(randomDrink)}
-                        altUrl={randomDrink.imageUrl}
-                        description={randomDrink.description}
-                        glass={randomDrink.glass}
-                        ingredients={randomDrink.ingredients}
-                        amounts={randomDrink.amounts}
-                        recipe={randomDrink.recipe}
-                        showUpdateButton={true}
-                        updateRandomDrink={updateRandomDrink}
-                        isOrderable={false}
-                        />
+                <div className="flex-container-horizontal">
+                    <div className="dashboard-random">
+                        <RandomDrinkCard
+                            drinkId={randomDrink.id}
+                            name={randomDrink.name}
+                            imageUrl={getDrinkImage(randomDrink)}
+                            altUrl={randomDrink.imageUrl}
+                            description={randomDrink.description}
+                            glass={randomDrink.glass}
+                            ingredients={randomDrink.ingredients}
+                            amounts={randomDrink.amounts}
+                            recipe={randomDrink.recipe}
+                            showUpdateButton={true}
+                            updateRandomDrink={updateRandomDrink}
+                            isOrderable={false}
+                            />
+                    </div>
                 </div>
                     }
                 {glassTypes && <GlassTypesList glassTypes={glassTypes} />}
@@ -48,7 +50,7 @@ const GlassTypesList = ({glassTypes}) =>{
             </div>
             <div className="Grid">
                 {glassTypes.map((glass, index) => {
-                    return <div key={index}>
+                    return <div className="cardlistcontainer" key={index}>
                         <Link key={glass} to={{pathname:'/filtered', state: {glass, category:"", page:1}}}>
                             <CategoryCard
                                 imageUrl={getGlassImage(glass)}
@@ -70,7 +72,7 @@ return (<div className="Grid-container">
             <div className="Grid">
                 {categories.map((cat, index) => {
                     return( 
-                        <div key={index}>
+                        <div className="cardlistcontainer" key={index}>
                             <Link to={{pathname:"/filtered", state:{glass: "", category:cat.name, page:1}}}>
                                 <CategoryCard
                                     imageUrl={getCategoryImage(cat)}

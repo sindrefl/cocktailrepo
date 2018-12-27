@@ -108,7 +108,6 @@ class Main extends Component {
       }
 
     render() {
-       console.log(this.state.admin)
         return (
             <div className="Main">
              {this.state.loading && <div className="loader"></div>}
