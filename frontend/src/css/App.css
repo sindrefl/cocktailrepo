@@ -12,17 +12,34 @@
   height: 80px;
 }
 
-.App-header {
-  background-image: url("../assets/background5.jpg");
-  background-repeat: no-repeat;
-  background-size: cover;
-  min-height: 380px;
-  padding: 20px;
-  font-size: 32px;
-  color: red;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+@media(min-width: 768px){
+  .App-header {
+    background-image: url("../assets/background5.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    min-height: 380px;
+    padding: 20px;
+    font-size: 32px;
+    color: red;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }  
+}
+
+@media(max-width: 768px){
+  .App-header{
+    background-image: url("../assets/background5.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    min-height: 150px;
+    padding: 20px;
+    font-size: 32px;
+    color: red;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
 }
 
 .right-header{

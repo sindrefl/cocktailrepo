@@ -10,6 +10,7 @@ import {withRouter} from 'react-router'
 
 ReactModal.setAppElement('#root')
 
+/*
 const modalStyle = {
     content: {
         top: '50%',
@@ -28,6 +29,7 @@ const modalStyle = {
         transform: 'translate(-50%,-50%)'
     }
 }
+*/
 
 class Login extends Component {
     componentDidMount() {
@@ -55,7 +57,11 @@ class Login extends Component {
 
         return (
                 <div className="login-container">
-                    <ReactModal isOpen={this.props.isOpen} style={modalStyle} onRequestClose={this.props.close}>
+                    <ReactModal
+                        isOpen={this.props.isOpen} 
+                        onRequestClose={this.props.close}
+                        className="login-content modal-main"
+                        >
                             <h1 className="login-title">Login to access your barpage</h1>
                             <SocialLogin />
                         </ReactModal>

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import Media from 'react-media';
 
-class DrinkCard extends Component {
+class   DrinkCard extends Component {
     render() {
         const {imageUrl, altUrl, name, amounts,ingredients, description,glass, show, onImageLoad, onImageError} = this.props;
         return (
