@@ -42,7 +42,7 @@ class StickyNav extends React.Component {
             </ReactModal>
         <ul>
           <li><Link to={"/"}><img className="icon" src={require("../assets/home.png")} alt="Home icon"></img></Link></li>
-          <li><img className="icon clickable" src={require("../assets/plus.png")} alt="plus icon" onClick={this.props.showModal}></img></li>
+          {this.props.todo && 'REMOVE THIS WHEN ADD DRINK IS READY' && <li><img className="icon clickable" src={require("../assets/plus.png")} alt="plus icon" onClick={this.props.showModal}></img></li>}
           <li>{this.props.user ? <Link to={"/home/bar"}><img className="icon" src={require("../assets/profile4.png")} alt="Profile icon"></img></Link> : <img className="icon clickable" src={require("../assets/profile4.png")} alt="plus icon" onClick={this.props.openLogin}></img>}</li>
           
           <Media query="(min-width: 768px)">

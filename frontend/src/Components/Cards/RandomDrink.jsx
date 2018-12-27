@@ -36,11 +36,13 @@ class RandomDrinkCard extends Component {
                                 alt={altUrl}></img>
                             </div>
                         <div className="flex-container-vertical padding-listtext">
-                            <div>
-                                Served in a 
-                                <strong> {glass} </strong>
-                                glass.
-                            </div>
+                            {!isOrderable &&
+                                <div>
+                                    Served in a 
+                                    <strong> {glass} </strong>
+                                    glass.
+                                </div>
+                            }
                             <div className="flex-container-horizontal">
                                 <div className="padding-listtext-left">
                                     <ul>

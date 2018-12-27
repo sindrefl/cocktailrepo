@@ -169,6 +169,12 @@
     padding-left: 2.7em;
     padding-top: 2em;
   }
+  .padding-listtext-left {
+    padding-right: 1.5em;
+  }
+  .padding-listtext-right{
+    padding-left: 1.5em;
+  }
     
 }
 

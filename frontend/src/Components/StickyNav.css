@@ -8,6 +8,8 @@ body {
 }
 
 nav {
+  position: relative;
+  z-index: 1000;
   width: 100%;
   margin: 0;
   top: 0;
