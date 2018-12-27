@@ -173,7 +173,6 @@ export function deleteCocktail(cocktail_id){
 }
 
 async function updateCocktailImage(file, cocktailId){
-    console.log(file)
     var data = new FormData();
     data.append('image', file)
     data.append('fileName', file.name)
@@ -182,7 +181,6 @@ async function updateCocktailImage(file, cocktailId){
 }
 
 export async function updateCocktail(file, cocktail){
-    console.log(cocktail);
     if(file) {
         updateCocktailImage(file, cocktail.drinkId)
     }

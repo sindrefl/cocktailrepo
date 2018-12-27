@@ -26,6 +26,7 @@ class CocktailDashboard extends Component {
                         recipe={randomDrink.recipe}
                         showUpdateButton={true}
                         updateRandomDrink={updateRandomDrink}
+                        isOrderable={false}
                         />
                 </div>
                     }

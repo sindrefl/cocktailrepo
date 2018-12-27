@@ -13,7 +13,6 @@ export const Autocomplete = ({items, value, name, setField, text, placeholder}) 
         }}  
             selectedItem={value}
             itemToString={item => {
-                console.log(item)
                 return (item
             ? item.toLowerCase()
             : '')}}>

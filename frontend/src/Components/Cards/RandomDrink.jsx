@@ -6,14 +6,25 @@ import { deleteCocktail } from '../../Containers/api';
 class RandomDrinkCard extends Component {
     render() {
         const {drinkId, toggleEdit, name, imageUrl,altUrl,glass,
-            amounts,ingredients,recipe,updateRandomDrink, showUpdateButton, admin, deleteCocktail} = this.props;
+            amounts,ingredients,recipe,updateRandomDrink, showUpdateButton, admin, deleteCocktail, isOrderable, orderCocktail} = this.props;
         return (
             <div className="Random-Card-Container">
                 {admin && <div className="flex-container-horizontal flex-space-between">
                     <button onClick={toggleEdit}>Edit</button>
                     <button onClick={() => deleteCocktail(drinkId)}>Delete</button>
                 </div>
-                }
+                } 
+                {isOrderable && 
+                <div className="flex-container-horizontal flex-space-around">
+                    <div style={{paddingRight: "0.5em", paddingLeft:"0.5em"}}>
+                        <label>Tlf (brukes for Vipps):</label>
+                        <input type="text" placeholder="TLF"/>
+                    </div>
+                    <div style={{paddingRight: "0.5em", paddingLeft:"0.5em"}}>
+                        <button onClick={() => orderCocktail(drinkId)}>Bestill nå: 25,-</button>                
+                    </div>
+                </div>
+                } 
                 <h1>{name}</h1>
                 <div className="Random-Card flex-container-vertical">
                     <div className="flex-container-horizontal flex-space-between">

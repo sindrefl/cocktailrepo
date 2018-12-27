@@ -45,6 +45,7 @@ class MyBarPage extends Component {
                     glass={randomDrink.glass}
                     ingredients={randomDrink.ingredients}
                     amounts ={randomDrink.amounts}
+                    isOrderable={false}
                     />
         }
         </div>
@@ -56,6 +57,7 @@ class MyBarPage extends Component {
                     ingredients={randomDrink.ingredients}
                     amounts ={randomDrink.amounts}
                     description={"This could either be some statistics or a suggestion based on previous drinks"}
+                    isOrderable={false}
                     />
         }
         </div>

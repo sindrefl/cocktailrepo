@@ -40,7 +40,16 @@ class MenuContainer extends Component {
     render(){
         const {drinks, modal, modal_url} = this.state;
         return <div>
-                    {modal && <AlcoholModal admin={this.props.admin} isOpen={modal !== undefined} contentLabel={'AlcoholModal'} toggleModal={this.toggleModal} drink={modal} drinkUrl={modal_url} isLoading = {drinks.filter(drink => drink === modal).length === 0}/>}    
+                    {modal && 
+                        <AlcoholModal 
+                            admin={this.props.admin} 
+                            isOpen={modal !== undefined} 
+                            contentLabel={'AlcoholModal'} 
+                            toggleModal={this.toggleModal} 
+                            drink={modal} drinkUrl={modal_url} 
+                            isLoading = {drinks.filter(drink => drink === modal).length === 0}
+                            isOrderable={true}
+                            />}    
 
                     <div className="Grid-container">
                         <div className="Grid">

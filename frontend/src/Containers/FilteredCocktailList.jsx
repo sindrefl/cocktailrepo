@@ -206,7 +206,17 @@ class FilteredCocktailList extends Component {
         return <div>
                     {this.suggestionsLoaded && <HeaderWithSearch  {...this.state} submitIngredients={this.searchDrinkByIngredients} removeIngredient={this.removeIngredient} addIngredient={this.addIngredient} setIngredientNameField={this.setListFieldWithSuggestion} setField={this.setField} setFieldWithBackendCall={this.setFieldWithSuggestion} submit={this.submit} searchDrinkByName={this.searchDrinkByName}/>}
 
-                    {loadedImages > 0 && modal && <AlcoholModal admin={this.props.admin} isOpen={modal !== undefined} contentLabel={'AlcoholModal'} toggleModal={this.toggleModal} drink={modal} drinkUrl={modal_url} isLoading = {drinks.filter(drink => drink === modal).length === 0}/>}    
+                    {loadedImages > 0 && modal && 
+                        <AlcoholModal 
+                            admin={this.props.admin} 
+                            isOpen={modal !== undefined} 
+                            contentLabel={'AlcoholModal'} 
+                            toggleModal={this.toggleModal} 
+                            drink={modal} 
+                            drinkUrl={modal_url} 
+                            isLoading = {drinks.filter(drink => drink === modal).length === 0}
+                            isOrderable={false}
+                            />}    
                     
                     {loadedImages === 0 && <div className="loader"></div>}
                     <div className="Grid-container">
