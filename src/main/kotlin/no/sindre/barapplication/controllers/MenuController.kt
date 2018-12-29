@@ -12,7 +12,7 @@ class MenuController(val cocktailService: CocktailService) {
 
     @GetMapping
     fun menuIndex(): List<Cocktail> {
-        return cocktailService.getCocktails(listOf(312,312,312,312,312,312))
+        return cocktailService.getCocktails(listOf(45,515,95,180,311,601,600))
 
     }
 }
