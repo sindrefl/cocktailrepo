@@ -11,7 +11,7 @@ class MailService {
         val from = Email("no-reply@mycocktailbar.com")
         val subject = "Drink order: $cocktailName - to - $orderName"
         val to = Email("sindre.flood@gmail.com")
-        val content = Content("text/plain", "")
+        val content = Content("text/plain", "This is the email content.")
         val mail = Mail(from, subject, to, content)
 
         val sg = SendGrid(System.getenv("SENDGRID_API_KEY"))
