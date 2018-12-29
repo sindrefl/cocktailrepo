@@ -171,6 +171,11 @@ export function deleteCocktail(cocktail_id){
         method: 'POST'
     })
 }
+export function orderCocktail(cocktailName, orderName){
+    return request(`/api/menu/order?cocktailName=${cocktailName}&orderName=${orderName}`, {
+        method: 'GET'
+    })
+}
 
 async function updateCocktailImage(file, cocktailId){
     var data = new FormData();

@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import { deleteCocktail } from '../../Containers/api';
 
 
 
@@ -17,11 +16,11 @@ class RandomDrinkCard extends Component {
                 {isOrderable && 
                 <div className="flex-container-horizontal flex-space-around">
                     <div style={{paddingRight: "0.5em", paddingLeft:"0.5em"}}>
-                        <label>Tlf (used for Vipps):</label>
-                        <input value={this.props.phoneNumber} type="text" placeholder="TLF" onChange={this.props.updatePhoneNumber}/>
+                        <label>Navn:</label>
+                        <input value={this.props.orderName} type="text" placeholder="Navn til deg som bestiller" onChange={this.props.updateOrderName}/>
                     </div>
                     <div style={{paddingRight: "0.5em", paddingLeft:"0.5em"}}>
-                        <button disabled={this.props.phoneNumber === ""} onClick={() => orderCocktail(drinkId)}>Order now: 25,-</button>                
+                        <button disabled={this.props.orderName === ""} onClick={() => orderCocktail(name)}>Bestill nå: 25,-</button>                
                     </div>
                 </div>
                 } 

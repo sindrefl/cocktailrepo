@@ -5,7 +5,7 @@
 
 	<groupId>no.sindre</groupId>
 	<artifactId>barapplication</artifactId>
-	<version>3.6.0</version>
+	<version>3.7.0</version>
 	<packaging>jar</packaging>
 
 	<name>barapplication</name>
@@ -100,7 +100,14 @@
             <version>1.11.163</version>
         </dependency>
 
-    </dependencies>
+		<!-- Mail -->
+		<dependency>
+			<groupId>com.sendgrid</groupId>
+			<artifactId>sendgrid-java</artifactId>
+			<version>4.3.0</version>
+		</dependency>
+
+	</dependencies>
 
 	<build>
 		<sourceDirectory>${project.basedir}/src/main/kotlin</sourceDirectory>

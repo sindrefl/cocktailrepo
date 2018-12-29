@@ -2,9 +2,6 @@ import React from 'react';
 import {Autocomplete} from './Autocomplete';
 import {ListAutocomplete} from './ListAutocomplete';
 import Media from 'react-media';
-import searchIcon from '../assets/search.png';
-
-
 
 const HeaderWithSearch = ({setSearchType,searchType,submitIngredients,categories, glassTypes, category,glass, specificDrink, setField, submit,searchDrinkByName, setFieldWithBackendCall, drinkSuggestions, ingredients,allIngredients, addIngredient,setIngredientNameField, removeIngredient}) => {
     return (
