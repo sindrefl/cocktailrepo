@@ -22,7 +22,7 @@ class RandomDrinkCard extends Component {
                     <div style={{paddingRight: "0.5em", paddingLeft:"0.5em"}}>
                         <button disabled={this.props.orderName === ""} 
                             onClick={(e) => orderCocktail(e,name)}
-                            ontouchend={(e) => orderCocktail(e,name)}
+                            onTouchEnd={(e) => orderCocktail(e,name)}
                         >Bestill nå: 25,-</button>                
                     </div>
                 </div>
