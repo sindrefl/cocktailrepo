@@ -573,6 +573,7 @@ a:hover {
   background-color: transparent;
   border-color: #e8e8e8;
   outline: none;
+  z-index: 10000;
 }
 
 .btn-block {
