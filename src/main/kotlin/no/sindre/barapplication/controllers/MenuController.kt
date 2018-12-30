@@ -13,8 +13,8 @@ class MenuController(val cocktailService: CocktailService,
 
     @GetMapping
     fun menuIndex(): List<Cocktail> {
-        return cocktailService.getCocktails(listOf(45,515,95,180,311,601,600))
-        //return cocktailService.getCocktails(listOf(45,515,95))
+        //return cocktailService.getCocktails(listOf(45,515,95,180,311,601,600))
+        return cocktailService.getCocktails(listOf(45,515,95))
     }
 
     @GetMapping("/order")

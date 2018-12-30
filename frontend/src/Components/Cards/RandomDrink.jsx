@@ -16,11 +16,14 @@ class RandomDrinkCard extends Component {
                 {isOrderable && 
                 <div className="flex-container-horizontal flex-space-around">
                     <div style={{paddingRight: "0.5em", paddingLeft:"0.5em"}}>
-                        <label>Navn:</label>
+                        <label>Navn: - ny</label>
                         <input value={this.props.orderName} type="text" placeholder="Navn til deg som bestiller" onChange={this.props.updateOrderName}/>
                     </div>
                     <div style={{paddingRight: "0.5em", paddingLeft:"0.5em"}}>
-                        <button type="submit" disabled={this.props.orderName === ""} onClick={(e) => orderCocktail(e,name)}>Bestill nå: 25,-</button>                
+                        <button disabled={this.props.orderName === ""} 
+                            onClick={(e) => orderCocktail(e,name)}
+                            ontouchend={(e) => orderCocktail(e,name)}
+                        >Bestill nå: 25,-</button>                
                     </div>
                 </div>
                 } 
