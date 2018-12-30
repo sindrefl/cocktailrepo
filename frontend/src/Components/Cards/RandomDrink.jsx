@@ -20,7 +20,7 @@ class RandomDrinkCard extends Component {
                         <input value={this.props.orderName} type="text" placeholder="Navn til deg som bestiller" onChange={this.props.updateOrderName}/>
                     </div>
                     <div style={{paddingRight: "0.5em", paddingLeft:"0.5em"}}>
-                        <button disabled={this.props.orderName === ""} onClick={() => orderCocktail(name)}>Bestill nå: 25,-</button>                
+                        <button type="submit" disabled={this.props.orderName === ""} onClick={(e) => orderCocktail(e,name)}>Bestill nå: 25,-</button>                
                     </div>
                 </div>
                 } 

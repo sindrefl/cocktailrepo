@@ -52,7 +52,8 @@ class AlcoholModal extends Component {
         this.props.toggleModal();
     }
 
-    order(name){
+    order(event, name){
+        event.preventDefault();
         orderCocktail(name, this.state.orderName).then(response =>{
             console.log(response);
             if(response.ok === 'ok') {
